@@ -36,19 +36,13 @@ You can reach us at the email `e1122999[at]comp.nus.edu.sg`
 
 * Role: Developer
 
-### Jane Doe
 
-<img src="images/johndoe.png" width="200px">
+### Wei Tianyue
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+<img src="images/jeremiah33-3.png" width="200px">
 
-* Role: Team Lead
-* Responsibilities: UI
-
-### Johnny Doe
-
-<img src="images/johndoe.png" width="200px">
+[[github](http://github.com/jeremiah33-3)]
+[[portfolio](team/jeremiah33-3.md)]
 
 [[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
 
