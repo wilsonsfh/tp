@@ -18,5 +18,32 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](https://github.com/awc1116)]
 [[portfolio](team/awc1116.md)]
 
+### Tang Ming Shan
+
+<img src="images/mingshan2705.png" width="200px">
+
+[[homepage](http://www.comp.nus.edu.sg/~mingshan)]
+[[github](https://github.com/mingshan2705)]
+[[portfolio](team/mingshan2705.md)]
+
+* Role: Developer
+
+### Jane Doe
+
+<img src="images/johndoe.png" width="200px">
+
+[[github](http://github.com/johndoe)]
+[[portfolio](team/johndoe.md)]
+
+* Role: Team Lead
+* Responsibilities: UI
+
+### Johnny Doe
+
+<img src="images/johndoe.png" width="200px">
+
+[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
+
+
 * Role: Developer
 
