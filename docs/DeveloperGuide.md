@@ -302,7 +302,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `manager`, unless specified otherwise)
 
-**Use case: UC1: List members**
+**Use case: UC1 List members**
 
 **MSS**
 
@@ -315,7 +315,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
   Use case ends.
 
-**Use case: UC2: List tasks**
+**Use case: UC2 List tasks**
 
 **MSS**
 
@@ -328,7 +328,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
   Use case ends.
 
-**Use case: Delete a member**
+**Use case: UC3 Delete a member**
 
 **MSS**
 
@@ -346,7 +346,31 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 2.
 
-**Use case: Add a person**
+**Use case: UC4 Edit a member**
+
+**MSS**
+
+1.  Manager <ins>list members (UC1)</ins>.
+2.  Manager requests to edit a specific member in the list
+3.  AddressBook edits the member
+
+    Use case ends.
+
+**Extensions**
+
+* 3a. The given index is invalid.
+
+    * 3a1. AddressBook shows an error message.
+
+      Use case resumes at step 2.
+
+* 3b. Edit command received invalid inputs.
+
+    * 3b1. AddressBook shows an error message
+
+      Use case resumes at step 2.
+
+**Use case: UC5 Add a person**
 
 **MSS**
 
@@ -363,31 +387,74 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 1.
 
-**Use case: Add a task under a person**
+**Use case: UC6 Add a task under a person**
 
 **MSS**
 
 1.  Manager <ins>list members (UC1)</ins>.
-2.  Manager requests to add a task under a member.
-3.  AddressBook adds a task under a member.
+2.  Manager <ins>list tasks (UC2)</ins>.
+3.  Manager requests to add a task under a member.
+4.  AddressBook adds a task under a member.
 
     Use case ends.
 
 **Extensions**
 
-* 4a. The given index is invalid.
+* 4a. The given index for either task is invalid.
 
     * 4a1. AddressBook shows an error message.
 
       Use case resumes at step 2.
 
-* 4b. The details provided for the task are invalid.
+* 4b. The given index for either member is invalid.
 
     * 4b1. AddressBook shows an error message.
 
       Use case resumes at step 2.
 
-**Use case: Set a due date for a task**
+**Use case: UC7 Changes a task under a person**
+
+**MSS**
+
+1.  Manager <ins>list members (UC1)</ins>.
+2.  Manager <ins>list tasks (UC2)</ins>.
+3.  Manager requests to change a task under a member.
+4.  AddressBook changes a task under a member.
+
+    Use case ends.
+
+**Extensions**
+
+* 4a. The given index for either task is invalid.
+
+    * 4a1. AddressBook shows an error message.
+
+      Use case resumes at step 2.
+
+* 4b. The given index for either member is invalid.
+
+    * 4b1. AddressBook shows an error message.
+
+      Use case resumes at step 2.
+
+**Use case: UC8 Create a task**
+
+**MSS**
+
+1. Manager requests to create a task.
+2. AddressBook creates a task.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. Invalid task input.
+
+    * 2a1. AddressBook shows an error message.
+
+      Use case ends.
+
+**Use case: UC9 Set a due date for a task**
 
 **MSS**
 
@@ -399,19 +466,19 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 4a. The given task index is invalid.
+* 3a. The given task index is invalid.
 
     * 4a1. AddressBook shows an error message.
 
       Use case resumes at step 2.
 
-* 4b. The due date format is invalid.
+* 3b. The due date format is invalid.
 
     * 4b1. AddressBook shows an error message.
 
       Use case resumes at step 2.
 
-**Use case: Mark the task as completed, in progress, or yet to start**
+**Use case: UC10 Mark the task as completed, in progress, or yet to start**
 
 **MSS**
 
@@ -423,21 +490,40 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 4a. The given task index is invalid.
+* 3a. The given task index is invalid.
 
-    * 4a1. AddressBook shows an error message.
+    * 3a1. AddressBook shows an error message.
 
       Use case resumes at step 2.
 
-* 4b. The due date format is invalid.
+* 3b. The due date format is invalid.
 
     * 4b1. AddressBook shows an error message.
 
       Use case resumes at step 2.
 
-**Use case: Find and return members’ contact by name**
+**Use case: UC11 Find and return members’ contact by name**
 
-**Use case: Generate task status report**
+**MSS**
+
+1.  Manager requests to find the member by name.
+2.  AddressBook finds the member.
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. Empty member list
+    * 2a1. AddressBook shows an error message.
+
+      Use case ends.
+
+* 2b. No member of the name found.
+    * 2b1. AddressBook shows an error message.
+
+      Use case ends.
+
+**Use case: UC12 Generate task status report**
 
 **MSS**
 
@@ -453,7 +539,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: use of help command**
+**Use case: UC13 Use of help command**
 
 **MSS**
 
