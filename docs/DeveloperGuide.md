@@ -439,7 +439,45 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Use case: Generate task status report**
 
+**MSS**
+
+1.  Manager requests to generate tasks report.
+2.  AddressBook generate tasks report and show.
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. Empty task list
+    * 2a1. AddressBook shows an error message.
+
+      Use case ends.
+
 **Use case: use of help command**
+
+**MSS**
+
+1.  Manager requests to get help.
+2.  AddressBook prompts manager.
+3.  Manager input a prompt.
+4.  AddressBook shows user guide.
+    Steps 3 and 4 are repeated until Manager requests to exit help mode.
+5.  User requests to exit help mode.
+6.  AddressBook exits help mode.
+
+    Use case ends.
+
+**Extensions**
+
+* 4a. Invalid input from user.
+    * 4a1. AddressBook shows an error message.
+
+      Use case resumes at step 2.
+
+* *a. At any time, manager chooses to exit help mode
+    * *a1. AddressBook exits help mode.
+
+      Use case ends.
 
 *{More to be added}*
 
