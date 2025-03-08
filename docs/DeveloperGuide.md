@@ -4,7 +4,7 @@
   pageNav: 3
 ---
 
-# AB-3 Developer Guide
+# TeamScape Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -13,7 +13,7 @@
 
 ## **Acknowledgements**
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+[_AB3_](docs\_markbind\layouts\default.md)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -274,27 +274,57 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
+* has a need to manage a small team
+* need efficient way to track and manage team members' progress and status
+* does not require online syncing functionality
+* does not require multi-user interactions
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: 
+
+* help users to categorize members by position, grade, skills, and department for easy tracking
+* help users to assign tasks, break them into subtasks, and track completion as a percentage
+* generate overall statistics for individual members and teams, offering insights into progress and efficiency
 
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                 | So that I can…​                                                        |
-|----------|--------------------------------------------|------------------------------|------------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions       | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person             |                                                                        |
-| `* * *`  | user                                       | delete a person              | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name        | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name         | locate a person easily                                                 |
+| Priority | As a …​      | I want to …​                                                                                 | So that I can…​                                                                  |
+|----------|--------------|----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| `* * *`  | team manager | add a member, his/her position, department, roles                                            | start tracking my team member progress.                                          |
+| `* * *`  | team manager | remove inactive team members                                                                 | keep the team database clean and up-to-date.                                     |
+| `* * *`  | team manager | add a task/subtask under a member                                                            | ensure clarity responsibilities.                                                 |
+| `* * *`  | team manager | be able to mark the task as completed/in-progress/yet-to-start                               | check the status of my tasks.                                                    |
+| `* * *`  | team manager | set due dates for the tasks                                                                  | know what time each task need to be completed by.                                |
+| `* * *`  | team manager | receive a summary of task statuses                                                           | stay informed.                                                                   |
+| `* * *`  | team manager | quickly search for members’ contacts by name                                                 | call them easily if there is an urgency.                                         |
+| `* * *`  | user         | access interactive tutorials or help pop-ups                                                 | quickly learn how to use the app’s features effectively.                         |
+| `* *`    | team manager | identify gaps in skills required for the Task and the members/departments assigned to it     | assign more people to the Task to fill up the skill gap.                         |
+| `* *`    | team manager | search for tasks sorted by their priority levels                                             | know which tasks need immediate attention.                                       |
+| `* *`    | team manager | search for tasks by their assigned deadline                                                  | search for tasks by their assigned deadline.                                     |
+| `* *`    | team manager | filter team members by their availability (sorting by number of tasks)                       | assign tasks only to those who are not overloaded.                               |
+| `* *`    | team manager | edit the position, department, roles of my team members                                      | easily organise my team structure when there is a change.                        |
+| `* *`    | team manager | add skills required for a task                                                               | know which members/department to assign the task to.                             |
+| `* *`    | team manager | set priority levels for tasks                                                                | I knows which task need immediate attention and which task can be handled later. |
+| `* *`    | team manager | set task dependencies (e.g. Task B can only start after Task A is completed)                 | know if the task have been completed in the right order.                         |
+| `* *`    | team manager | see the task completion percentages (no. of subtasks completed out of total no. of subtasks) | easily gauge progress and identify any bottlenecks.                              |
+| `* *`    | team manager | bulk import member details via a CSV file                                                    | save time when adding multiple members.                                          |
+| `* *`    | team manager | generate a report showing the team's overall task completion rate                            | present it to stakeholders.                                                      |
+| `* *`    | team manager | color-code tasks by priority level                                                           | easily differentiate between critical and low-priority tasks.                    |
+| `* *`    | team manager | set reminders for upcoming deadlines                                                         | ensure my team stays on track and meets important deadlines.                     |
+| `* *`    | team manager | receive notifications when a task is overdue                                                 | address delays immediately.                                                      |
+| `* *`    | team manager | quickly search for team members by their progress completion state                           | identify and help those who are lagging behind.                                  |
+| `*`      | team manager | add a task/subtask to a department                                                           | mass assign tasks to members in that department.                                 |
+| `*`      | team manager | create subtasks for a  task                                                                  | break down large tasks into smaller, manageable pieces.                          |
+| `*`      | team manager | track the hours worked by each member on tasks                                               | analyze productivity and effort.                                                 |
+| `*`      | team manager | see statistics comparing the progress of different departments/members                       | identify high-performing department/member.                                      |
+| `*`      | user         | customize themes and layouts                                                                 | the app feels personal and meets my visual preferences.                          |
+| `*`      | user         | take an interactive app tour                                                                 | learn features without external help.                                            |
+| `*`      | user         | undo accidental deletions                                                                    | critical data isn’t lost.                                                        |
+| `*`      | user         | enable keyboard shortcuts                                                                    | frequent actions (e.g., Ctrl+S to save) are faster.                              |
 
 *{More to be added}*
 
