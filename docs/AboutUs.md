@@ -7,9 +7,16 @@
 
 We are a team based in the [School of Computing, National University of Singapore](http://www.comp.nus.edu.sg).
 
-You can reach us at the email `e1122999[at]comp.nus.edu.sg`
-
 ## TeamScape
+
+### Bryan Kuan
+
+<img src="images/bkkuan.png" width="200px">
+
+[[github](https://github.com/bkkuan)]
+[[portfolio](team/bkkuan.md)]
+
+* Role: Developer
 
 ### Wilson Soon
 
@@ -19,12 +26,17 @@ You can reach us at the email `e1122999[at]comp.nus.edu.sg`
 [[github](https://github.com/wilsonsfh)]
 [[portfolio](team/wilsonsfh.md)]
 
+* Role: Developer
+
 ### Wei Cheng
 
 <img src="images/awc1116.png" width="200px">
 
 [[github](https://github.com/awc1116)]
 [[portfolio](team/awc1116.md)]
+
+
+* Role: Developer
 
 ### Tang Ming Shan
 
@@ -43,8 +55,6 @@ You can reach us at the email `e1122999[at]comp.nus.edu.sg`
 
 [[github](http://github.com/jeremiah33-3)]
 [[portfolio](team/jeremiah33-3.md)]
-
-[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
 
 
 * Role: Developer
