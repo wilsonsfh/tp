@@ -7,13 +7,12 @@ We are a team based in the [School of Computing, National University of Singapor
 
 You can reach us at the email `seer[at]comp.nus.edu.sg`
 
-## TeamScape
+
 
 ### Bryan Kuan
 
 <img src="images/bkkuan.png" width="200px">
 
-[[homepage](https://bkkuan.github.io/ip/)]
 [[github](https://github.com/bkkuan)]
 [[portfolio](team/bkkuan.md)]
 
