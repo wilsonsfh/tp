@@ -325,8 +325,18 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Glossary
 
-* **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
+    - **CLI**: Command Line Interface. A text-based way to interact with the app (e.g., `add n/John`).
+    - **Mainstream OS**: Windows, Linux, Unix, macOS.
+    - **Private contact detail**: A contact detail not meant to be shared (e.g., personal phone number).
+    - **Task**: A unit of work assigned to a team member, which can have subtasks and deadlines.
+    - **Subtask**: A smaller component of a task (e.g., "Design UI mockups" as part of "Develop login feature").
+    - **Model**: The component managing data (e.g., storing team members and tasks).
+    - **UI**: User Interface. The visual part of the app (e.g., buttons, lists).
+    - **Storage**: Component that saves/loads data to/from the hard drive.
+    - **API**: Application Programming Interface. How components interact (e.g., `Logic.java` defines the API for executing commands).
+    - **JSON**: A file format used to store data (e.g., team members are saved in `addressbook.json`).
+
+
 
 --------------------------------------------------------------------------------------------------------------------
 
