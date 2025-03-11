@@ -7,7 +7,7 @@
 # TeamScape
 
 ## 📌 Product Overview
-**TeamScape** is a lightweight, offline application designed to help **team managers, leaders, and student leaders** efficiently track and manage their team members' progress and status. 
+**TeamScape** is a lightweight, offline application designed to help **team managers, leaders, and student leaders** efficiently track and manage their team members' progress and status.
 
 ## 🎯 Target Users
 - Team managers
