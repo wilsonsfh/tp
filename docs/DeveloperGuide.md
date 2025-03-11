@@ -281,7 +281,7 @@ _{Explain here how the data archiving feature will be implemented}_
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: 
+**Value proposition**:
 
 * help users to categorize members by position, grade, skills, and department for easy tracking
 * help users to assign tasks, break them into subtasks, and track completion as a percentage
@@ -598,7 +598,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 *{More to be added}*
 
 ### Non-Functional Requirements
-*Based on the AB3 brown-field project* 
+*Based on the AB3 brown-field project*
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2. Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
@@ -606,23 +606,23 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 5. Should minimize data loss to 1-minute worth of user input for resilience in unexpected shutdowns.
 6. A user needs to confirm when handling duplicate entries instead of allowing silent overwrites.
 7. Should work on both 32-bit and 64-bit operating systems for compatibility inclusion.
-8. Should be compatible with Windows, macOS, and Linux for cross-platform usage. 
-9. Should follow a modular code structure, allowing for future enhancements and maintainability. 
+8. Should be compatible with Windows, macOS, and Linux for cross-platform usage.
+9. Should follow a modular code structure, allowing for future enhancements and maintainability.
 10. Should complete all CRUD operations (Add, Remove, Update) within 200 milliseconds. 
 11. Should retrieve and display a list of 1000 members within 1.5 second.
 12. Should generate task status reports within a maximum of 3 seconds.
-15. Should prevent accidental data loss by implementing confirmation prompts for deletions. 
-16. Should support automatic backups at periodic intervals or before performing bulk actions. 
-17. Should process command inputs in a case-insensitive manner to improve usability. 
-18. Should provide explicit and user-friendly error messages for troubleshooting. 
-19. Should provide a user manual detailing all available commands. 
-20. Should document code using JavaDoc for maintainability by future developers. 
-21. Should allow data recovery from the last saved state in case of crashes. 
-22. Should consume less than 200MB of memory during normal operations. 
-23. Should generate reports in a structured format, ensuring usability with spreadsheet applications. 
-24. Should include unit tests covering at least 80% of core functionalities. 
+15. Should prevent accidental data loss by implementing confirmation prompts for deletions.
+16. Should support automatic backups at periodic intervals or before performing bulk actions.
+17. Should process command inputs in a case-insensitive manner to improve usability.
+18. Should provide explicit and user-friendly error messages for troubleshooting.
+19. Should provide a user manual detailing all available commands.
+20. Should document code using JavaDoc for maintainability by future developers.
+21. Should allow data recovery from the last saved state in case of crashes.
+22. Should consume less than 200MB of memory during normal operations.
+23. Should generate reports in a structured format, ensuring usability with spreadsheet applications.
+24. Should include unit tests covering at least 80% of core functionalities.
 25. Should encrypt or obfuscate sensitive data if required.
-26. Should ensure that commands follow a consistent pattern to reduce user confusion. 
+26. Should ensure that commands follow a consistent pattern to reduce user confusion.
 27. Should return task search results within 1 second.
 
 ### Glossary
