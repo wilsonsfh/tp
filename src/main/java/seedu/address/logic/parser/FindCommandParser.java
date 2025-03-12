@@ -8,13 +8,13 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
-
 
 /**
  * Parses input arguments and creates a new FindCommand object
@@ -35,11 +35,11 @@ public class FindCommandParser implements Parser<FindCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
-        Name placeHolderName = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
+        Name placeHolderName = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get().trim());
         String names = placeHolderName.fullName;
-        String[] nameKeywords = names.split("\\s+");
-
-        return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
+        String[] nameKeywords = names.trim().split("\\s+");
+        List<String> arr = Arrays.asList(nameKeywords);
+        return new FindCommand(new NameContainsKeywordsPredicate(arr));
     }
 
     /**
