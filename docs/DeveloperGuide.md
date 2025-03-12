@@ -608,7 +608,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 7. Should work on both 32-bit and 64-bit operating systems for compatibility inclusion.
 8. Should be compatible with Windows, macOS, and Linux for cross-platform usage.
 9. Should follow a modular code structure, allowing for future enhancements and maintainability.
-10. Should complete all CRUD operations (Add, Remove, Update) within 200 milliseconds. 
+10. Should complete all CRUD operations (Add, Remove, Update) within 200 milliseconds.
 11. Should retrieve and display a list of 1000 members within 1.5 second.
 12. Should generate task status reports within a maximum of 3 seconds.
 15. Should prevent accidental data loss by implementing confirmation prompts for deletions.
