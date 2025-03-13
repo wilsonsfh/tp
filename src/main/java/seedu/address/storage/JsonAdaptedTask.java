@@ -2,8 +2,12 @@ package seedu.address.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import seedu.address.model.task.Task;
 
+/**
+ * Jackson-friendly {@link Task} for JSON serialization and deserialization.
+ */
 public class JsonAdaptedTask {
 
     private final String description;

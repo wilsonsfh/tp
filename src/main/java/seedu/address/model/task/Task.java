@@ -1,5 +1,9 @@
 package seedu.address.model.task;
 
+/**
+ * Represents a Task associated with a Person in address book.
+ * Guarantees to be immutable and description is non-null.
+ */
 public class Task {
     private final String description;
 
@@ -18,8 +22,14 @@ public class Task {
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) return true;
-        if (!(other instanceof Task)) return false;
+        if (other == this) {
+            return true;
+        }
+
+        if (!(other instanceof Task)) {
+            return false;
+        }
+
         Task otherTask = (Task) other;
         return description.equals(otherTask.description);
     }

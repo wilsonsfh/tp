@@ -70,6 +70,10 @@ public class Person {
         return Collections.unmodifiableList(tasks);
     }
 
+    /**
+     * Add a new task.
+     * Returns a new Person object.
+     */
     public Person addTask(Task newTask) {
         List<Task> updatedTasks = new ArrayList<>(tasks);
         updatedTasks.add(newTask);
