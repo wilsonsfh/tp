@@ -9,8 +9,15 @@ public class Task {
     private final String description;
     private LocalDateTime dueDate;
 
+    /**
+     * Constructs a new Task with the specified description.
+     * The due date is initialized to null, indicating that no due date has been set.
+     *
+     * @param description
+     */
     public Task(String description) {
         this.description = description;
+        this.dueDate = null;
     }
 
     public String getDescription() {
