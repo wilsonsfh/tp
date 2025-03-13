@@ -1,18 +1,38 @@
 package seedu.address.model.task;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Represents a Task associated with a Person in address book.
  * Guarantees to be immutable and description is non-null.
  */
 public class Task {
     private final String description;
+    private final TaskStatus status;
 
-    public Task(String description) {
+    /**
+     * Creates a Task with inputted description and status.
+     *
+     * @param description The task's description.
+     * @param status The task's status.
+     */
+    public Task(String description, TaskStatus status) {
+        requireNonNull(description);
+        requireNonNull(status);
         this.description = description;
+        this.status = status;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public Task withStatus(TaskStatus newStatus) {
+        return new Task(this.description, newStatus);
     }
 
     @Override

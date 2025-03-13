@@ -59,9 +59,12 @@ public class PersonCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
         person.getTasks().stream()
-            .map(Task::getDescription) // You may need to implement getDescription()
-            .forEach(taskDesc -> {
-                Label taskLabel = new Label(taskDesc);
+            .forEach((Task task) -> {
+                Label taskLabel = new Label(task.getDescription()
+                                            + " ["
+                                            + task.getStatus().name().toLowerCase().replace("_", " ")
+                                            + "]");
+                taskLabel.getStyleClass().add("task-label");
                 tasks.getChildren().add(taskLabel);
             });
 

@@ -17,6 +17,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.task.Task;
+import seedu.address.model.task.TaskStatus;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -127,14 +128,17 @@ public class ParserUtil {
 
     /**
      * Parses a {@code Collection<String> tasks} into a {@code List<Task>}.
+     * All newly added tasks are marked as YET_TO_START by default.
      */
     public static List<Task> parseTasks(Collection<String> tasks) throws ParseException {
+        requireNonNull(tasks);
         final List<Task> taskList = new ArrayList<>();
         for (String taskStr : tasks) {
-            if (taskStr.trim().isEmpty()) {
+            String trimmedTask = taskStr.trim();
+            if (trimmedTask.isEmpty()) {
                 throw new ParseException("Task description cannot be empty! Or omit tk/ prefix.");
             }
-            taskList.add(new Task(taskStr.trim()));
+            taskList.add(new Task(trimmedTask, TaskStatus.YET_TO_START));
         }
         return taskList;
     }
