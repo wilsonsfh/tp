@@ -1,23 +1,31 @@
 package seedu.address.model.task;
 
+import static java.util.Objects.requireNonNull;
+
 import java.time.LocalDateTime;
 
 /**
- * Public class that represents a task.
+ * Represents a Task associated with a Person in address book.
+ * Guarantees to be immutable and description is non-null.
  */
 public class Task {
     private final String description;
     private LocalDateTime dueDate;
+    private final TaskStatus status;
+
 
     /**
-     * Constructs a new Task with the specified description.
+     * Creates a Task with inputted description and status.
      * The due date is initialized to null, indicating that no due date has been set.
      *
-     * @param description
+     * @param description The task's description.
+     * @param status The task's status.
      */
-    public Task(String description) {
+    public Task(String description, TaskStatus status) {
+        requireNonNull(description);
+        requireNonNull(status);
         this.description = description;
-        this.dueDate = null;
+        this.status = status;
     }
 
     public String getDescription() {
@@ -26,6 +34,14 @@ public class Task {
 
     public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public Task withStatus(TaskStatus newStatus) {
+        return new Task(this.description, newStatus);
     }
 
     @Override

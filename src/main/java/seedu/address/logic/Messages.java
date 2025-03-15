@@ -20,6 +20,7 @@ public class Messages {
                 "Multiple values specified for the following single-valued field(s): ";
     public static final String MESSAGE_INCORRECT_DATE_FORMAT =
             "Incorrect date format! Please input in: yyyy/mm/dd HH:mm";
+    public static final String MESSAGE_INVALID_TASK_DISPLAYED_INDEX = "The task index provided is invalid";
 
     /**
      * Returns an error message indicating the duplicate prefixes.

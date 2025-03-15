@@ -2,8 +2,10 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
@@ -14,6 +16,8 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.task.Task;
+import seedu.address.model.task.TaskStatus;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -120,5 +124,22 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses a {@code Collection<String> tasks} into a {@code List<Task>}.
+     * All newly added tasks are marked as YET_TO_START by default.
+     */
+    public static List<Task> parseTasks(Collection<String> tasks) throws ParseException {
+        requireNonNull(tasks);
+        final List<Task> taskList = new ArrayList<>();
+        for (String taskStr : tasks) {
+            String trimmedTask = taskStr.trim();
+            if (trimmedTask.isEmpty()) {
+                throw new ParseException("Task description cannot be empty! Or omit tk/ prefix.");
+            }
+            taskList.add(new Task(trimmedTask, TaskStatus.YET_TO_START));
+        }
+        return taskList;
     }
 }
