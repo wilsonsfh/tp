@@ -9,6 +9,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.TaskCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.task.Task;
+import seedu.address.model.task.TaskStatus;
 
 /**
  * Parses input and creates a new {@code TaskCommand}.
@@ -26,7 +27,7 @@ public class TaskCommandParser implements Parser<TaskCommand> {
         Index index = ParserUtil.parseIndex(matcher.group("index"));
         String taskDescription = matcher.group("taskDesc");
 
-        return new TaskCommand(index, new Task(taskDescription));
+        return new TaskCommand(index, new Task(taskDescription, TaskStatus.YET_TO_START));
     }
 }
 

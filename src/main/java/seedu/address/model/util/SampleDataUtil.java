@@ -14,6 +14,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.task.Task;
+import seedu.address.model.task.TaskStatus;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.
@@ -67,7 +68,7 @@ public class SampleDataUtil {
 
     public static List<Task> getTask(String... descriptions) {
         return Arrays.stream(descriptions)
-                .map(Task::new)
+                .map(description -> new Task(description, TaskStatus.YET_TO_START))
                 .collect(Collectors.toList());
     }
 
