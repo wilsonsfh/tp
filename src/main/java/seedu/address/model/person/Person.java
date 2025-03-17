@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.other.Other;
+import seedu.address.model.skill.Skill;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.task.Task;
 
@@ -23,24 +25,34 @@ public class Person {
     private final Name name;
     private final Phone phone;
     private final Email email;
+    private final Telegram telegram;
+    private final Position position;
     private final String taskStatus;
 
     // Data fields
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
+    private final Set<Skill> skills = new HashSet<>();
+    private final Set<Other> others = new HashSet<>();
     private final List<Task> tasks;
 
     /**
      * Every field must be present and not null.
      */
-
+    public Person(Name name, Phone phone, Email email, Telegram telegram, Position position,
+                  Address address, Set<Tag> tags, Set<Skill> skills, Set<Other> others) {
+        requireAllNonNull(name, phone, email, address, tags);
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, String taskStatus) {
         requireAllNonNull(name, phone, email, address, tags, taskStatus);
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.telegram = telegram;
+        this.position = position;
         this.address = address;
         this.tags.addAll(tags);
+        this.skills.addAll(skills);
+        this.others.addAll(others);
         this.taskStatus = taskStatus;
     }
 
@@ -60,6 +72,14 @@ public class Person {
 
     public Email getEmail() {
         return email;
+    }
+
+    public Telegram getTelegram() {
+        return telegram;
+    }
+
+    public Position getPosition() {
+        return position;
     }
 
     public Address getAddress() {
@@ -89,6 +109,22 @@ public class Person {
         List<Task> updatedTasks = new ArrayList<>(tasks);
         updatedTasks.add(newTask);
         return new Person(name, phone, email, address, tags, updatedTasks);
+    }
+
+    /**
+     * Returns an immutable skill set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Skill> getSkills() {
+        return Collections.unmodifiableSet(skills);
+    }
+
+    /**
+     * Returns an immutable other set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Other> getOthers() {
+        return Collections.unmodifiableSet(others);
     }
 
     /**
@@ -139,8 +175,12 @@ public class Person {
                 .add("name", name)
                 .add("phone", phone)
                 .add("email", email)
+                .add("telegram handle", telegram)
+                .add("position", position)
                 .add("address", address)
                 .add("tags", tags)
+                .add("skills", skills)
+                .add("others", others)
                 .toString();
     }
 
