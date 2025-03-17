@@ -21,7 +21,8 @@ public class TagsInKeywordsPredicate implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(this.concatenateTags(person.getTags()), keyword));
+                .anyMatch(keyword -> StringUtil
+                    .containsWordIgnoreCase(this.concatenateTags(person.getTags()), keyword));
     }
 
     @Override
