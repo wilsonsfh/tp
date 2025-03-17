@@ -26,6 +26,10 @@ public class JsonAdaptedPersonTest {
     private static final List<JsonAdaptedTag> VALID_TAGS = BENSON.getTags().stream()
             .map(JsonAdaptedTag::new)
             .collect(Collectors.toList());
+    private static final List<JsonAdaptedTask> VALID_TASKS = BENSON.getTasks().stream()
+            .map(JsonAdaptedTask::new)
+            .collect(Collectors.toList());
+
 
     @Test
     public void toModelType_invalidName_throwsIllegalValueException() {

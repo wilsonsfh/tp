@@ -1,59 +1,61 @@
 ---
-layout: page
-title: About Us
+  layout: default.md
+  title: "About Us"
 ---
 
-We are a team based in the [School of Computing, National University of Singapore](https://www.comp.nus.edu.sg).
+# About Us
 
-You can reach us at the email `seer[at]comp.nus.edu.sg`
+We are a team based in the [School of Computing, National University of Singapore](http://www.comp.nus.edu.sg).
 
-## Project team
+## TeamScape
 
-### John Doe
+### Bryan Kuan
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/bkkuan.png" width="200px">
 
-[[homepage](http://www.comp.nus.edu.sg/~damithch)]
-[[github](https://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Project Advisor
-
-### Jane Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Team Lead
-* Responsibilities: UI
-
-### Johnny Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
+[[github](https://github.com/bkkuan)]
+[[portfolio](team/bkkuan.md)]
 
 * Role: Developer
-* Responsibilities: Data
 
-### Jean Doe
+### Wilson Soon
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/wilsonsfh.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Developer
-* Responsibilities: Dev Ops + Threading
-
-### James Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[homepage](https://wilsonsfh.github.io/ip/)]
+[[github](https://github.com/wilsonsfh)]
+[[portfolio](team/wilsonsfh.md)]
 
 * Role: Developer
-* Responsibilities: UI
+
+### Wei Cheng
+
+<img src="images/awc1116.png" width="200px">
+
+[[github](https://github.com/awc1116)]
+[[portfolio](team/awc1116.md)]
+
+
+* Role: Developer
+
+### Tang Ming Shan
+
+<img src="images/mingshan2705.png" width="200px">
+
+[[homepage](http://www.comp.nus.edu.sg/~mingshan)]
+[[github](https://github.com/mingshan2705)]
+[[portfolio](team/mingshan2705.md)]
+
+* Role: Developer
+
+
+### Wei Tianyue
+
+<img src="images/jeremiah33-3.png" width="200px">
+
+[[github](http://github.com/jeremiah33-3)]
+[[portfolio](team/jeremiah33-3.md)]
+
+
+* Role: Developer
+

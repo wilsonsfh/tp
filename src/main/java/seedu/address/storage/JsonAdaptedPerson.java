@@ -16,6 +16,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.task.Task;
 
 /**
  * Jackson-friendly version of {@link Person}.
@@ -30,6 +31,8 @@ class JsonAdaptedPerson {
     private final String address;
     private final String taskStatus;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final List<JsonAdaptedTask> tasks = new ArrayList<>();
+
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -49,6 +52,9 @@ class JsonAdaptedPerson {
         if (tags != null) {
             this.tags.addAll(tags);
         }
+        if (tasks != null) {
+            this.tasks.addAll(tasks);
+        }
     }
 
     /**
@@ -63,6 +69,9 @@ class JsonAdaptedPerson {
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
+        tasks.addAll(source.getTasks().stream()
+                .map(JsonAdaptedTask::new)
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -73,8 +82,15 @@ class JsonAdaptedPerson {
     public Person toModelType() throws IllegalValueException {
         final List<Tag> personTags = new ArrayList<>();
         final String modelTaskStatus = taskStatus != null ? taskStatus : "not started";
+
         for (JsonAdaptedTag tag : tags) {
             personTags.add(tag.toModelType());
+        }
+
+        final List<Task> personTasks = new ArrayList<>();
+
+        for (JsonAdaptedTask task : tasks) {
+            personTasks.add(task.toModelType()); // Convert each JsonAdaptedTask to Task
         }
 
         if (name == null) {
@@ -110,6 +126,9 @@ class JsonAdaptedPerson {
         final Address modelAddress = new Address(address);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
+
         return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags, modelTaskStatus);
+
+        final List<Task> modelTasks = personTasks; // Placeholder for now
     }
 }
