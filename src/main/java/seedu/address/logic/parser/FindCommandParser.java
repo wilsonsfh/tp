@@ -9,12 +9,14 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.TagsInKeywordsPredicate;
 
 /**
  * Parses input arguments and creates a new FindCommand object
@@ -29,17 +31,30 @@ public class FindCommandParser implements Parser<FindCommand> {
     public FindCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME)
-                || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+
+        if (arePrefixesPresent(argMultimap, PREFIX_NAME)) {
+            argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
+            Name placeHolderName = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get().trim());
+            String names = placeHolderName.fullName;
+            String[] nameKeywords = names.trim().split("\\s+");
+            List<String> arr = Arrays.asList(nameKeywords);
+            return new FindCommand(new NameContainsKeywordsPredicate(arr));
         }
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
-        Name placeHolderName = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get().trim());
-        String names = placeHolderName.fullName;
-        String[] nameKeywords = names.trim().split("\\s+");
-        List<String> arr = Arrays.asList(nameKeywords);
-        return new FindCommand(new NameContainsKeywordsPredicate(arr));
+
+        if (arePrefixesPresent(argMultimap, PREFIX_TAG)) {
+            argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
+            Optional<String> tagsToFindOptional = argMultimap.getValue(PREFIX_TAG);
+            if (!tagsToFindOptional.isPresent()) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            }
+            String tagsToFind = tagsToFindOptional.get().trim();
+            String[] tagKeywords = tagsToFind.trim().split("\\s+");
+            List<String> arr = Arrays.asList(tagKeywords);
+            return new FindCommand(new TagsInKeywordsPredicate(arr));
+        }
+
+        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+
     }
 
     /**

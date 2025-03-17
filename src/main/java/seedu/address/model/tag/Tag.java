@@ -59,4 +59,11 @@ public class Tag {
         return '[' + tagName + ']';
     }
 
+    /**
+     * Returns the raw tag name string.
+     */
+    public String getTagName() {
+        return this.tagName;
+    }
+
 }
