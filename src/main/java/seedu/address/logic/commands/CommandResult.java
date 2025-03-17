@@ -19,6 +19,8 @@ public class CommandResult {
     /** The application should exit. */
     private final boolean exit;
 
+    private final String taskReport;
+
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
@@ -26,6 +28,7 @@ public class CommandResult {
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.showHelp = showHelp;
         this.exit = exit;
+        this.taskReport = null;
     }
 
     /**
@@ -34,6 +37,18 @@ public class CommandResult {
      */
     public CommandResult(String feedbackToUser) {
         this(feedbackToUser, false, false);
+    }
+
+    // New constructor for task reports
+    private CommandResult(String feedbackToUser, String taskReport) {
+        this.feedbackToUser = feedbackToUser;
+        this.showHelp = false;
+        this.exit = false;
+        this.taskReport = taskReport;
+    }
+
+    public static CommandResult withReport(String feedback, String report) {
+        return new CommandResult(feedback, report);
     }
 
     public String getFeedbackToUser() {
@@ -46,6 +61,15 @@ public class CommandResult {
 
     public boolean isExit() {
         return exit;
+    }
+
+    // New methods
+    public boolean hasReport() {
+        return taskReport != null;
+    }
+
+    public String getTaskReport() {
+        return taskReport;
     }
 
     @Override

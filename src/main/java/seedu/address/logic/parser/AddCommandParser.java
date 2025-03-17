@@ -10,7 +10,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_POSITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -26,6 +28,7 @@ import seedu.address.model.person.Position;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.skill.Skill;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.task.Task;
 
 /**
  * Parses input arguments and creates a new AddCommand object
@@ -41,6 +44,8 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM,
                         PREFIX_POSITION, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_SKILL, PREFIX_OTHER);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
+                                            PREFIX_TAG, PREFIX_TASK);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM, PREFIX_POSITION,
                 PREFIX_ADDRESS)
@@ -61,6 +66,10 @@ public class AddCommandParser implements Parser<AddCommand> {
         Set<Other> otherList = ParserUtil.parseOthers(argMultimap.getAllValues(PREFIX_OTHER));
 
         Person person = new Person(name, phone, email, telegram, position, address, tagList, skillList, otherList);
+        List<Task> taskList = ParserUtil.parseTasks(argMultimap.getAllValues(PREFIX_TASK)); // New parsing for tasks!
+
+
+        Person person = new Person(name, phone, email, address, tagList, taskList);
 
         return new AddCommand(person);
     }

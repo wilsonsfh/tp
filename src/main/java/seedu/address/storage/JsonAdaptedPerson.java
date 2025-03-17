@@ -20,6 +20,7 @@ import seedu.address.model.person.Position;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.skill.Skill;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.task.Task;
 
 /**
  * Jackson-friendly version of {@link Person}.
@@ -34,9 +35,11 @@ class JsonAdaptedPerson {
     private final String telegram;
     private final String position;
     private final String address;
+    private final String taskStatus;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final List<JsonAdaptedSkill> skills = new ArrayList<>();
     private final List<JsonAdaptedOther> others = new ArrayList<>();
+    private final List<JsonAdaptedTask> tasks = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -50,13 +53,15 @@ class JsonAdaptedPerson {
                              @JsonProperty("address") String address,
                              @JsonProperty("tags") List<JsonAdaptedTag> tags,
                              @JsonProperty("skills") List<JsonAdaptedSkill> skills,
-                             @JsonProperty("others") List<JsonAdaptedOther> others) {
+                             @JsonProperty("others") List<JsonAdaptedOther> others), 
+                             @JsonProperty("taskStatus") String taskStatus) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.telegram = telegram;
         this.position = position;
         this.address = address;
+        this.taskStatus = taskStatus != null ? taskStatus : "not started";
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -65,6 +70,8 @@ class JsonAdaptedPerson {
         }
         if (others != null) {
             this.others.addAll(others);
+        if (tasks != null) {
+            this.tasks.addAll(tasks);
         }
     }
 
@@ -78,6 +85,7 @@ class JsonAdaptedPerson {
         telegram = source.getTelegram().value;
         position = source.getPosition().value;
         address = source.getAddress().value;
+        taskStatus = source.getTaskStatus();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -86,6 +94,8 @@ class JsonAdaptedPerson {
                 .collect(Collectors.toList()));
         others.addAll(source.getOthers().stream()
                 .map(JsonAdaptedOther::new)
+        tasks.addAll(source.getTasks().stream()
+                .map(JsonAdaptedTask::new)
                 .collect(Collectors.toList()));
     }
 
@@ -96,6 +106,8 @@ class JsonAdaptedPerson {
      */
     public Person toModelType() throws IllegalValueException {
         final List<Tag> personTags = new ArrayList<>();
+        final String modelTaskStatus = taskStatus != null ? taskStatus : "not started";
+
         for (JsonAdaptedTag tag : tags) {
             personTags.add(tag.toModelType());
         }
@@ -108,6 +120,10 @@ class JsonAdaptedPerson {
         final List<Other> personOthers = new ArrayList<>();
         for (JsonAdaptedOther other : others) {
             personOthers.add(other.toModelType());
+        final List<Task> personTasks = new ArrayList<>();
+
+        for (JsonAdaptedTask task : tasks) {
+            personTasks.add(task.toModelType()); // Convert each JsonAdaptedTask to Task
         }
 
         if (name == null) {
@@ -160,8 +176,8 @@ class JsonAdaptedPerson {
         final Set<Tag> modelTags = new HashSet<>(personTags);
         final Set<Skill> modelSkills = new HashSet<>(personSkills);
         final Set<Other> modelOthers = new HashSet<>(personOthers);
+        final List<Task> modelTasks = personTasks; // Placeholder for now
         return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelPosition, modelAddress, modelTags,
-                modelSkills, modelOthers);
+                          modelSkills, modelOthers, modelTaskStatus);
     }
-
 }

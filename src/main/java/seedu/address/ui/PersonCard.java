@@ -8,6 +8,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
+import seedu.address.model.task.Task;
 
 /**
  * An UI component that displays information of a {@code Person}.
@@ -48,6 +49,8 @@ public class PersonCard extends UiPart<Region> {
     private FlowPane skills;
     @FXML
     private FlowPane others;
+    @FXML
+    private FlowPane tasks;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -71,5 +74,14 @@ public class PersonCard extends UiPart<Region> {
         person.getOthers().stream()
                 .sorted(Comparator.comparing(other -> other.other))
                 .forEach(other -> others.getChildren().add(new Label(other.other)));
+        person.getTasks().stream()
+            .forEach((Task task) -> {
+                Label taskLabel = new Label(task.getDescription()
+                                            + " ["
+                                            + task.getStatus().name().toLowerCase().replace("_", " ")
+                                            + "]");
+                taskLabel.getStyleClass().add("task-label");
+                tasks.getChildren().add(taskLabel);
+            });
     }
 }

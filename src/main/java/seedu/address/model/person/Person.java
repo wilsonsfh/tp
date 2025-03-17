@@ -2,8 +2,10 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -11,6 +13,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.other.Other;
 import seedu.address.model.skill.Skill;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.task.Task;
 
 /**
  * Represents a Person in the address book.
@@ -24,12 +27,14 @@ public class Person {
     private final Email email;
     private final Telegram telegram;
     private final Position position;
+    private final String taskStatus;
 
     // Data fields
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
     private final Set<Skill> skills = new HashSet<>();
     private final Set<Other> others = new HashSet<>();
+    private final List<Task> tasks;
 
     /**
      * Every field must be present and not null.
@@ -37,6 +42,8 @@ public class Person {
     public Person(Name name, Phone phone, Email email, Telegram telegram, Position position,
                   Address address, Set<Tag> tags, Set<Skill> skills, Set<Other> others) {
         requireAllNonNull(name, phone, email, address, tags);
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, String taskStatus) {
+        requireAllNonNull(name, phone, email, address, tags, taskStatus);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -46,6 +53,13 @@ public class Person {
         this.tags.addAll(tags);
         this.skills.addAll(skills);
         this.others.addAll(others);
+        this.taskStatus = taskStatus;
+    }
+
+    // Legacy constructor
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+        this(name, phone, email, address, tags, "not started");
+        this.tasks = new ArrayList<>(tasks);
     }
 
     public Name getName() {
@@ -72,12 +86,29 @@ public class Person {
         return address;
     }
 
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
+     * Returns an immutable tag set.
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    public List<Task> getTasks() {
+        return Collections.unmodifiableList(tasks);
+    }
+
+    /**
+     * Add a new task.
+     * Returns a new Person object.
+     */
+    public Person addTask(Task newTask) {
+        List<Task> updatedTasks = new ArrayList<>(tasks);
+        updatedTasks.add(newTask);
+        return new Person(name, phone, email, address, tags, updatedTasks);
     }
 
     /**

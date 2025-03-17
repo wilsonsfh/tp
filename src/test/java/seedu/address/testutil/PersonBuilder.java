@@ -1,6 +1,8 @@
 package seedu.address.testutil;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import seedu.address.model.other.Other;
@@ -13,7 +15,9 @@ import seedu.address.model.person.Position;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.skill.Skill;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.task.Task;
 import seedu.address.model.util.SampleDataUtil;
+
 
 /**
  * A utility class to help with building Person objects.
@@ -36,6 +40,7 @@ public class PersonBuilder {
     private Set<Tag> tags;
     private Set<Skill> skills;
     private Set<Other> others;
+    private List<Task> tasks;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -50,6 +55,7 @@ public class PersonBuilder {
         tags = new HashSet<>();
         skills = new HashSet<>();
         others = new HashSet<>();
+        tasks = new ArrayList<>();
     }
 
     /**
@@ -65,6 +71,7 @@ public class PersonBuilder {
         tags = new HashSet<>(personToCopy.getTags());
         skills = new HashSet<>(personToCopy.getSkills());
         others = new HashSet<>(personToCopy.getOthers());
+        tasks = new ArrayList<>(personToCopy.getTasks());
     }
 
     /**
@@ -80,6 +87,14 @@ public class PersonBuilder {
      */
     public PersonBuilder withTags(String ... tags) {
         this.tags = SampleDataUtil.getTagSet(tags);
+        return this;
+    }
+
+    /**
+     * Parses the {@code tasks} into a {@code List<Task>} and set it to the {@code Person} that we are building.
+     */
+    public PersonBuilder withTasks(String... tasks) {
+        this.tasks = SampleDataUtil.getTask(tasks);
         return this;
     }
 
@@ -140,7 +155,7 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, phone, email, telegram, position, address, tags, skills, others);
+        return new Person(name, phone, email, telegram, position, address, tags, skills, others, tasks);
     }
 
 }

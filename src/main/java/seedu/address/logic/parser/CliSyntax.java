@@ -15,5 +15,7 @@ public class CliSyntax {
     public static final Prefix PREFIX_TAG = new Prefix("t/");
     public static final Prefix PREFIX_SKILL = new Prefix("s/");
     public static final Prefix PREFIX_OTHER = new Prefix("o/");
-
+    public static final Prefix PREFIX_DUE_DATE = new Prefix("due/");
+    public static final Prefix PREFIX_TASK = new Prefix("tk/");
+    public static final Prefix PREFIX_TASK_DESC = new Prefix("taskdesc/");
 }
