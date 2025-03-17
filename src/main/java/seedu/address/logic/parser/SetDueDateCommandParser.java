@@ -4,9 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_DATE_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DUE_DATE;
+import static seedu.address.logic.parser.ParserUtil.parseDueDate;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import seedu.address.commons.core.index.Index;
@@ -17,7 +17,6 @@ import seedu.address.logic.parser.exceptions.ParseException;
  * Parses input arguments and creates a new SetDueDateCommand object
  */
 public class SetDueDateCommandParser implements Parser<SetDueDateCommand> {
-    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
     public SetDueDateCommand parse(String userInput) throws ParseException {
@@ -46,7 +45,7 @@ public class SetDueDateCommandParser implements Parser<SetDueDateCommand> {
 
         // handles parsing date
         try {
-            dueDate = LocalDateTime.parse(argMultimap.getValue(PREFIX_DUE_DATE).get(), INPUT_FORMATTER);
+            dueDate = parseDueDate(argMultimap);
         } catch (DateTimeParseException e) {
             throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
         }

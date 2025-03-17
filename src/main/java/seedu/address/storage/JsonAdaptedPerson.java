@@ -121,7 +121,7 @@ class JsonAdaptedPerson {
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
 
-        final List<Task> modelTasks = new ArrayList<>(); // Placeholder for now
+        final List<Task> modelTasks = personTasks; // Placeholder for now
 
         return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags, modelTasks);
     }

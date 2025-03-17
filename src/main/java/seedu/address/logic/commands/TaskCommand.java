@@ -1,6 +1,8 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DUE_DATE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK_DESC;
 
 import java.util.List;
 
@@ -17,8 +19,12 @@ import seedu.address.model.task.Task;
 public class TaskCommand extends Command {
     public static final String COMMAND_WORD = "task";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to the specified team member.\n"
-        + "Parameters: INDEX (must be a positive integer) TASK_DESCRIPTION\n"
-        + "Example: " + COMMAND_WORD + " 1 Complete project milestone";
+            + "Parameters: INDEX (must be a positive integer) "
+            + PREFIX_TASK_DESC + "TASK_DESCRIPTION\n"
+            + "[ " + PREFIX_DUE_DATE + " yyyy-mm-dd HH:mm]\n"
+            + "Example: " + COMMAND_WORD + " 1 "
+            + PREFIX_TASK_DESC + " Complete project milestone "
+            + PREFIX_DUE_DATE + "2025-05-05 12:00";
 
     public static final String MESSAGE_ADD_TASK_SUCCESS = "Added task to member: %1$s";
 

@@ -1,5 +1,7 @@
 package seedu.address.storage;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,15 +18,18 @@ public class JsonAdaptedTask {
 
     private final String description;
     private final String status;
+    private LocalDateTime dueDate;
 
     /**
      * Constructs a {@code JsonAdaptedTask} with inputted task details.
      */
     @JsonCreator
     public JsonAdaptedTask(@JsonProperty("description") String description,
-                           @JsonProperty("status") String status) {
+                           @JsonProperty("status") String status,
+                           @JsonProperty("dueDate") LocalDateTime dueDate) {
         this.description = description;
         this.status = status;
+        this.dueDate = dueDate;
     }
 
     /**
@@ -33,6 +38,7 @@ public class JsonAdaptedTask {
     public JsonAdaptedTask(Task source) {
         this.description = source.getDescription();
         this.status = source.getStatus().name(); // Store as string
+        this.dueDate = source.getDueDate();
     }
 
     /**
@@ -58,6 +64,6 @@ public class JsonAdaptedTask {
                                             + ". Valid statuses: YET_TO_START, IN_PROGRESS, COMPLETED.");
         }
 
-        return new Task(description, modelStatus);
+        return new Task(description, modelStatus, dueDate);
     }
 }

@@ -120,7 +120,7 @@ public class JsonAdaptedPersonTest {
     @Test
     public void toModelType_invalidTasks_throwsIllegalValueException() {
         List<JsonAdaptedTask> invalidTasks = new ArrayList<>(VALID_TASKS);
-        invalidTasks.add(new JsonAdaptedTask("Some task", "INVALID_STATUS"));
+        invalidTasks.add(new JsonAdaptedTask("Some task", "INVALID_STATUS", null));
         JsonAdaptedPerson person =
             new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_TAGS, invalidTasks);
         assertThrows(IllegalValueException.class, person::toModelType);

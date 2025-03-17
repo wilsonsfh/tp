@@ -1,10 +1,13 @@
 package seedu.address.model.util;
 
+import static seedu.address.logic.parser.ParserUtil.parseTask;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Address;
@@ -14,7 +17,6 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.task.Task;
-import seedu.address.model.task.TaskStatus;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.
@@ -25,7 +27,7 @@ public class SampleDataUtil {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new Address("Blk 30 Geylang Street 29, #06-40"),
                 getTagSet("friends"),
-                getTask("barbeque")),
+                getTask("barbeque /duedate 2025-06-07 17:00")),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
                 new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
                 getTagSet("colleagues", "friends"),
@@ -41,7 +43,7 @@ public class SampleDataUtil {
             new Person(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
                 new Address("Blk 47 Tampines Street 20, #17-35"),
                 getTagSet("classmates"),
-                getTask("annual class gathering")),
+                getTask("annual class gathering /duedate 2025-05-07 17:00")),
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
                 new Address("Blk 45 Aljunied Street 85, #11-31"),
                 getTagSet("colleagues"),
@@ -68,7 +70,13 @@ public class SampleDataUtil {
 
     public static List<Task> getTask(String... descriptions) {
         return Arrays.stream(descriptions)
-                .map(description -> new Task(description, TaskStatus.YET_TO_START))
+                .map(description -> {
+                    try {
+                        return parseTask(description);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
     }
 

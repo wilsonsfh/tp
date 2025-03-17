@@ -1,7 +1,12 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_INCORRECT_DATE_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DUE_DATE;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,6 +30,7 @@ import seedu.address.model.task.TaskStatus;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -135,11 +141,62 @@ public class ParserUtil {
         final List<Task> taskList = new ArrayList<>();
         for (String taskStr : tasks) {
             String trimmedTask = taskStr.trim();
-            if (trimmedTask.isEmpty()) {
-                throw new ParseException("Task description cannot be empty! Or omit tk/ prefix.");
-            }
-            taskList.add(new Task(trimmedTask, TaskStatus.YET_TO_START));
+            Task task = parseTask(trimmedTask);
+            taskList.add(task);
         }
         return taskList;
+    }
+
+    /**
+     * Parses a {@code String taskStr} into a {@code Task}.
+     * A newly added tasks are marked as YET_TO_START by default.
+     */
+    public static Task parseTask(String taskStr) throws ParseException {
+        if (taskStr.isEmpty()) {
+            throw new ParseException("Task description cannot be empty! Or omit tk/ prefix.");
+        }
+
+        String description;
+        LocalDateTime dueDate = null;
+
+        // Split based on due/ if present
+        String[] parts = taskStr.split(String.valueOf(PREFIX_DUE_DATE), 2);
+        description = parts[0].trim();
+        if (description.isEmpty()) {
+            throw new ParseException("Task description cannot be empty before due date.");
+        }
+
+        // Parse due date if provided
+        if (parts.length == 2) {
+            String dueDateStr = parts[1].trim();
+            try {
+                dueDate = LocalDateTime.parse(dueDateStr);
+            } catch (DateTimeParseException e) {
+                throw new ParseException("Invalid date format. Use yyyy-MM-dd for due dates.");
+            }
+        }
+
+        return new Task(description, TaskStatus.YET_TO_START, dueDate);
+    }
+
+    /**
+     * Parses the due date provided by the user from the given {@code ArgumentMultimap},
+     * expecting the value associated with {@code PREFIX_DUE_DATE} to be in String format.
+     *
+     * @param argMultimap The map containing argument prefixes and their corresponding values.
+     * @return The parsed {@code LocalDateTime} due date.
+     * @throws ParseException If the due date is not in the expected format.
+     */
+    public static LocalDateTime parseDueDate(ArgumentMultimap argMultimap) throws ParseException {
+        LocalDateTime dueDate;
+
+        // handles parsing date
+        try {
+            dueDate = LocalDateTime.parse(argMultimap.getValue(PREFIX_DUE_DATE).get(), INPUT_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
+        }
+
+        return dueDate;
     }
 }

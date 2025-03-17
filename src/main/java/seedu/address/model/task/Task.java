@@ -21,11 +21,12 @@ public class Task {
      * @param description The task's description.
      * @param status The task's status.
      */
-    public Task(String description, TaskStatus status) {
+    public Task(String description, TaskStatus status, LocalDateTime dueDate) {
         requireNonNull(description);
         requireNonNull(status);
         this.description = description;
         this.status = status;
+        this.dueDate = dueDate;
     }
 
     public String getDescription() {
@@ -35,13 +36,16 @@ public class Task {
     public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
+    public LocalDateTime getDueDate() {
+        return this.dueDate;
+    }
 
     public TaskStatus getStatus() {
         return status;
     }
 
     public Task withStatus(TaskStatus newStatus) {
-        return new Task(this.description, newStatus);
+        return new Task(this.description, newStatus, this.dueDate);
     }
 
     @Override
