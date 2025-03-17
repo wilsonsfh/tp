@@ -299,8 +299,12 @@ public class EditCommand extends Command {
             return Objects.equals(name, otherEditPersonDescriptor.name)
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
+                    && Objects.equals(telegram, otherEditPersonDescriptor.telegram)
+                    && Objects.equals(position, otherEditPersonDescriptor.position)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
-                    && Objects.equals(tags, otherEditPersonDescriptor.tags);
+                    && Objects.equals(tags, otherEditPersonDescriptor.tags)
+                    && Objects.equals(skills, otherEditPersonDescriptor.skills)
+                    && Objects.equals(others, otherEditPersonDescriptor.others);
         }
 
         @Override
@@ -309,8 +313,12 @@ public class EditCommand extends Command {
                     .add("name", name)
                     .add("phone", phone)
                     .add("email", email)
+                    .add("telegram", telegram)
+                    .add("position", position)
                     .add("address", address)
                     .add("tags", tags)
+                    .add("skills", skills)
+                    .add("others", others)
                     .toString();
         }
     }
