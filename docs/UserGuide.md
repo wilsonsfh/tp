@@ -116,9 +116,11 @@ Examples:
 
 ### Locating persons by name: `find`
 
-Finds persons whose names contain any of the given keywords.
+Finding persons by name:
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `find n/ KEYWORD [MORE_KEYWORDS]`
+
+Finds persons whose names contain any of the given keywords.
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
@@ -128,9 +130,19 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
 Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `find n/ john` returns `john` and `John Doe`
+* `find n/ alex david` returns `Alex Yeoh`, `David Li`<br>
+  ![result for 'find n/ bernice alex'](images/findAlexBerniceResult.png)
+
+Finding persons by tags:
+
+Format: `find t/ KEYWORD [MORE_KEYWORDS]`
+
+Finds persons whose tags contain any of the given keywords.
+
+Example Usage:
+* `find t/ colleagues friends` returns all Persons tagged with colleagues or friends
+  ![result for 'find t/ colleagues friends'](images/findColleaguesFriendsResult.png)
 
 ### Deleting a person : `delete`
 
