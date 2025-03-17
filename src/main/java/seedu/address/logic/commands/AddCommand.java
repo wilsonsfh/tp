@@ -44,11 +44,13 @@ public class AddCommand extends Command {
     private final Person toAdd;
 
     /**
-     * Creates an AddCommand to add the specified {@code Person}
+     * Creates an AddCommand to add the specified {@code Person}.
+     *
+     * @param person The person to add.
      */
     public AddCommand(Person person) {
         requireNonNull(person);
-        toAdd = person;
+        this.toAdd = person;
     }
 
     @Override
@@ -69,7 +71,6 @@ public class AddCommand extends Command {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof AddCommand)) {
             return false;
         }

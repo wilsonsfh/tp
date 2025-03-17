@@ -68,6 +68,13 @@ public class EditCommand extends Command {
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
     }
 
+    /**
+     * Executes the edit command to update the specified person's details in the address book.
+     *
+     * @param model {@code Model} which the command should operate on.
+     * @return the result of the command execution.
+     * @throws CommandException if the index is invalid or the edited person is a duplicate.
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
@@ -103,7 +110,8 @@ public class EditCommand extends Command {
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         List<Task> updatedTasks = personToEdit.getTasks(); // Carry over existing tasks
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedTasks);
+        return new Person(updatedName, updatedPhone, updatedEmail,
+                updatedAddress, updatedTags, personToEdit.getTaskStatus());
     }
 
     @Override
@@ -141,11 +149,16 @@ public class EditCommand extends Command {
         private Address address;
         private Set<Tag> tags;
 
+        /**
+         * Constructs an empty EditPersonDescriptor.
+         */
         public EditPersonDescriptor() {}
 
         /**
          * Copy constructor.
          * A defensive copy of {@code tags} is used internally.
+         *
+         * @param toCopy The descriptor to copy values from.
          */
         public EditPersonDescriptor(EditPersonDescriptor toCopy) {
             setName(toCopy.name);

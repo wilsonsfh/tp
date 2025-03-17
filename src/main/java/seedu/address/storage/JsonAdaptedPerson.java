@@ -29,6 +29,7 @@ class JsonAdaptedPerson {
     private final String phone;
     private final String email;
     private final String address;
+    private final String taskStatus;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final List<JsonAdaptedTask> tasks = new ArrayList<>();
 
@@ -37,20 +38,23 @@ class JsonAdaptedPerson {
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
      */
     @JsonCreator
-    public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email, @JsonProperty("address") String address,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags, @JsonProperty("tasks") List<JsonAdaptedTask> tasks) {
+    public JsonAdaptedPerson(@JsonProperty("name") String name,
+                             @JsonProperty("phone") String phone,
+                             @JsonProperty("email") String email,
+                             @JsonProperty("address") String address,
+                             @JsonProperty("tags") List<JsonAdaptedTag> tags,
+                             @JsonProperty("taskStatus") String taskStatus) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
+        this.taskStatus = taskStatus != null ? taskStatus : "not started";
         if (tags != null) {
             this.tags.addAll(tags);
         }
         if (tasks != null) {
             this.tasks.addAll(tasks);
         }
-
     }
 
     /**
@@ -61,6 +65,7 @@ class JsonAdaptedPerson {
         phone = source.getPhone().value;
         email = source.getEmail().value;
         address = source.getAddress().value;
+        taskStatus = source.getTaskStatus();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -76,6 +81,7 @@ class JsonAdaptedPerson {
      */
     public Person toModelType() throws IllegalValueException {
         final List<Tag> personTags = new ArrayList<>();
+        final String modelTaskStatus = taskStatus != null ? taskStatus : "not started";
 
         for (JsonAdaptedTag tag : tags) {
             personTags.add(tag.toModelType());
@@ -121,9 +127,8 @@ class JsonAdaptedPerson {
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
 
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags, modelTaskStatus);
+
         final List<Task> modelTasks = personTasks; // Placeholder for now
-
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags, modelTasks);
     }
-
 }
