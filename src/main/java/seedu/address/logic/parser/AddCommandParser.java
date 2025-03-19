@@ -9,8 +9,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_POSITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK_DESC;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 
 import java.util.List;
 import java.util.Set;
@@ -41,11 +42,9 @@ public class AddCommandParser implements Parser<AddCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM,
-                        PREFIX_POSITION, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_SKILL, PREFIX_OTHER);
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                                            PREFIX_TAG, PREFIX_TASK);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE,
+                PREFIX_EMAIL, PREFIX_TELEGRAM, PREFIX_POSITION, PREFIX_ADDRESS, PREFIX_TAG,
+                PREFIX_SKILL, PREFIX_OTHER, PREFIX_TASK_DESC, PREFIX_TASK);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM, PREFIX_POSITION,
                 PREFIX_ADDRESS)
@@ -64,12 +63,10 @@ public class AddCommandParser implements Parser<AddCommand> {
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
         Set<Skill> skillList = ParserUtil.parseSkills(argMultimap.getAllValues(PREFIX_SKILL));
         Set<Other> otherList = ParserUtil.parseOthers(argMultimap.getAllValues(PREFIX_OTHER));
-
-        Person person = new Person(name, phone, email, telegram, position, address, tagList, skillList, otherList);
         List<Task> taskList = ParserUtil.parseTasks(argMultimap.getAllValues(PREFIX_TASK)); // New parsing for tasks!
-
-
-        Person person = new Person(name, phone, email, address, tagList, taskList);
+        String taskStatus = ""; // or fetch this from input if available
+        Person person = new Person(name, phone, email, telegram, position, address,
+                tagList, skillList, otherList, taskStatus, taskList);
 
         return new AddCommand(person);
     }

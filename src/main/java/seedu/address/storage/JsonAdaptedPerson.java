@@ -27,7 +27,7 @@ import seedu.address.model.task.Task;
  */
 class JsonAdaptedPerson {
 
-    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
+    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Task's %s field is missing!";
 
     private final String name;
     private final String phone;
@@ -53,7 +53,7 @@ class JsonAdaptedPerson {
                              @JsonProperty("address") String address,
                              @JsonProperty("tags") List<JsonAdaptedTag> tags,
                              @JsonProperty("skills") List<JsonAdaptedSkill> skills,
-                             @JsonProperty("others") List<JsonAdaptedOther> others), 
+                             @JsonProperty("others") List<JsonAdaptedOther> others,
                              @JsonProperty("taskStatus") String taskStatus) {
         this.name = name;
         this.phone = phone;
@@ -70,6 +70,7 @@ class JsonAdaptedPerson {
         }
         if (others != null) {
             this.others.addAll(others);
+        }
         if (tasks != null) {
             this.tasks.addAll(tasks);
         }
@@ -94,6 +95,7 @@ class JsonAdaptedPerson {
                 .collect(Collectors.toList()));
         others.addAll(source.getOthers().stream()
                 .map(JsonAdaptedOther::new)
+                .collect(Collectors.toList()));
         tasks.addAll(source.getTasks().stream()
                 .map(JsonAdaptedTask::new)
                 .collect(Collectors.toList()));
@@ -120,6 +122,7 @@ class JsonAdaptedPerson {
         final List<Other> personOthers = new ArrayList<>();
         for (JsonAdaptedOther other : others) {
             personOthers.add(other.toModelType());
+        }
         final List<Task> personTasks = new ArrayList<>();
 
         for (JsonAdaptedTask task : tasks) {
@@ -178,6 +181,6 @@ class JsonAdaptedPerson {
         final Set<Other> modelOthers = new HashSet<>(personOthers);
         final List<Task> modelTasks = personTasks; // Placeholder for now
         return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelPosition, modelAddress, modelTags,
-                          modelSkills, modelOthers, modelTaskStatus);
+                          modelSkills, modelOthers, modelTaskStatus, modelTasks);
     }
 }
