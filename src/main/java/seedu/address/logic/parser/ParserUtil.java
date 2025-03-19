@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_EMPTY_TASK_DESC;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_DATE_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DUE_DATE;
 
@@ -15,6 +16,7 @@ import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.commands.TaskCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
@@ -153,7 +155,7 @@ public class ParserUtil {
      */
     public static Task parseTask(String taskStr) throws ParseException {
         if (taskStr.isEmpty()) {
-            throw new ParseException("Task description cannot be empty! Or omit tk/ prefix.");
+            throw new ParseException(MESSAGE_EMPTY_TASK_DESC + TaskCommand.MESSAGE_USAGE);
         }
 
         String description;
@@ -163,7 +165,7 @@ public class ParserUtil {
         String[] parts = taskStr.split(String.valueOf(PREFIX_DUE_DATE), 2);
         description = parts[0].trim();
         if (description.isEmpty()) {
-            throw new ParseException("Task description cannot be empty before due date.");
+            throw new ParseException(MESSAGE_EMPTY_TASK_DESC + TaskCommand.MESSAGE_USAGE);
         }
 
         // Parse due date if provided
@@ -172,7 +174,7 @@ public class ParserUtil {
             try {
                 dueDate = LocalDateTime.parse(dueDateStr);
             } catch (DateTimeParseException e) {
-                throw new ParseException("Invalid date format. Use yyyy-MM-dd for due dates.");
+                throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
             }
         }
 

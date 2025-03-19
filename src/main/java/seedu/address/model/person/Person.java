@@ -71,6 +71,14 @@ public class Person {
     }
 
     /**
+     * Updates the task list.
+     * Returns a new Person object with the updated tasks.
+     */
+    public Person updateTasks(List<Task> updatedTasks) {
+        return new Person(name, phone, email, address, tags, updatedTasks);
+    }
+
+    /**
      * Add a new task.
      * Returns a new Person object.
      */

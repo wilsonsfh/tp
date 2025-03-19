@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_DATE_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DUE_DATE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK_INDEX;
 import static seedu.address.logic.parser.ParserUtil.parseDueDate;
 
 import java.time.LocalDateTime;
@@ -20,25 +21,27 @@ public class SetDueDateCommandParser implements Parser<SetDueDateCommand> {
 
     @Override
     public SetDueDateCommand parse(String userInput) throws ParseException {
-        // TODO: implements this
         requireNonNull(userInput);
 
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(userInput, PREFIX_DUE_DATE);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(userInput, PREFIX_TASK_INDEX, PREFIX_DUE_DATE);
 
-        Index index;
+        Index taskIndex;
+        Index personIndex;
         LocalDateTime dueDate;
 
-        // handles non-numerical input for index
         try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
+            // handles non-numerical input for personIndex
+            personIndex = ParserUtil.parseIndex(argMultimap.getPreamble());
+            // handles non-numerical input for taskIndex
+            taskIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_TASK_INDEX).orElseThrow(() ->
+                    new ParseException("Task index is required.")));
         } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetDueDateCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(String.format("Invalid input: %s\n%s", pe.getMessage(),
+                    SetDueDateCommand.MESSAGE_USAGE), pe);
         }
 
         // handles where PREFIX_DUE_DATE is not present
-        if (!argMultimap.getValue(PREFIX_DUE_DATE).isPresent()
-                || !argMultimap.getPreamble().isEmpty()) {
+        if (!argMultimap.getValue(PREFIX_DUE_DATE).isPresent()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetDueDateCommand.MESSAGE_USAGE));
         }
@@ -50,6 +53,6 @@ public class SetDueDateCommandParser implements Parser<SetDueDateCommand> {
             throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
         }
 
-        return new SetDueDateCommand(dueDate, index);
+        return new SetDueDateCommand(dueDate, taskIndex, personIndex);
     }
 }
