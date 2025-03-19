@@ -124,13 +124,11 @@ public class EditCommand extends Command {
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Set<Skill> updatedSkills = editPersonDescriptor.getSkills().orElse(personToEdit.getSkills());
         Set<Other> updatedOthers = editPersonDescriptor.getOthers().orElse(personToEdit.getOthers());
+        List<Task> updatedTasks = personToEdit.getTasks(); // Retaining existing tasks
+        String updatedTaskStatus = "completed"; // Set this to whatever value makes sense for the task status
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedTelegram, updatedPosition, updatedAddress,
-                updatedTags, updatedSkills, updatedOthers);
-        List<Task> updatedTasks = personToEdit.getTasks(); // Carry over existing tasks
-
-        return new Person(updatedName, updatedPhone, updatedEmail,
-                updatedAddress, updatedTags, personToEdit.getTaskStatus());
+                updatedTags, updatedSkills, updatedOthers, updatedTaskStatus, updatedTasks);
     }
 
     @Override

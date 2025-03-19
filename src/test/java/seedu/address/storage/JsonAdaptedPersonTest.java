@@ -18,6 +18,7 @@ import seedu.address.model.person.Position;
 import seedu.address.model.person.Telegram;
 
 public class JsonAdaptedPersonTest {
+    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Task's %s field is missing!";
     private static final String INVALID_NAME = "R@chel";
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_EMAIL = "example.com";
@@ -25,7 +26,6 @@ public class JsonAdaptedPersonTest {
     private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_TAG = "#friend";
     private static final String VALID_TASK_STATUS = "not started"; // Add valid status
-
     private static final String VALID_NAME = BENSON.getName().toString();
     private static final String VALID_PHONE = BENSON.getPhone().toString();
     private static final String VALID_EMAIL = BENSON.getEmail().toString();
@@ -40,6 +40,7 @@ public class JsonAdaptedPersonTest {
             .collect(Collectors.toList());
     private static final List<JsonAdaptedOther> VALID_OTHERS = BENSON.getOthers().stream()
             .map(JsonAdaptedOther::new)
+            .collect(Collectors.toList());
     private static final List<JsonAdaptedTask> VALID_TASKS = BENSON.getTasks().stream()
             .map(JsonAdaptedTask::new)
             .collect(Collectors.toList());

@@ -39,11 +39,10 @@ public class Person {
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Telegram telegram, Position position,
-                  Address address, Set<Tag> tags, Set<Skill> skills, Set<Other> others) {
-        requireAllNonNull(name, phone, email, address, tags);
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, String taskStatus) {
-        requireAllNonNull(name, phone, email, address, tags, taskStatus);
+
+    public Person(Name name, Phone phone, Email email, Telegram telegram, Position position, Address address,
+                  Set<Tag> tags, Set<Skill> skills, Set<Other> others, String taskStatus, List<Task> tasks) {
+        requireAllNonNull(name, phone, email, telegram, position, address, tags, skills, others, taskStatus, tasks);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -54,13 +53,14 @@ public class Person {
         this.skills.addAll(skills);
         this.others.addAll(others);
         this.taskStatus = taskStatus;
+        this.tasks = new ArrayList<>(tasks);
     }
 
     // Legacy constructor
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+    /*public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
         this(name, phone, email, address, tags, "not started");
         this.tasks = new ArrayList<>(tasks);
-    }
+    }*/
 
     public Name getName() {
         return name;
@@ -108,7 +108,8 @@ public class Person {
     public Person addTask(Task newTask) {
         List<Task> updatedTasks = new ArrayList<>(tasks);
         updatedTasks.add(newTask);
-        return new Person(name, phone, email, address, tags, updatedTasks);
+        return new Person(name, phone, email, telegram, position, address, tags,
+                skills, others, taskStatus, updatedTasks);
     }
 
     /**

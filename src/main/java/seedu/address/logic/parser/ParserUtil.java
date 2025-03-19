@@ -207,7 +207,9 @@ public class ParserUtil {
             otherSet.add(parseOther(other));
         }
         return otherSet;
+    }
 
+    /**
      * Parses a {@code Collection<String> tasks} into a {@code List<Task>}.
      * All newly added tasks are marked as YET_TO_START by default.
      */
