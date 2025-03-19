@@ -4,9 +4,13 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_OTHER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_POSITION;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -26,17 +30,26 @@ public class AddCommand extends Command {
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
+            + PREFIX_TELEGRAM + "TELEGRAM "
+            + PREFIX_POSITION + "POSITION "
             + PREFIX_ADDRESS + "ADDRESS "
             + "[" + PREFIX_TAG + "TAG]...\n"
+            + "[" + PREFIX_SKILL + "SKILL]...\n"
+            + "[" + PREFIX_OTHER + "OTHER]...\n"
             + "[" + PREFIX_TASK + "TASK]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_EMAIL + "johnd@example.com "
+            + PREFIX_TELEGRAM + "@john123 "
+            + PREFIX_POSITION + "Team Leader "
             + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
             + PREFIX_TAG + "friends "
             + PREFIX_TAG + "owesMoney "
-            + PREFIX_TASK + "barbeque ";
+            + PREFIX_SKILL + "C Programming "
+            + PREFIX_SKILL + "Java Programming "
+            + PREFIX_OTHER + "New to the team"
+            + PREFIX_TASK + "barbeque";
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
@@ -44,11 +57,13 @@ public class AddCommand extends Command {
     private final Person toAdd;
 
     /**
-     * Creates an AddCommand to add the specified {@code Person}
+     * Creates an AddCommand to add the specified {@code Person}.
+     *
+     * @param person The person to add.
      */
     public AddCommand(Person person) {
         requireNonNull(person);
-        toAdd = person;
+        this.toAdd = person;
     }
 
     @Override
@@ -69,7 +84,6 @@ public class AddCommand extends Command {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof AddCommand)) {
             return false;
         }
