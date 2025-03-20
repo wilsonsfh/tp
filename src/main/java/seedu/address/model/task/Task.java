@@ -51,7 +51,9 @@ public class Task {
     @Override
     public String toString() {
         String formattedDueDate = (dueDate == null) ? "No due date set yet." : dueDate.toString();
-        return "DESCRIPTION: " + description + " DUE DATE: " + formattedDueDate;
+        return "DESCRIPTION: " + description
+                + " | DUE DATE: " + formattedDueDate
+                + " | STATUS: " + status + " |";
     }
 
     @Override
