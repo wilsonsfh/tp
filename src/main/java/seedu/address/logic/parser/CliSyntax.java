@@ -18,4 +18,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_DUE_DATE = new Prefix("due/");
     public static final Prefix PREFIX_TASK = new Prefix("tk/");
     public static final Prefix PREFIX_TASK_DESC = new Prefix("taskdesc/");
+    public static final Prefix PREFIX_TASK_INDEX = new Prefix("taskint/");
 }

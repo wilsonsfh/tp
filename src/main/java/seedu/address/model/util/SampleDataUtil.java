@@ -120,6 +120,12 @@ public class SampleDataUtil {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Get a list of task given the descriptions provided.
+     *
+     * @param descriptions A variable number of tasks in string representation.
+     * @return A list of Task objects.
+     */
     public static List<Task> getTask(String... descriptions) {
         return Arrays.stream(descriptions)
                 .map(description -> {
