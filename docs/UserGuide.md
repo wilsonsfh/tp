@@ -45,7 +45,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ## Features
 
-<box type="info" seamless>
+</box type="info" seamless>
 
 **Notes about the command format:**<br>
 
@@ -82,7 +82,7 @@ Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`
 
-<box type="tip" seamless>
+</box type="tip" seamless>
 
 **Tip:** A person can have any number of tags (including 0)
 </box>
@@ -158,7 +158,37 @@ Format: `delete INDEX`
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `find n/ Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+
+### Listing tasks assigned to a member : `listtasks`
+
+Lists the tasks of
+the specified person from the address book.
+
+Format: `listtasks INDEX`
+
+* Lists the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
+Examples:
+* `list` followed by `listtasks 2` list the tasks the 2nd person in the address book has.
+* `find n/ Betsy` followed by `listtasks 1` lists the tasks of 1st person in the results of the `find` command.
+
+### Setting due date for a task : `setduedate`
+
+Set a due date for a specific task of a member.
+
+Format: `setduedate PERSON_INDEX taskint/TASK_INDEX due/yyyy-mm-dd hh:mm`
+
+* Set the due date for a task at `TASK_INDEX` of the person at the specified `PERSON_INDEX`.
+* `TASK_INDEX` refers to the index number shown in the task list of a member.
+* Both indexes **must be a positive integer** 1, 2, 3, …​
+* Due date must be inputted in the format of `yyyy-mm-dd hh:mm`.
+
+Examples:
+* `listtasks 2` followed by `setduedate 2 taskint/1 due/2025-10-10 23:59` set the due date for the first task of the second person in the displayed person list to be 2025-10-10 23:59. 
+* `find n/ Betsy` followed by `setduedate 1 taskint/2 due/2025-10-10 23:59` set the due date for the second task of the first person in the results of the `find` command. to be 2025-10-10 23:59.
 
 ### Clearing all entries : `clear`
 
@@ -180,7 +210,7 @@ AddressBook data are saved in the hard disk automatically after any command that
 
 AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
-<box type="warning" seamless>
+</box type="warning" seamless>
 
 **Caution:**
 If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
