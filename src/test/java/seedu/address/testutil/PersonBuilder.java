@@ -41,7 +41,6 @@ public class PersonBuilder {
     private Set<Skill> skills;
     private Set<Other> others;
     private List<Task> tasks;
-    private String taskStatus;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -57,7 +56,6 @@ public class PersonBuilder {
         skills = new HashSet<>();
         others = new HashSet<>();
         tasks = new ArrayList<>();
-        taskStatus = "Default String";
     }
 
     /**
@@ -74,7 +72,6 @@ public class PersonBuilder {
         skills = new HashSet<>(personToCopy.getSkills());
         others = new HashSet<>(personToCopy.getOthers());
         tasks = new ArrayList<>(personToCopy.getTasks());
-        taskStatus = personToCopy.getTaskStatus();
     }
 
     /**
@@ -158,7 +155,7 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, phone, email, telegram, position, address, tags, skills, others, taskStatus, tasks);
+        return new Person(name, phone, email, telegram, position, address, tags, skills, others, tasks);
     }
 
 }

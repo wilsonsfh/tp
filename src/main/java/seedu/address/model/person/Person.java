@@ -14,6 +14,7 @@ import seedu.address.model.other.Other;
 import seedu.address.model.skill.Skill;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.task.Task;
+import seedu.address.model.task.TaskStatus;
 
 /**
  * Represents a Person in the address book.
@@ -27,7 +28,6 @@ public class Person {
     private final Email email;
     private final Telegram telegram;
     private final Position position;
-    private final String taskStatus;
 
     // Data fields
     private final Address address;
@@ -41,8 +41,8 @@ public class Person {
      */
 
     public Person(Name name, Phone phone, Email email, Telegram telegram, Position position, Address address,
-                  Set<Tag> tags, Set<Skill> skills, Set<Other> others, String taskStatus, List<Task> tasks) {
-        requireAllNonNull(name, phone, email, telegram, position, address, tags, skills, others, taskStatus, tasks);
+                  Set<Tag> tags, Set<Skill> skills, Set<Other> others, List<Task> tasks) {
+        requireAllNonNull(name, phone, email, telegram, position, address, tags, skills, others, tasks);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -52,7 +52,6 @@ public class Person {
         this.tags.addAll(tags);
         this.skills.addAll(skills);
         this.others.addAll(others);
-        this.taskStatus = taskStatus;
         this.tasks = new ArrayList<>(tasks);
     }
 
@@ -87,7 +86,7 @@ public class Person {
     }
 
     public String getTaskStatus() {
-        return taskStatus;
+        return this.tasks.stream().map(Task::getStatus).findFirst().orElse(TaskStatus.YET_TO_START).toString();
     }
 
     /**
@@ -107,7 +106,7 @@ public class Person {
      */
     public Person updateTasks(List<Task> updatedTasks) {
         return new Person(name, phone, email, telegram, position, address, tags,
-                skills, others, taskStatus, updatedTasks);
+                skills, others, updatedTasks);
     }
 
     /**
@@ -118,7 +117,7 @@ public class Person {
         List<Task> updatedTasks = new ArrayList<>(tasks);
         updatedTasks.add(newTask);
         return new Person(name, phone, email, telegram, position, address, tags,
-                skills, others, taskStatus, updatedTasks);
+                skills, others, updatedTasks);
     }
 
     /**

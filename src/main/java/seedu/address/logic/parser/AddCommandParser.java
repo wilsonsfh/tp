@@ -10,7 +10,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_POSITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK_DESC;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 
 import java.util.List;
@@ -44,8 +43,7 @@ public class AddCommandParser implements Parser<AddCommand> {
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE,
                 PREFIX_EMAIL, PREFIX_TELEGRAM, PREFIX_POSITION, PREFIX_ADDRESS, PREFIX_TAG,
-                PREFIX_SKILL, PREFIX_OTHER, PREFIX_TASK_DESC, PREFIX_TASK);
-
+                PREFIX_SKILL, PREFIX_OTHER, PREFIX_TASK);
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM, PREFIX_POSITION,
                 PREFIX_ADDRESS)
                 || !argMultimap.getPreamble().isEmpty()) {
@@ -63,10 +61,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
         Set<Skill> skillList = ParserUtil.parseSkills(argMultimap.getAllValues(PREFIX_SKILL));
         Set<Other> otherList = ParserUtil.parseOthers(argMultimap.getAllValues(PREFIX_OTHER));
-        List<Task> taskList = ParserUtil.parseTasks(argMultimap.getAllValues(PREFIX_TASK)); // New parsing for tasks!
-        String taskStatus = ""; // or fetch this from input if available
+        List<Task> taskList = ParserUtil.parseTasks(argMultimap.getAllValues(PREFIX_TASK)).stream().toList();
         Person person = new Person(name, phone, email, telegram, position, address,
-                tagList, skillList, otherList, taskStatus, taskList);
+                tagList, skillList, otherList, taskList);
 
         return new AddCommand(person);
     }
