@@ -64,7 +64,7 @@ public class TaskStatusCommand extends Command {
             personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                 personToEdit.getTelegram(), personToEdit.getPosition(), personToEdit.getAddress(),
                 personToEdit.getTags(), personToEdit.getSkills(), personToEdit.getOthers(),
-                personToEdit.getTaskStatus(), personToEdit.getTasks());
+                personToEdit.getTasks());
 
         model.setPerson(personToEdit, updatedPerson);
 

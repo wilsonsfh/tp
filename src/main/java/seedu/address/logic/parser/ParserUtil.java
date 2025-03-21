@@ -1,22 +1,20 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.Messages.MESSAGE_EMPTY_TASK_DESC;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_DATE_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INCORRECT_TASK_STATUS;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DUE_DATE;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
-import seedu.address.logic.commands.TaskCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.other.Other;
 import seedu.address.model.person.Address;
@@ -212,50 +210,42 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code Collection<String> tasks} into a {@code List<Task>}.
-     * All newly added tasks are marked as YET_TO_START by default.
+     * Parses a {@code String task} into a {@code Task}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code Task} is invalid.
      */
-    public static List<Task> parseTasks(Collection<String> tasks) throws ParseException {
-        requireNonNull(tasks);
-        final List<Task> taskList = new ArrayList<>();
-        for (String taskStr : tasks) {
-            String trimmedTask = taskStr.trim();
-            Task task = parseTask(trimmedTask);
-            taskList.add(task);
+    public static Task parseTask(String task) throws ParseException {
+        requireNonNull(task);
+        String[] taskDetails = task.split(",");
+        String taskDesc;
+        LocalDateTime dueDate;
+        TaskStatus taskStatus;
+        if (taskDetails.length != 3) {
+            throw new ParseException(MESSAGE_INVALID_COMMAND_FORMAT);
         }
-        return taskList;
+        try {
+            taskDesc = taskDetails[0].trim();
+            dueDate = LocalDateTime.parse(taskDetails[1].trim(), INPUT_FORMATTER);
+            taskStatus = TaskStatus.valueOf(taskDetails[2].trim().toUpperCase().replace(" ", "_"));
+        } catch (DateTimeParseException e) {
+            throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
+        } catch (IllegalArgumentException e) {
+            throw new ParseException(MESSAGE_INCORRECT_TASK_STATUS);
+        }
+        return new Task(taskDesc, taskStatus, dueDate);
     }
 
     /**
-     * Parses a {@code String taskStr} into a {@code Task}.
-     * A newly added tasks are marked as YET_TO_START by default.
+     * Parses {@code Collection<String> tasks} into a {@code Set<Task>}.
      */
-    public static Task parseTask(String taskStr) throws ParseException {
-        if (taskStr.isEmpty()) {
-            throw new ParseException(MESSAGE_EMPTY_TASK_DESC + TaskCommand.MESSAGE_USAGE);
+    public static Set<Task> parseTasks(Collection<String> tasks) throws ParseException {
+        requireNonNull(tasks);
+        final Set<Task> taskSet = new HashSet<>();
+        for (String task : tasks) {
+            taskSet.add(parseTask(task));
         }
-
-        String description;
-        LocalDateTime dueDate = null;
-
-        // Split based on due/ if present
-        String[] parts = taskStr.split(String.valueOf(PREFIX_DUE_DATE), 2);
-        description = parts[0].trim();
-        if (description.isEmpty()) {
-            throw new ParseException(MESSAGE_EMPTY_TASK_DESC + TaskCommand.MESSAGE_USAGE);
-        }
-
-        // Parse due date if provided
-        if (parts.length == 2) {
-            String dueDateStr = parts[1].trim();
-            try {
-                dueDate = LocalDateTime.parse(dueDateStr);
-            } catch (DateTimeParseException e) {
-                throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
-            }
-        }
-
-        return new Task(description, TaskStatus.YET_TO_START, dueDate);
+        return taskSet;
     }
 
     /**

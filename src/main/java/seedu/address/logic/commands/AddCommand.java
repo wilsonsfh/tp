@@ -36,7 +36,8 @@ public class AddCommand extends Command {
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "[" + PREFIX_SKILL + "SKILL]...\n"
             + "[" + PREFIX_OTHER + "OTHER]...\n"
-            + "[" + PREFIX_TASK + "TASK]...\n"
+            + "[" + PREFIX_TASK + "TASK DESCRIPTION, DUE DATE(yyyy-mm-dd HH:mm), STATUS(completed/in progress/yet to "
+            + "start)]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
@@ -49,7 +50,7 @@ public class AddCommand extends Command {
             + PREFIX_SKILL + "C Programming "
             + PREFIX_SKILL + "Java Programming "
             + PREFIX_OTHER + "New to the team"
-            + PREFIX_TASK + "barbeque";
+            + PREFIX_TASK + "barbeque, 2025-05-28 14:00, yet to start";
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
