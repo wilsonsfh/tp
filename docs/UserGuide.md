@@ -175,11 +175,11 @@ Examples:
 * `list` followed by `listtasks 2` list the tasks the 2nd person in the address book has.
 * `find n/ Betsy` followed by `listtasks 1` lists the tasks of 1st person in the results of the `find` command.
 
-### Updating status for a task : `Mark`
+### Updating status for a task : `mark`
 
 Mark the task status for a specific task of a member.
 
-Format: `Mark PERSON_INDEX TASK_INDEX task_status`
+Format: `mark PERSON_INDEX TASK_INDEX task_status`
 
 * Set the due date for a task at `TASK_INDEX` of the person at the specified `PERSON_INDEX`.
 * `TASK_INDEX` refers to the index number shown in the task list of a member.
@@ -187,9 +187,8 @@ Format: `Mark PERSON_INDEX TASK_INDEX task_status`
 * Only valid inputs are only `yet-to-start`, `in-progress` and `completed`.
 
 Examples:
-* `listtasks 2` followed by `Mark 3 2 in-progress` sets the task status for the second task of the third person in the displayed person list to be **in-progress**.
-* `find n/ Betsy` followed by `Mark 2 1 completed` sets the task status for the first task of the second person in the results of the `find` command to be **completed**.
-
+* `listtasks 2` followed by `mark 3 2 in-progress` sets the task status for the second task of the third person in the displayed person list to be **in-progress**.
+* `find n/ Betsy` followed by `mark 2 1 completed` sets the task status for the first task of the second person in the results of the `find` command to be **completed**.
 
 ### Setting due date for a task : `setduedate`
 
