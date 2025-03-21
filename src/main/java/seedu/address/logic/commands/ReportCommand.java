@@ -1,9 +1,15 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+
+import java.util.List;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.Person;
+import seedu.address.model.task.Task;
+import seedu.address.model.task.TaskStatus;
 
 /**
  * Generates a summary report of task completion statuses.
@@ -18,9 +24,28 @@ public class ReportCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        // Temporary implementation using person count
+        requireNonNull(model);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        int total = model.getFilteredPersonList().size();
-        return new CommandResult(String.format(MESSAGE_SUCCESS, total, 0, 0, 0));
+        List<Person> personList = model.getFilteredPersonList();
+
+        int totalTasks = 0;
+        int completed = 0;
+        int inProgress = 0;
+        int yetToStart = 0;
+
+        for (Person person : personList) {
+            for (Task task : person.getTasks()) {
+                totalTasks++;
+                if (task.getStatus().equals(TaskStatus.COMPLETED)) {
+                    completed++;
+                } else if (task.getStatus().equals(TaskStatus.IN_PROGRESS)) {
+                    inProgress++;
+                } else if (task.getStatus().equals(TaskStatus.YET_TO_START)) {
+                    yetToStart++;
+                }
+            }
+        }
+
+        return new CommandResult(String.format(MESSAGE_SUCCESS, totalTasks, completed, inProgress, yetToStart));
     }
 }

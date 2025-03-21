@@ -125,10 +125,12 @@ public class EditCommand extends Command {
         Set<Skill> updatedSkills = editPersonDescriptor.getSkills().orElse(personToEdit.getSkills());
         Set<Other> updatedOthers = editPersonDescriptor.getOthers().orElse(personToEdit.getOthers());
         List<Task> updatedTasks = personToEdit.getTasks(); // Retaining existing tasks
+        String updatedTaskStatus = personToEdit.getTaskStatus(); // Retain or update as needed
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedTelegram, updatedPosition, updatedAddress,
-                updatedTags, updatedSkills, updatedOthers, updatedTasks);
+                updatedTags, updatedSkills, updatedOthers, updatedTaskStatus, updatedTasks);
     }
+
 
     @Override
     public boolean equals(Object other) {

@@ -24,7 +24,7 @@ public class TaskCommand extends Command {
             + PREFIX_TASK_DESC + "TASK_DESCRIPTION\n"
             + "[ " + PREFIX_DUE_DATE + " yyyy-mm-dd HH:mm]\n"
             + "Example: " + COMMAND_WORD + " 1 "
-            + PREFIX_TASK_DESC + " Complete project milestone "
+            + PREFIX_TASK_DESC + "Complete project milestone "
             + PREFIX_DUE_DATE + "2025-05-05 12:00";
 
     public static final String MESSAGE_ADD_TASK_SUCCESS = "Added task to member: %1$s";
