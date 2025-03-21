@@ -28,7 +28,7 @@ public class SetDueDateCommand extends Command {
             + ": Set a due date for the task under a member.\n"
             + "Parameters: PERSON INDEX (must be a positive integer)\n"
             + PREFIX_TASK_INDEX + "TASK INDEX (must be a positive integer)\n"
-            + PREFIX_DUE_DATE + "DUE DATE (yyyy-mm-dd HH:mm)" + "\n"
+            + PREFIX_DUE_DATE + "DUE DATE (yyyy-mm-dd hh:mm)" + "\n"
             + "Example: " + COMMAND_WORD + " 1 " + PREFIX_TASK_INDEX + " 1"
             + PREFIX_DUE_DATE + "2025/01/01 23:59";
 
