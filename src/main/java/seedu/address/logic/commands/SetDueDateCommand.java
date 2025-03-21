@@ -29,7 +29,7 @@ public class SetDueDateCommand extends Command {
             + "Parameters: PERSON INDEX (must be a positive integer)\n"
             + PREFIX_TASK_INDEX + "TASK INDEX (must be a positive integer)\n"
             + PREFIX_DUE_DATE + "DUE DATE (yyyy-mm-dd HH:mm)" + "\n"
-            + "Example: " + COMMAND_WORD + " 1 " + PREFIX_TASK_INDEX + " 1"
+            + "Example: " + COMMAND_WORD + " 1 " + PREFIX_TASK_INDEX + " 1 "
             + PREFIX_DUE_DATE + "2025/01/01 23:59";
 
     public static final String MESSAGE_SUCCESS_SET_DUE_DATE = "Task due date updated!";
@@ -65,13 +65,28 @@ public class SetDueDateCommand extends Command {
 
         if (taskIndex.getZeroBased() >= updatedTasks.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX
-                    + (taskIndex.getOneBased()));
+                    + taskIndex.getOneBased());
         }
 
+        // Update the due date for the specified task.
         Task taskToUpdate = updatedTasks.get(taskIndex.getZeroBased());
         taskToUpdate.setDueDate(dueDate);
 
-        Person editedPerson = personToEdit.updateTasks(updatedTasks);
+        // Create a new Person with the updated tasks.
+        Person editedPerson = new Person(
+                personToEdit.getName(),
+                personToEdit.getPhone(),
+                personToEdit.getEmail(),
+                personToEdit.getTelegram(),
+                personToEdit.getPosition(),
+                personToEdit.getAddress(),
+                personToEdit.getTags(),
+                personToEdit.getSkills(),
+                personToEdit.getOthers(),
+                personToEdit.getTaskStatus(),
+                updatedTasks
+        );
+
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
@@ -84,7 +99,6 @@ public class SetDueDateCommand extends Command {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof SetDueDateCommand)) {
             return false;
         }

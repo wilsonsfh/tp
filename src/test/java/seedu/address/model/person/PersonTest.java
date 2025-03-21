@@ -92,11 +92,28 @@ public class PersonTest {
 
     @Test
     public void toStringMethod() {
-        String expected = Person.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
-                + ", email=" + ALICE.getEmail() + ", telegram handle=" + ALICE.getTelegram()
-                + ", position=" + ALICE.getPosition() + ", address=" + ALICE.getAddress()
-                + ", tags=" + ALICE.getTags() + ", skills=" + ALICE.getSkills()
-                + ", others=" + ALICE.getOthers() + "}";
-        assertEquals(expected, ALICE.toString());
+        Person alice = new PersonBuilder().withName("Alice Pauline")
+                .withPhone("94351253")
+                .withEmail("alice@example.com")
+                .withTelegram("@amyBee")
+                .withPosition("Boss")
+                .withAddress("123, Jurong West Ave 6, #08-111")
+                .withTags("friends")
+                .withTaskStatus("yet to start")
+                .build();
+
+        String expected = "seedu.address.model.person.Person{"
+                + "name=Alice Pauline, "
+                + "phone=94351253, "
+                + "email=alice@example.com, "
+                + "telegram=@amyBee, "
+                + "position=Boss, "
+                + "address=123, Jurong West Ave 6, #08-111, "
+                + "tags=[[friends]], "
+                + "skills=[], "
+                + "others=[], "
+                + "taskStatus=yet to start}";
+
+        assertEquals(expected, alice.toString());
     }
 }

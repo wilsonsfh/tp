@@ -30,6 +30,7 @@ public class PersonBuilder {
     public static final String DEFAULT_TELEGRAM = "@amyBee";
     public static final String DEFAULT_POSITION = "Boss";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_TASK_STATUS = "yet to start";
 
     private Name name;
     private Phone phone;
@@ -41,6 +42,7 @@ public class PersonBuilder {
     private Set<Skill> skills;
     private Set<Other> others;
     private List<Task> tasks;
+    private String taskStatus;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -56,6 +58,7 @@ public class PersonBuilder {
         skills = new HashSet<>();
         others = new HashSet<>();
         tasks = new ArrayList<>();
+        taskStatus = DEFAULT_TASK_STATUS;
     }
 
     /**
@@ -72,6 +75,7 @@ public class PersonBuilder {
         skills = new HashSet<>(personToCopy.getSkills());
         others = new HashSet<>(personToCopy.getOthers());
         tasks = new ArrayList<>(personToCopy.getTasks());
+        taskStatus = personToCopy.getTaskStatus();
     }
 
     /**
@@ -154,8 +158,18 @@ public class PersonBuilder {
         return this;
     }
 
-    public Person build() {
-        return new Person(name, phone, email, telegram, position, address, tags, skills, others, tasks);
+    /**
+     * Sets the {@code taskStatus} of the {@code Person} that we are building.
+     *
+     * @param taskStatus The task status to be assigned to the Person.
+     * @return The current instance of {@code PersonBuilder} with the updated task status.
+     */
+    public PersonBuilder withTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
+        return this;
     }
 
+    public Person build() {
+        return new Person(name, phone, email, telegram, position, address, tags, skills, others, taskStatus, tasks);
+    }
 }

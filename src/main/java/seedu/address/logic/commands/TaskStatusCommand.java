@@ -17,11 +17,10 @@ import seedu.address.model.task.TaskStatus;
  */
 public class TaskStatusCommand extends Command {
 
-    public static final String COMMAND_WORD = "Mark";
+    public static final String COMMAND_WORD = "mark";
     public static final String MESSAGE_USAGE = COMMAND_WORD
-        + ": Update a task with status (completed, in-progress, yet-to-start) for a particular person.\n"
-        + "Example: " + COMMAND_WORD + " 1 (Person's index) 2 (Person's task index) completed";
-
+            + ": Update a task with status (completed, in-progress, yet-to-start) for a particular person.\n"
+            + "Example: " + COMMAND_WORD + " 1 2 completed";
     public static final String MESSAGE_MARK_TASK_SUCCESS = "Marked task: %1$s with status: %2$s under %3$s";
 
     private final Index personIndex;
@@ -29,7 +28,7 @@ public class TaskStatusCommand extends Command {
     private final TaskStatus newStatus;
 
     /**
-     * Mark a task with a new status for a person
+     * Constructs a TaskStatusCommand.
      */
     public TaskStatusCommand(Index personIndex, Index taskIndex, TaskStatus newStatus) {
         requireNonNull(personIndex);
@@ -60,19 +59,30 @@ public class TaskStatusCommand extends Command {
         Task updatedTask = taskToUpdate.withStatus(newStatus);
         updatedTasks.set(taskIndex.getZeroBased(), updatedTask);
 
+        // Create a new Person with the updated tasks.
+        // Assuming Person has a method addTask is immutable and returns a new Person,
+        // here we build a new Person using the existing data but with updated tasks.
         Person updatedPerson = new Person(
-            personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getTelegram(), personToEdit.getPosition(), personToEdit.getAddress(),
-                personToEdit.getTags(), personToEdit.getSkills(), personToEdit.getOthers(),
-                personToEdit.getTasks());
+                personToEdit.getName(),
+                personToEdit.getPhone(),
+                personToEdit.getEmail(),
+                personToEdit.getTelegram(),
+                personToEdit.getPosition(),
+                personToEdit.getAddress(),
+                personToEdit.getTags(),
+                personToEdit.getSkills(),
+                personToEdit.getOthers(),
+                personToEdit.getTaskStatus(),
+                updatedTasks
+        );
 
         model.setPerson(personToEdit, updatedPerson);
 
         return new CommandResult(String.format(
-            MESSAGE_MARK_TASK_SUCCESS,
-            updatedTask.getDescription(),
-            updatedTask.getStatus(),
-            updatedPerson.getName()
+                MESSAGE_MARK_TASK_SUCCESS,
+                updatedTask.getDescription(),
+                updatedTask.getStatus(),
+                updatedPerson.getName()
         ));
     }
 }
