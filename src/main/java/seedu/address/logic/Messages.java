@@ -23,6 +23,7 @@ public class Messages {
     public static final String MESSAGE_INVALID_TASK_DISPLAYED_INDEX = "The task index provided is invalid:  \n";
     public static final String MESSAGE_EMPTY_TASK_DESC = "Task description cannot be empty! \n";
     public static final String MESSAGE_NO_TASK_FOR_MEM = "No tasks found for %s.";
+    public static final String MESSAGE_INCORRECT_TASK_STATUS = "No available task status.";
 
     /**
      * Returns an error message indicating the duplicate prefixes.
