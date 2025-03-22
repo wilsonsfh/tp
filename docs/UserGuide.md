@@ -18,15 +18,15 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+2. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
+4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
    * `list` : Lists all contacts.
@@ -39,7 +39,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
    * `exit` : Exits the app.
 
-1. Refer to the [Features](#features) below for details of each command.
+6. Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -171,9 +171,16 @@ Format: `listtasks INDEX`
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
 
+Example results for member without task:
+* ![listtasks for person without a task](images/listtasksAlex1.png)
+* ![listtasks for person without a task](images/listtasksAlex2.png)
+
+Example results for member with tasks:
+* ![listtasks for person with a task](images/listtasksJungkook.png)
+
 Examples:
 * `list` followed by `listtasks 2` list the tasks the 2nd person in the address book has.
-* `find n/ Betsy` followed by `listtasks 1` lists the tasks of 1st person in the results of the `find` command.
+* `find n/ Alex` followed by `listtasks 1` lists the tasks of 1st person in the results of the `find` command.
 
 ### Updating status for a task : `mark`
 
@@ -185,6 +192,8 @@ Format: `mark PERSON_INDEX TASK_INDEX task_status`
 * `TASK_INDEX` refers to the index number shown in the task list of a member.
 * Both indexes **must be a positive integer** 1, 2, 3, …​
 * Only valid inputs are only `yet-to-start`, `in-progress` and `completed`.
+
+![mark a task in progress](images/markTaskResult.png)
 
 Examples:
 * `listtasks 2` followed by `mark 3 2 in-progress` sets the task status for the second task of the third person in the displayed person list to be **in-progress**.
@@ -200,6 +209,8 @@ Format: `setduedate PERSON_INDEX taskint/TASK_INDEX due/yyyy-mm-dd hh:mm`
 * `TASK_INDEX` refers to the index number shown in the task list of a member.
 * Both indexes **must be a positive integer** 1, 2, 3, …​
 * Due date must be inputted in the format of `yyyy-mm-dd hh:mm`.
+
+![set due date for a task](images/setduedate.png)
 
 Examples:
 * `listtasks 2` followed by `setduedate 2 taskint/1 due/2025-10-10 23:59` set the due date for the first task of the second person in the displayed person list to be 2025-10-10 23:59. 
@@ -239,6 +250,8 @@ Shows a summary of all tasks and their completion statuses.
 Format: `report`
 
 Example output:
+
+![generate report for one task](images/reportResult.png)
 
 ### Archiving data files `[coming in v2.0]`
 
