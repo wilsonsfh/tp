@@ -193,6 +193,8 @@ Format: `mark PERSON_INDEX TASK_INDEX task_status`
 * Both indexes **must be a positive integer** 1, 2, 3, …​
 * Only valid inputs are only `yet-to-start`, `in-progress` and `completed`.
 
+![mark a task in progress](images/markTaskResult.png)
+
 Examples:
 * `listtasks 2` followed by `mark 3 2 in-progress` sets the task status for the second task of the third person in the displayed person list to be **in-progress**.
 * `find n/ Betsy` followed by `mark 2 1 completed` sets the task status for the first task of the second person in the results of the `find` command to be **completed**.
@@ -248,6 +250,8 @@ Shows a summary of all tasks and their completion statuses.
 Format: `report`
 
 Example output:
+
+![generate report for one task](images/reportResult.png)
 
 ### Archiving data files `[coming in v2.0]`
 
