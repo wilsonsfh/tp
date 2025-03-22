@@ -14,7 +14,6 @@ import seedu.address.model.other.Other;
 import seedu.address.model.skill.Skill;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.task.Task;
-import seedu.address.model.task.TaskStatus;
 
 /**
  * Represents a Person in the address book.
@@ -28,38 +27,35 @@ public class Person {
     private final Email email;
     private final Telegram telegram;
     private final Position position;
+    private final String taskStatus;
 
     // Data fields
     private final Address address;
-    private final Set<Tag> tags = new HashSet<>();
-    private final Set<Skill> skills = new HashSet<>();
-    private final Set<Other> others = new HashSet<>();
+    private final Set<Tag> tags;
+    private final Set<Skill> skills;
+    private final Set<Other> others;
     private final List<Task> tasks;
 
     /**
      * Every field must be present and not null.
      */
-
     public Person(Name name, Phone phone, Email email, Telegram telegram, Position position, Address address,
-                  Set<Tag> tags, Set<Skill> skills, Set<Other> others, List<Task> tasks) {
-        requireAllNonNull(name, phone, email, telegram, position, address, tags, skills, others, tasks);
+                  Set<Tag> tags, Set<Skill> skills, Set<Other> others, String taskStatus, List<Task> tasks) {
+        requireAllNonNull(name, phone, email, telegram, position, address, tags, skills, others, taskStatus, tasks);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.telegram = telegram;
         this.position = position;
         this.address = address;
-        this.tags.addAll(tags);
-        this.skills.addAll(skills);
-        this.others.addAll(others);
+        this.tags = new HashSet<>(tags);
+        this.skills = new HashSet<>(skills);
+        this.others = new HashSet<>(others);
+        this.taskStatus = taskStatus;
         this.tasks = new ArrayList<>(tasks);
     }
 
-    // Legacy constructor
-    /*public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        this(name, phone, email, address, tags, "not started");
-        this.tasks = new ArrayList<>(tasks);
-    }*/
+    // Getters
 
     public Name getName() {
         return name;
@@ -86,14 +82,19 @@ public class Person {
     }
 
     public String getTaskStatus() {
-        return this.tasks.stream().map(Task::getStatus).findFirst().orElse(TaskStatus.YET_TO_START).toString();
+        return taskStatus;
     }
 
-    /**
-     * Returns an immutable tag set.
-     */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    public Set<Skill> getSkills() {
+        return Collections.unmodifiableSet(skills);
+    }
+
+    public Set<Other> getOthers() {
+        return Collections.unmodifiableSet(others);
     }
 
     public List<Task> getTasks() {
@@ -101,69 +102,40 @@ public class Person {
     }
 
     /**
-     * Updates the task list.
-     * Returns a new Person object with the updated tasks.
-     */
-    public Person updateTasks(List<Task> updatedTasks) {
-        return new Person(name, phone, email, telegram, position, address, tags,
-                skills, others, updatedTasks);
-    }
-
-    /**
-     * Add a new task.
-     * Returns a new Person object.
+     * Returns a new Person object with the additional task added.
      */
     public Person addTask(Task newTask) {
         List<Task> updatedTasks = new ArrayList<>(tasks);
         updatedTasks.add(newTask);
+        // Retain the same taskStatus when adding a new task.
         return new Person(name, phone, email, telegram, position, address, tags,
-                skills, others, updatedTasks);
+                skills, others, taskStatus, updatedTasks);
     }
 
     /**
-     * Returns an immutable skill set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
-    public Set<Skill> getSkills() {
-        return Collections.unmodifiableSet(skills);
-    }
-
-    /**
-     * Returns an immutable other set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
-    public Set<Other> getOthers() {
-        return Collections.unmodifiableSet(others);
-    }
-
-    /**
-     * Returns true if both persons have the same name.
-     * This defines a weaker notion of equality between two persons.
+     * Returns true if both persons have the same identity fields.
+     * This defines a weaker notion of equality between two persons where
+     * only the name is compared. Two persons with the same name are considered the same person,
+     * even if their other details differ.
+     *
+     * @param otherPerson the person to compare with
+     * @return true if both persons have the same name, false otherwise
      */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
             return true;
         }
-
-        return otherPerson != null
-                && otherPerson.getName().equals(getName());
+        return otherPerson != null && otherPerson.getName().equals(getName());
     }
 
-    /**
-     * Returns true if both persons have the same identity and data fields.
-     * This defines a stronger notion of equality between two persons.
-     */
     @Override
     public boolean equals(Object other) {
         if (other == this) {
             return true;
         }
-
-        // instanceof handles nulls
         if (!(other instanceof Person)) {
             return false;
         }
-
         Person otherPerson = (Person) other;
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
@@ -174,7 +146,6 @@ public class Person {
 
     @Override
     public int hashCode() {
-        // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(name, phone, email, address, tags);
     }
 
@@ -184,13 +155,13 @@ public class Person {
                 .add("name", name)
                 .add("phone", phone)
                 .add("email", email)
-                .add("telegram handle", telegram)
+                .add("telegram", telegram)
                 .add("position", position)
                 .add("address", address)
                 .add("tags", tags)
                 .add("skills", skills)
                 .add("others", others)
+                .add("taskStatus", taskStatus)
                 .toString();
     }
-
 }
