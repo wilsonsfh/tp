@@ -251,7 +251,7 @@ Format: `report`
 
 Example output:
 
-![generate report for one task](images/reportResult.png)
+![generate report for one task](images/report.png)
 
 ### Archiving data files `[coming in v2.0]`
 
