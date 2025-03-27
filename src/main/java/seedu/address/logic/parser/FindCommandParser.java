@@ -33,7 +33,7 @@ public class FindCommandParser implements Parser<FindCommand> {
     public FindCommand parse(String args) throws ParseException {
         assert args != null : "Input arguments should not be null";
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, 
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE,
                     PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_TASK);
 
         if (arePrefixesPresent(argMultimap, PREFIX_NAME)) {
