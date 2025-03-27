@@ -12,6 +12,7 @@ import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.TagsInKeywordsPredicate;
+import seedu.address.model.person.TasksInKeywordsPredicate;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
@@ -37,6 +38,10 @@ public class FindCommand extends Command {
     }
 
     public FindCommand(TagsInKeywordsPredicate predicate) {
+        this.predicate = predicate;
+    }
+
+    public FindCommand(TasksInKeywordsPredicate predicate) {
         this.predicate = predicate;
     }
 
