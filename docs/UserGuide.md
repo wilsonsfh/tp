@@ -146,6 +146,17 @@ Example Usage:
 * `find t/ colleagues friends` returns all Persons tagged with colleagues or friends
   ![result for 'find t/ colleagues friends'](images/findColleaguesFriendsResult.png)
 
+
+Finding persons by task:
+
+Format: `find task/ KEYWORD [MORE_KEYWORDS]`
+
+Finds persons whose task descriptions contain any of the given keywords.
+
+Example Usage:
+* `find task/ bbq` returns all Persons with 'bbq' in their task description.
+  ![result for 'find task/ bbq'](images/findBbqResult.png)
+
 ### Deleting a person : `delete`
 
 Deletes the specified person from the address book.
