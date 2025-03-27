@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +18,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.TagsInKeywordsPredicate;
+import seedu.address.model.person.TasksInKeywordsPredicate;
 
 /**
  * Parses input arguments and creates a new FindCommand object
@@ -30,7 +32,8 @@ public class FindCommandParser implements Parser<FindCommand> {
      */
     public FindCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE,
+                    PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_TASK);
 
         if (arePrefixesPresent(argMultimap, PREFIX_NAME)) {
             argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
@@ -47,10 +50,26 @@ public class FindCommandParser implements Parser<FindCommand> {
             if (!tagsToFindOptional.isPresent()) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
             }
+            assert tagsToFindOptional.isPresent() : "Should be able to get tags";
             String tagsToFind = tagsToFindOptional.get().trim();
             String[] tagKeywords = tagsToFind.trim().split("\\s+");
             List<String> arr = Arrays.asList(tagKeywords);
             return new FindCommand(new TagsInKeywordsPredicate(arr));
+        }
+
+        if (arePrefixesPresent(argMultimap, PREFIX_TASK)) {
+            argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
+            Optional<String> tasksToFindOptional = argMultimap.getValue(PREFIX_TASK);
+            System.out.println("HERE");
+            System.out.println(tasksToFindOptional);
+            if (!tasksToFindOptional.isPresent()) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            }
+            assert tasksToFindOptional.isPresent() : "Should be able to get tasks";
+            String tasksToFind = tasksToFindOptional.get().trim();
+            String[] taskKeywords = tasksToFind.trim().split("\\s+");
+            List<String> arr = Arrays.asList(taskKeywords);
+            return new FindCommand(new TasksInKeywordsPredicate(arr));
         }
 
         throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
