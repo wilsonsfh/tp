@@ -31,7 +31,6 @@ public class FindCommandParser implements Parser<FindCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public FindCommand parse(String args) throws ParseException {
-        assert args != null : "Input arguments should not be null";
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE,
                     PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_TASK);
@@ -51,6 +50,7 @@ public class FindCommandParser implements Parser<FindCommand> {
             if (!tagsToFindOptional.isPresent()) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
             }
+            assert tagsToFindOptional.isPresent() : "Should be able to get tags";
             String tagsToFind = tagsToFindOptional.get().trim();
             String[] tagKeywords = tagsToFind.trim().split("\\s+");
             List<String> arr = Arrays.asList(tagKeywords);
@@ -65,13 +65,12 @@ public class FindCommandParser implements Parser<FindCommand> {
             if (!tasksToFindOptional.isPresent()) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
             }
+            assert tasksToFindOptional.isPresent() : "Should be able to get tasks";
             String tasksToFind = tasksToFindOptional.get().trim();
             String[] taskKeywords = tasksToFind.trim().split("\\s+");
             List<String> arr = Arrays.asList(taskKeywords);
             return new FindCommand(new TasksInKeywordsPredicate(arr));
         }
-
-        assert args == null : "Input arguments are null at this point";
 
         throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
 
