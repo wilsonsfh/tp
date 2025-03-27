@@ -19,6 +19,16 @@ public class TaskCommandParserTest {
     private TaskCommandParser parser = new TaskCommandParser();
 
     @Test
+    public void parse_noTaskDescription_success() {
+        String userInput = "1 d/2025-12-31 23:59";
+        LocalDateTime expectedDate = LocalDateTime.of(2025, 12, 31, 23, 59);
+        Task expectedTask = new Task("", TaskStatus.YET_TO_START, expectedDate);
+        TaskCommand expectedCommand = new TaskCommand(Index.fromOneBased(1), expectedTask);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
     public void parse_validArgsWithDate_success() {
         String userInput = "1 t/Finish assignment d/2025-12-31 23:59";
         LocalDateTime expectedDate = LocalDateTime.of(2025, 12, 31, 23, 59);
