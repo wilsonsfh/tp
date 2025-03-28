@@ -221,19 +221,36 @@ public class ParserUtil {
         String taskDesc;
         LocalDateTime dueDate;
         TaskStatus taskStatus;
-        if (taskDetails.length != 3) {
+        if (taskDetails.length == 1) {
+            taskDesc = taskDetails[0].trim();
+            return new Task(taskDesc, TaskStatus.YET_TO_START, null);
+        } else if (taskDetails.length == 2) {
+            taskDesc = taskDetails[0].trim();
+            try {
+                dueDate = LocalDateTime.parse(taskDetails[1].trim(), INPUT_FORMATTER);
+                return new Task(taskDesc, TaskStatus.YET_TO_START, dueDate);
+            } catch (DateTimeParseException e) {
+                try {
+                    taskStatus = TaskStatus.valueOf(taskDetails[1].trim().toUpperCase().replace(" ", "_"));
+                    return new Task(taskDesc, taskStatus, null);
+                } catch (IllegalArgumentException e1) {
+                    throw new ParseException(MESSAGE_INVALID_COMMAND_FORMAT);
+                }
+            }
+        } else if (taskDetails.length == 3) {
+            try {
+                taskDesc = taskDetails[0].trim();
+                dueDate = LocalDateTime.parse(taskDetails[1].trim(), INPUT_FORMATTER);
+                taskStatus = TaskStatus.valueOf(taskDetails[2].trim().toUpperCase().replace(" ", "_"));
+            } catch (DateTimeParseException e) {
+                throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
+            } catch (IllegalArgumentException e) {
+                throw new ParseException(MESSAGE_INCORRECT_TASK_STATUS);
+            }
+            return new Task(taskDesc, taskStatus, dueDate);
+        } else {
             throw new ParseException(MESSAGE_INVALID_COMMAND_FORMAT);
         }
-        try {
-            taskDesc = taskDetails[0].trim();
-            dueDate = LocalDateTime.parse(taskDetails[1].trim(), INPUT_FORMATTER);
-            taskStatus = TaskStatus.valueOf(taskDetails[2].trim().toUpperCase().replace(" ", "_"));
-        } catch (DateTimeParseException e) {
-            throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
-        } catch (IllegalArgumentException e) {
-            throw new ParseException(MESSAGE_INCORRECT_TASK_STATUS);
-        }
-        return new Task(taskDesc, taskStatus, dueDate);
     }
 
     /**
@@ -262,6 +279,9 @@ public class ParserUtil {
         // handles parsing date
         try {
             dueDate = LocalDateTime.parse(argMultimap.getValue(PREFIX_DUE_DATE).get(), INPUT_FORMATTER);
+            if (dueDate.isBefore(LocalDateTime.now())) {
+                throw new ParseException("Due date is in the past!");
+            }
         } catch (DateTimeParseException e) {
             throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
         }
