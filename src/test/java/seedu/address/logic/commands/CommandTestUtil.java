@@ -10,6 +10,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_POSITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -48,6 +49,8 @@ public class CommandTestUtil {
     public static final String VALID_SKILL_CSS = "css";
     public static final String VALID_OTHER_DRINKER = "drinks a lot";
     public static final String VALID_OTHER_WORKOHOLIC = "workoholic";
+    public static final String VALID_TASK_BARBEQUE = "barbeque";
+    public static final String VALID_TASK_OUTING = "outing, 2025-05-28 14:00, in progress";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -67,6 +70,8 @@ public class CommandTestUtil {
     public static final String SKILL_DESC_CSS = " " + PREFIX_SKILL + VALID_SKILL_CSS;
     public static final String OTHER_DESC_DRINKER = " " + PREFIX_OTHER + VALID_OTHER_DRINKER;
     public static final String OTHER_DESC_WORKOHOLIC = " " + PREFIX_OTHER + VALID_OTHER_WORKOHOLIC;
+    public static final String TASK_DESC_BARBEQUE = " " + PREFIX_TASK + VALID_TASK_BARBEQUE;
+    public static final String TASK_DESC_OUTING = " " + PREFIX_TASK + VALID_TASK_OUTING;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
@@ -85,12 +90,14 @@ public class CommandTestUtil {
         DESC_AMY = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY).withTelegram(VALID_TELEGRAM_AMY)
                 .withPosition(VALID_POSITION_AMY).withAddress(VALID_ADDRESS_AMY)
-                .withTags(VALID_TAG_FRIEND).withSkills(VALID_SKILL_C).withOthers(VALID_OTHER_DRINKER).build();
+                .withTags(VALID_TAG_FRIEND).withSkills(VALID_SKILL_C).withOthers(VALID_OTHER_DRINKER)
+                .withTasks(VALID_TASK_BARBEQUE).build();
         DESC_BOB = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).withTelegram(VALID_TELEGRAM_BOB)
                 .withPosition(VALID_POSITION_BOB).withAddress(VALID_ADDRESS_BOB)
                 .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).withSkills(VALID_SKILL_C, VALID_SKILL_CSS)
-                .withOthers(VALID_OTHER_DRINKER, VALID_OTHER_WORKOHOLIC).build();
+                .withOthers(VALID_OTHER_DRINKER, VALID_OTHER_WORKOHOLIC)
+                .withTasks(VALID_TASK_BARBEQUE, VALID_TASK_OUTING).build();
     }
 
     /**
