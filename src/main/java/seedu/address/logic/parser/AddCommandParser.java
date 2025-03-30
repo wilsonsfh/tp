@@ -61,7 +61,8 @@ public class AddCommandParser implements Parser<AddCommand> {
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
         Set<Skill> skillList = ParserUtil.parseSkills(argMultimap.getAllValues(PREFIX_SKILL));
         Set<Other> otherList = ParserUtil.parseOthers(argMultimap.getAllValues(PREFIX_OTHER));
-        List<Task> taskList = parseSingleTask(argMultimap);
+        List<Task> taskList = ParserUtil.parseTasks(argMultimap.getAllValues(PREFIX_TASK)).stream().toList();
+
 
         // Set a default task status.
         String taskStatus = "not started";
@@ -78,19 +79,6 @@ public class AddCommandParser implements Parser<AddCommand> {
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
-
-    private List<Task> parseSingleTask(ArgumentMultimap argMultimap) throws ParseException {
-        if (!argMultimap.getValue(PREFIX_TASK).isPresent()) {
-            return List.of();
-        }
-
-        if (argMultimap.getAllValues(PREFIX_TASK).size() > 1) {
-            throw new ParseException("Only one task is allowed per person.");
-        }
-
-        Task task = ParserUtil.parseTask(argMultimap.getValue(PREFIX_TASK).get());
-        return List.of(task);
     }
 
 }

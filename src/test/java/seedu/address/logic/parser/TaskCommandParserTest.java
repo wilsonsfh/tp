@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_EMPTY_TASK_DESC;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_DATE_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_TASK_STATUS;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
@@ -89,20 +90,19 @@ public class TaskCommandParserTest {
     @Test
     public void parse_emptyTask_failure() {
         String userInput = "2 task/";
-        assertParseFailure(parser, userInput, MESSAGE_INVALID_COMMAND_FORMAT);
+        assertParseFailure(parser, userInput, MESSAGE_EMPTY_TASK_DESC);
     }
 
     @Test
     public void parse_blankDescription_failure() {
         String userInput = "1 task/   ";
-        assertParseFailure(parser, userInput, MESSAGE_INVALID_COMMAND_FORMAT);
+        assertParseFailure(parser, userInput, MESSAGE_EMPTY_TASK_DESC);
     }
 
     @Test
     public void parse_blankFields_failure() {
         String userInput = "1 task/   , 2025-12-31 23:59, yet to start";
-        assertParseFailure(parser, userInput,
-            "Task fields cannot be empty.");
+        assertParseFailure(parser, userInput, MESSAGE_EMPTY_TASK_DESC);
     }
 
 }
