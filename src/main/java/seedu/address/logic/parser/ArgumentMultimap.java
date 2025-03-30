@@ -75,4 +75,11 @@ public class ArgumentMultimap {
             throw new ParseException(Messages.getErrorMessageForDuplicatePrefixes(duplicatedPrefixes));
         }
     }
+
+    /**
+     * Returns the size of the hashmap.
+     */
+    public int getSize() {
+        return argMultimap.size();
+    }
 }

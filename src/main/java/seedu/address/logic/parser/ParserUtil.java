@@ -264,6 +264,17 @@ public class ParserUtil {
     }
 
     /**
+     * Parses {@code Collection<String> tasks} into a {@code Set<Task>}.
+     */
+    public static Set<Task> parseTasks(Collection<String> tasks) throws ParseException {
+        requireNonNull(tasks);
+        final Set<Task> taskSet = new HashSet<>();
+        for (String task : tasks) {
+            taskSet.add(parseTask(task));
+        }
+    }
+
+    /**
      * Parses the due date provided by the user from the given {@code ArgumentMultimap},
      * expecting the value associated with {@code PREFIX_DUE_DATE} to be in String format.
      *
@@ -277,6 +288,9 @@ public class ParserUtil {
         // handles parsing date
         try {
             dueDate = LocalDateTime.parse(argMultimap.getValue(PREFIX_DUE_DATE).get(), INPUT_FORMATTER);
+            if (dueDate.isBefore(LocalDateTime.now())) {
+                throw new ParseException("Due date is in the past!");
+            }
         } catch (DateTimeParseException e) {
             throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
         }
