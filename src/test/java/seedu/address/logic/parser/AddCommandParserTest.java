@@ -14,6 +14,7 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_TELEGRAM_DESC
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.OTHER_DESC_DRINKER;
+import static seedu.address.logic.commands.CommandTestUtil.OTHER_DESC_WORKOHOLIC;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.POSITION_DESC_AMY;
@@ -21,16 +22,25 @@ import static seedu.address.logic.commands.CommandTestUtil.POSITION_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static seedu.address.logic.commands.CommandTestUtil.SKILL_DESC_C;
+import static seedu.address.logic.commands.CommandTestUtil.SKILL_DESC_CSS;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.TASK_DESC_BARBEQUE;
+import static seedu.address.logic.commands.CommandTestUtil.TASK_DESC_OUTING;
 import static seedu.address.logic.commands.CommandTestUtil.TELEGRAM_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.TELEGRAM_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_OTHER_DRINKER;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_OTHER_WORKOHOLIC;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_SKILL_C;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_SKILL_CSS;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TASK_BARBEQUE;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TASK_OUTING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
@@ -60,20 +70,24 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_allFieldsPresent_success() {
-        Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND).build();
+        Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND).withSkills(VALID_SKILL_C)
+                .withOthers(VALID_OTHER_DRINKER).withTasks(VALID_TASK_BARBEQUE).build();
 
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + TELEGRAM_DESC_BOB + POSITION_DESC_BOB + ADDRESS_DESC_BOB + TAG_DESC_FRIEND + SKILL_DESC_C
-                + OTHER_DESC_DRINKER, new AddCommand(expectedPerson));
+                + OTHER_DESC_DRINKER + TASK_DESC_BARBEQUE, new AddCommand(expectedPerson));
 
 
-        // multiple tags - all accepted
+        // multiple tags, skills, others and tasks - all accepted
         Person expectedPersonMultipleTags = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
-                .build();
+                .withSkills(VALID_SKILL_C, VALID_SKILL_CSS).withOthers(VALID_OTHER_DRINKER, VALID_OTHER_WORKOHOLIC)
+                .withTasks(VALID_TASK_BARBEQUE, VALID_TASK_OUTING).build();
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                         + TELEGRAM_DESC_BOB + POSITION_DESC_BOB + ADDRESS_DESC_BOB + TAG_DESC_FRIEND + TAG_DESC_HUSBAND
-                        + SKILL_DESC_C + OTHER_DESC_DRINKER, new AddCommand(expectedPersonMultipleTags));
+                        + SKILL_DESC_C + SKILL_DESC_CSS + OTHER_DESC_DRINKER + OTHER_DESC_WORKOHOLIC
+                        + TASK_DESC_BARBEQUE + TASK_DESC_OUTING,
+                new AddCommand(expectedPersonMultipleTags));
     }
 
     @Test
