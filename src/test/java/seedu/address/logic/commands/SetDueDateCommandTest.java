@@ -3,8 +3,10 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.logic.commands.SetDueDateCommand.MESSAGE_SUCCESS_SET_DUE_DATE;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_TASK;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 
 import java.time.LocalDateTime;
 
@@ -12,11 +14,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.Person;
 import seedu.address.model.util.SampleDataUtil;
 
 class SetDueDateCommandTest {
@@ -28,15 +32,16 @@ class SetDueDateCommandTest {
     void setUp() {
         // A new model for test date
         model = new ModelManager(SampleDataUtil.getSampleAddressBook(), new UserPrefs());
-        newDueDate = LocalDateTime.parse("2026-03-30T14:00");
+        newDueDate = LocalDateTime.parse("2027-01-01T23:59");
     }
 
     @Test
-    void execute_validIndexes_success() throws CommandException {
-        SetDueDateCommand command = new SetDueDateCommand(newDueDate, INDEX_FIRST_TASK, INDEX_FIRST_PERSON);
-        CommandResult result = command.execute(model);
+    void execute_validIndexes_success() {
+        SetDueDateCommand command = new SetDueDateCommand(newDueDate, INDEX_FIRST_TASK, INDEX_SECOND_PERSON);
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        assertCommandSuccess(command, model, result, expectedModel);
+        Person personToEdit = SampleDataUtil.getSamplePersons()[1];
+        String expectedResult = String.format(MESSAGE_SUCCESS_SET_DUE_DATE, Messages.format(personToEdit));
+        assertCommandSuccess(command, model, expectedResult, expectedModel);
     }
 
     @Test
