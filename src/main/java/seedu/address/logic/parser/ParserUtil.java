@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_DATE_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_TASK_STATUS;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DUE_DATE;
 
 import java.time.LocalDateTime;
@@ -219,27 +220,38 @@ public class ParserUtil {
 
         String[] taskDetails = task.split(",");
 
-        if (taskDetails.length != 3) {
-            throw new ParseException("Task must be in format: description, yyyy-MM-dd HH:mm, status");
-        }
-
-        String taskDesc = taskDetails[0].trim();
-        String dueDateStr = taskDetails[1].trim();
-        String statusStr = taskDetails[2].trim();
-
-        if (taskDesc.isEmpty() || dueDateStr.isEmpty() || statusStr.isEmpty()) {
-            throw new ParseException("Task fields cannot be empty.");
-        }
-
-        try {
-            LocalDateTime dueDate = LocalDateTime.parse(dueDateStr, INPUT_FORMATTER);
-            TaskStatus taskStatus = TaskStatus.fromString(statusStr); // already trims and validates enum
+        String taskDesc;
+        LocalDateTime dueDate;
+        TaskStatus taskStatus;
+        if (taskDetails.length == 1) {
+            taskDesc = taskDetails[0].trim();
+            return new Task(taskDesc, TaskStatus.YET_TO_START, null);
+        } else if (taskDetails.length == 2) {
+            taskDesc = taskDetails[0].trim();
+            try {
+                dueDate = LocalDateTime.parse(taskDetails[1].trim(), INPUT_FORMATTER);
+                return new Task(taskDesc, TaskStatus.YET_TO_START, dueDate);
+            } catch (DateTimeParseException e) {
+                try {
+                    taskStatus = TaskStatus.valueOf(taskDetails[1].trim().toUpperCase().replace(" ", "_"));
+                    return new Task(taskDesc, taskStatus, null);
+                } catch (IllegalArgumentException e1) {
+                    throw new ParseException(MESSAGE_INVALID_COMMAND_FORMAT);
+                }
+            }
+        } else if (taskDetails.length == 3) {
+            try {
+                taskDesc = taskDetails[0].trim();
+                dueDate = LocalDateTime.parse(taskDetails[1].trim(), INPUT_FORMATTER);
+                taskStatus = TaskStatus.valueOf(taskDetails[2].trim().toUpperCase().replace(" ", "_"));
+            } catch (DateTimeParseException e) {
+                throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
+            } catch (IllegalArgumentException e) {
+                throw new ParseException(MESSAGE_INCORRECT_TASK_STATUS);
+            }
             return new Task(taskDesc, taskStatus, dueDate);
-
-        } catch (DateTimeParseException e) {
-            throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
-        } catch (IllegalArgumentException e) {
-            throw new ParseException(MESSAGE_INCORRECT_TASK_STATUS);
+        } else {
+            throw new ParseException(MESSAGE_INVALID_COMMAND_FORMAT);
         }
     }
 
