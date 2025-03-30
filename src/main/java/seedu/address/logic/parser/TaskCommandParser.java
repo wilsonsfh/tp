@@ -1,55 +1,52 @@
 package seedu.address.logic.parser;
 
-import static seedu.address.logic.Messages.MESSAGE_INCORRECT_DATE_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_EMPTY_TASK_DESC;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_DUE_DATE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK_DESC;
-import static seedu.address.logic.parser.ParserUtil.parseDueDate;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
+import java.util.logging.Logger;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.TaskCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.task.Task;
-import seedu.address.model.task.TaskStatus;
 
 /**
  * Parses input and creates a new {@code TaskCommand}.
  */
 public class TaskCommandParser implements Parser<TaskCommand> {
+    private static final Logger logger = Logger.getLogger(TaskCommandParser.class.getName());
 
     @Override
     public TaskCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_TASK_DESC, PREFIX_DUE_DATE);
+            ArgumentTokenizer.tokenize(args, PREFIX_TASK);
 
         Index index;
-        LocalDateTime dueDate = null;
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_TASK_DESC, PREFIX_DUE_DATE);
-
-        // handles bad index
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
+            logger.info("Parsed index: " + index.getOneBased());
         } catch (ParseException pe) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, TaskCommand.MESSAGE_USAGE), pe);
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, TaskCommand.MESSAGE_USAGE), pe);
         }
 
-        if (argMultimap.getValue(PREFIX_DUE_DATE).isPresent()) {
-            // handles parsing date
-            try {
-                dueDate = parseDueDate(argMultimap);
-            } catch (DateTimeParseException e) {
-                throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
-            }
+        if (argMultimap.getAllValues(PREFIX_TASK).size() > 1) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TaskCommand.MESSAGE_USAGE));
         }
 
-        String taskDescription = argMultimap.getValue(PREFIX_TASK_DESC).get();
+        // Get task string safely
+        String taskString = argMultimap.getValue(PREFIX_TASK).orElse("").trim();
 
-        return new TaskCommand(index, new Task(taskDescription, TaskStatus.YET_TO_START, dueDate));
+        if (taskString.isEmpty()) {
+            throw new ParseException(MESSAGE_EMPTY_TASK_DESC);
+        }
+
+        logger.info("Task string: " + taskString);
+
+        Task task = ParserUtil.parseTask(taskString);
+        return new TaskCommand(index, task);
     }
 }
 

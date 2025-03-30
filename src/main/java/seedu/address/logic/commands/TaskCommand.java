@@ -1,8 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_DUE_DATE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK_DESC;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
@@ -20,12 +18,19 @@ import seedu.address.model.task.Task;
 public class TaskCommand extends Command {
     public static final String COMMAND_WORD = "task";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to the specified team member.\n"
-            + "Parameters: INDEX (must be a positive integer) "
-            + PREFIX_TASK_DESC + "TASK_DESCRIPTION\n"
-            + "[ " + PREFIX_DUE_DATE + " yyyy-mm-dd HH:mm]\n"
-            + "Example: " + COMMAND_WORD + " 1 "
-            + PREFIX_TASK_DESC + "Complete project milestone "
-            + PREFIX_DUE_DATE + "2025-05-05 12:00";
+        + "Usage:\n"
+        + "  " + COMMAND_WORD + " INDEX task/TASK_DESCRIPTION[, DUE_DATE][, STATUS]\n"
+        + "\n"
+        + "Parameters:\n"
+        + "  INDEX            - A positive integer indicating the person's order in the list.\n"
+        + "  task/            - Task description (required).\n"
+        + "  DUE_DATE         - (Optional) In the format yyyy-MM-dd HH:mm\n"
+        + "  STATUS           - (Optional) One of: 'yet to start', 'in progress', 'completed'\n"
+        + "\n"
+        + "Examples:\n"
+        + "  " + COMMAND_WORD + " 1 task/Submit report, 2025-12-31 23:59, yet to start\n"
+        + "  " + COMMAND_WORD + " 2 task/Buy groceries\n"
+        + "  " + COMMAND_WORD + " 3 task/Plan meeting, 2025-10-01 09:00";
 
     public static final String MESSAGE_ADD_TASK_SUCCESS = "Added task to member: %1$s";
 
@@ -59,5 +64,17 @@ public class TaskCommand extends Command {
         model.setPerson(personToEdit, updatedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_ADD_TASK_SUCCESS, updatedPerson.getName()));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof TaskCommand)) {
+            return false;
+        }
+        TaskCommand other = (TaskCommand) obj;
+        return index.equals(other.index) && task.equals(other.task);
     }
 }
