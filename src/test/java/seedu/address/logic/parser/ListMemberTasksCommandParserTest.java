@@ -11,7 +11,7 @@ import seedu.address.logic.commands.ListMemberTasksCommand;
 
 public class ListMemberTasksCommandParserTest {
     private final ListMemberTasksCommandParser parser = new ListMemberTasksCommandParser();
-    String failureMessage = String.format("Invalid input: %s\n%s", MESSAGE_INVALID_INDEX,
+    private String failureMessage = String.format("Invalid input: %s\n%s", MESSAGE_INVALID_INDEX,
             ListMemberTasksCommand.MESSAGE_USAGE);
 
     @Test
