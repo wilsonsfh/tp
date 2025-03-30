@@ -30,6 +30,31 @@ public class TaskCommandParserTest {
     }
 
     @Test
+    public void parse_onlyDescription_success() {
+        String userInput = "1 task/Submit report";
+        Task expectedTask = new Task("Submit report", TaskStatus.YET_TO_START, null);
+        TaskCommand expectedCommand = new TaskCommand(Index.fromOneBased(1), expectedTask);
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_descriptionAndDueDate_success() {
+        String userInput = "1 task/Submit report, 2025-12-31 23:59";
+        Task expectedTask = new Task("Submit report", TaskStatus.YET_TO_START,
+            LocalDateTime.of(2025, 12, 31, 23, 59));
+        TaskCommand expectedCommand = new TaskCommand(Index.fromOneBased(1), expectedTask);
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_descriptionAndStatus_success() {
+        String userInput = "1 task/Submit report, completed";
+        Task expectedTask = new Task("Submit report", TaskStatus.COMPLETED, null);
+        TaskCommand expectedCommand = new TaskCommand(Index.fromOneBased(1), expectedTask);
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
     public void parse_missingIndex_failure() {
         String userInput = "task/Do homework, 2025-12-31 23:59, yet to start";
         assertParseFailure(parser, userInput,
@@ -44,13 +69,6 @@ public class TaskCommandParserTest {
     }
 
     @Test
-    public void parse_taskWrongFormat_failure() {
-        String userInput = "1 task/OnlyDescription";
-        assertParseFailure(parser, userInput,
-            "Task must be in format: description, yyyy-MM-dd HH:mm, status");
-    }
-
-    @Test
     public void parse_invalidDateFormat_failure() {
         String userInput = "1 task/Do homework, 31-12-2025 23:59, yet to start";
         assertParseFailure(parser, userInput, MESSAGE_INCORRECT_DATE_FORMAT);
@@ -62,6 +80,23 @@ public class TaskCommandParserTest {
         assertParseFailure(parser, userInput, MESSAGE_INCORRECT_TASK_STATUS);
     }
 
+    @Test
+    public void parse_tooManyFields_failure() {
+        String userInput = "1 task/Submit report, 2025-12-31 23:59, completed, extra";
+        assertParseFailure(parser, userInput, MESSAGE_INVALID_COMMAND_FORMAT);
+    }
+
+    @Test
+    public void parse_emptyTask_failure() {
+        String userInput = "2 task/";
+        assertParseFailure(parser, userInput, MESSAGE_INVALID_COMMAND_FORMAT);
+    }
+
+    @Test
+    public void parse_blankDescription_failure() {
+        String userInput = "1 task/   ";
+        assertParseFailure(parser, userInput, MESSAGE_INVALID_COMMAND_FORMAT);
+    }
 
     @Test
     public void parse_blankFields_failure() {
