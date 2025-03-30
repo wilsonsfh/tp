@@ -170,6 +170,7 @@ public class EditCommand extends Command {
         private Set<Tag> tags;
         private Set<Skill> skills;
         private Set<Other> others;
+        private List<Task> tasks;
 
         /**
          * Constructs an empty EditPersonDescriptor.
@@ -192,6 +193,7 @@ public class EditCommand extends Command {
             setTags(toCopy.tags);
             setSkills(toCopy.skills);
             setOthers(toCopy.others);
+            setTasks(toCopy.tasks);
         }
 
         /**
@@ -298,6 +300,23 @@ public class EditCommand extends Command {
          */
         public Optional<Set<Other>> getOthers() {
             return (others != null) ? Optional.of(Collections.unmodifiableSet(others)) : Optional.empty();
+        }
+
+        /**
+         * Sets {@code tasks} to this object's {@code tasks}.
+         * A defensive copy of {@code tasks} is used internally.
+         */
+        public void setTasks(List<Task> tasks) {
+            this.tasks = (tasks != null) ? new HashSet<>(tasks).stream().toList() : null;
+        }
+
+        /**
+         * Returns an unmodifiable task list, which throws {@code UnsupportedOperationException}
+         * if modification is attempted.
+         * Returns {@code Optional#empty()} if {@code tasks} is null.
+         */
+        public Optional<List<Task>> getTasks() {
+            return (tasks != null) ? Optional.of(Collections.unmodifiableList(tasks)) : Optional.empty();
         }
 
         @Override

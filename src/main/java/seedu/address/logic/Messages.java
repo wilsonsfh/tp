@@ -20,11 +20,14 @@ public class Messages {
                 "Multiple values specified for the following single-valued field(s): ";
     public static final String MESSAGE_INCORRECT_DATE_FORMAT =
             "Incorrect date format! Please input in: yyyy-mm-dd HH:mm\n";
-    public static final String MESSAGE_INVALID_TASK_DISPLAYED_INDEX = "The task index provided is invalid:  \n";
+    public static final String MESSAGE_INVALID_TASK_DISPLAYED_INDEX = "The task index provided is invalid: %d\n"
+            + "Use \"listtasks PERSON IDEX\" to check tasks index.";
     public static final String MESSAGE_EMPTY_TASK_DESC = "Task description cannot be empty! \n";
     public static final String MESSAGE_NO_TASK_FOR_MEM = "No tasks found for %s.";
     public static final String MESSAGE_INCORRECT_TASK_STATUS = "Task status can be only either: "
                                                              + "yet to start | in progress | completed";
+    public static final String MESSAGE_INCORRECT_PREFIX = "The prefix you typed might be incorrect. "
+            + "Check again against the command usage.";
 
     /**
      * Returns an error message indicating the duplicate prefixes.
