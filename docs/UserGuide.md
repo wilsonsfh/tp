@@ -45,8 +45,6 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ## Features
 
-</box type="info" seamless>
-
 **Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
@@ -81,8 +79,6 @@ Format: `help`
 Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`
-
-</box type="tip" seamless>
 
 **Tip:** A person can have any number of tags (including 0)
 </box>
@@ -236,8 +232,6 @@ AddressBook data are saved in the hard disk automatically after any command that
 
 AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
-</box type="warning" seamless>
-
 **Caution:**
 If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
@@ -252,10 +246,6 @@ Format: `report`
 Example output:
 
 ![generate report for one task](images/reportResult.png)
-
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon ..._
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -273,14 +263,20 @@ _Details coming soon ..._
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Command summary
+## Command Summary
 
-Action     | Format, Examples
------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-**Clear**  | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List**   | `list`
-**Help**   | `help`
+| Action             | Format, Examples |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Add**            | `add n/NAME p/PHONE e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]… [s/SKILL]… [o/OTHER]… [task/TASK]…`<br> e.g., `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street task/barbeque, 2025-05-28 14:00, yet to start` |
+| **Clear**          | `clear` |
+| **Delete**         | `delete INDEX`<br> e.g., `delete 3` |
+| **Edit**           | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…`<br> e.g., `edit 2 n/Betsy Crower t/` |
+| **Find (Name)**    | `find n/ KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n/ alex david` |
+| **Find (Tag)**     | `find t/ KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/ colleagues friends` |
+| **List**           | `list` |
+| **List Tasks**     | `listtasks INDEX`<br> e.g., `listtasks 2` |
+| **Mark Task**      | `mark PERSON_INDEX TASK_INDEX task_status`<br> e.g., `mark 3 2 in-progress` |
+| **Set Due Date**   | `setduedate PERSON_INDEX taskint/TASK_INDEX due/yyyy-mm-dd hh:mm`<br> e.g., `setduedate 2 taskint/1 due/2025-10-10 23:59` |
+| **Report**         | `report` |
+| **Help**           | `help` |
+| **Exit**           | `exit` |
