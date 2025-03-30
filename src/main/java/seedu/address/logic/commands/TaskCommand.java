@@ -60,4 +60,16 @@ public class TaskCommand extends Command {
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_ADD_TASK_SUCCESS, updatedPerson.getName()));
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof TaskCommand)) {
+            return false;
+        }
+        TaskCommand other = (TaskCommand) obj;
+        return index.equals(other.index) && task.equals(other.task);
+    }
 }

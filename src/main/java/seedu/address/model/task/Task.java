@@ -15,6 +15,17 @@ public class Task {
 
 
     /**
+     * Creates a Task where task is not explicitly called during adding of command.
+     * ALl the properties of Task are initialised to a skeleton.
+     * To be used later during updates to the Task's properties, if any.
+     */
+    public Task() {
+        this.description = "";
+        this.status = TaskStatus.YET_TO_START;
+        this.dueDate = null;
+    }
+
+    /**
      * Creates a Task with inputted description and status.
      * The due date is initialized to null, indicating that no due date has been set.
      *
@@ -66,7 +77,9 @@ public class Task {
             return false;
         }
         Task otherTask = (Task) other;
-        return description.equals(otherTask.description);
+        return description.equals(otherTask.description)
+            && dueDate.equals(otherTask.dueDate)
+            && status == otherTask.status;
     }
 
     @Override
