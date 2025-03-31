@@ -53,7 +53,7 @@ public class SampleDataUtil {
                     getTagSet("neighbours"),
                     getSkillSet("json", "css", "html"),
                     getOtherSet("meet soon"),
-                    "not started",
+                    "yet to start",
                     getTask("neighbour, 2025-05-07 17:00, yet to start")),
             new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
                     new Telegram("@davidL"),
@@ -80,7 +80,7 @@ public class SampleDataUtil {
                     getTagSet("colleagues"),
                     getSkillSet(""),
                     getOtherSet(""),
-                    "not started",
+                    "yet to start",
                     getTask("barbeque, 2025-02-07 17:00, completed")),
         };
     }
