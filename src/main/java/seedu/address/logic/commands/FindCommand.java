@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
 
 import java.util.function.Predicate;
 
@@ -12,6 +13,7 @@ import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.TagsInKeywordsPredicate;
+import seedu.address.model.person.TasksInKeywordsPredicate;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
@@ -26,9 +28,11 @@ public class FindCommand extends Command {
         + "Parameters:\n"
         + PREFIX_NAME + " KEYWORD [MORE_KEYWORDS]... (to search by name)\n"
         + PREFIX_TAG + " KEYWORD [MORE_KEYWORDS]... (to search by tags)\n"
+        + PREFIX_TASK + " KEYWORD [MORE_KEYWORDS]... (to search by tasks)\n"
         + "Example:\n"
         + COMMAND_WORD + " " + PREFIX_NAME + " alice bob charlie\n"
-        + COMMAND_WORD + " " + PREFIX_TAG + " friends colleague";
+        + COMMAND_WORD + " " + PREFIX_TAG + " friends colleague\n"
+        + COMMAND_WORD + " " + PREFIX_TASK + " Presentation";
 
     private final Predicate<Person> predicate;
 
@@ -37,6 +41,10 @@ public class FindCommand extends Command {
     }
 
     public FindCommand(TagsInKeywordsPredicate predicate) {
+        this.predicate = predicate;
+    }
+
+    public FindCommand(TasksInKeywordsPredicate predicate) {
         this.predicate = predicate;
     }
 

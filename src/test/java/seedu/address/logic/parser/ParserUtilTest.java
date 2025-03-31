@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,6 +20,8 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.task.Task;
+import seedu.address.model.task.TaskStatus;
 
 public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
@@ -193,4 +196,14 @@ public class ParserUtilTest {
 
         assertEquals(expectedTagSet, actualTagSet);
     }
+
+    @Test
+    public void parseTask_validValue_returnsTask() throws Exception {
+        String validTaskString = "Submit proposal, 2025-12-31 23:59, yet to start";
+        LocalDateTime expectedDueDate = LocalDateTime.of(2025, 12, 31, 23, 59);
+        Task expectedTask = new Task("Submit proposal", TaskStatus.YET_TO_START, expectedDueDate);
+
+        assertEquals(expectedTask, ParserUtil.parseTask(validTaskString));
+    }
+
 }

@@ -15,8 +15,12 @@ public class AppUtil {
      */
     public static Image getImage(String imagePath) {
         requireNonNull(imagePath);
+        if (!imagePath.startsWith("/")) {
+            imagePath = "/" + imagePath;
+        }
         return new Image(MainApp.class.getResourceAsStream(imagePath));
     }
+
 
     /**
      * Checks that {@code condition} is true. Used for validating arguments to methods.
