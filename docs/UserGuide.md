@@ -123,6 +123,7 @@ Format: `task INDEX task/TASK_DESCRIPTION[, yyyy-MM-dd HH:mm, TASK_STATUS]`
 
 - TASK_STATUS can be one of: `yet to start`, `in progress`, `completed`.
 - Date and status are optional. If omitted, status defaults to `yet to start`.
+- There can only exist 1 `task/` prefix for each TaskCommand to be added.  
 
 Examples:
 * `task 2 task/Prepare report, 2025-10-10 10:00, in progress`
