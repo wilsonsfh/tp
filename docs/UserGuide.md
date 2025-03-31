@@ -115,7 +115,7 @@ Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
-### Locating persons by name: `find`
+### Locating persons by name, tags, or tasks: `find`
 
 Finding persons by name:
 
@@ -145,16 +145,27 @@ Example Usage:
 * `find t/ colleagues friends` returns all Persons tagged with colleagues or friends
   ![result for 'find t/ colleagues friends'](images/findColleaguesFriendsResult.png)
 
-
-Finding persons by task:
+Finding persons by tasks:
 
 Format: `find task/ KEYWORD [MORE_KEYWORDS]`
 
-Finds persons whose task descriptions contain any of the given keywords.
+Finds persons whose task description contain any of the given keywords.
 
 Example Usage:
-* `find task/ bbq` returns all Persons with 'bbq' in their task description.
-  ![result for 'find task/ bbq'](images/findBbqResult.png)
+* `find task/ bbq` returns all Persons with task descriptions containing the word 'bbq'.
+  ![result for 'find task/ bbq'](images/findbbqResult.png)
+
+Finding persons by multiple conditions (limited to name, tags and tasks):
+
+Format: `find n/ KEYWORD [MORE_KEYWORDS] t/ KEYWORD [MORE_KEYWORDS] task/ KEYWORD [MORE_KEYWORDS]`
+
+This finds all persons who meets all the conditions in the specified name, tags, and task fields.
+
+Intuitively, you can think about this as an 'AND' operation. For example, if you want to find all interns that are assigned with the barbeque task, you can use the example command shown below.
+
+Example Usage:
+* `find t/ intern task/ bbq` returns all Persons with tags interns AND task descriptions containing the word 'bbq'.
+  ![result for 'find task/ bbq'](images/findbbqResult.png)
 
 ### Deleting a person : `delete`
 
@@ -291,6 +302,6 @@ Action     | Format, Examples
 **Clear**  | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find**   | `find [n/ KEYWORD [MORE_KEYWORDS]] [t/ KEYWORD [MORE_KEYWORDS]] [task/ KEYWORD [MORE_KEYWORDS]]`<br> e.g., `find n/ James Jake t/ intern task/ conduct workshop`
 **List**   | `list`
 **Help**   | `help`
