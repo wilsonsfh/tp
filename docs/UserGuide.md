@@ -115,6 +115,21 @@ Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
+### Adding a task to a member: `task`
+
+Adds a task to the specified member.
+
+Format: `task INDEX task/TASK_DESCRIPTION[, yyyy-MM-dd HH:mm, TASK_STATUS]`
+
+- TASK_STATUS can be one of: `yet to start`, `in progress`, `completed`.
+- Date and status are optional. If omitted, status defaults to `yet to start`.
+
+Examples:
+* `task 2 task/Prepare report, 2025-10-10 10:00, in progress`
+* `task 3 task/Book venue`
+  ![taskBetsyFullCommand.png](images/taskBetsyFullCommand.png)
+  ![taskBerniceTaskDescOnly.png](images/taskBerniceTaskDescOnly.png)
+
 ### Locating persons by name, tags, or tasks: `find`
 
 Finding persons by name:
