@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_EMPTY_TASK_DESC;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_DATE_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_TASK_STATUS;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
@@ -217,15 +218,23 @@ public class ParserUtil {
      */
     public static Task parseTask(String task) throws ParseException {
         requireNonNull(task);
+
+        if (task.trim().isEmpty()) {
+            throw new ParseException(MESSAGE_EMPTY_TASK_DESC); //Edge case to ensure task/ is not empty
+        }
+
         String[] taskDetails = task.split(",");
+
         String taskDesc;
         LocalDateTime dueDate;
         TaskStatus taskStatus;
         if (taskDetails.length == 1) {
             taskDesc = taskDetails[0].trim();
+            validateTaskDescription(taskDesc);
             return new Task(taskDesc, TaskStatus.YET_TO_START, null);
         } else if (taskDetails.length == 2) {
             taskDesc = taskDetails[0].trim();
+            validateTaskDescription(taskDesc);
             try {
                 dueDate = LocalDateTime.parse(taskDetails[1].trim(), INPUT_FORMATTER);
                 return new Task(taskDesc, TaskStatus.YET_TO_START, dueDate);
@@ -234,12 +243,13 @@ public class ParserUtil {
                     taskStatus = TaskStatus.valueOf(taskDetails[1].trim().toUpperCase().replace(" ", "_"));
                     return new Task(taskDesc, taskStatus, null);
                 } catch (IllegalArgumentException e1) {
-                    throw new ParseException(MESSAGE_INVALID_COMMAND_FORMAT);
+                    throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
                 }
             }
         } else if (taskDetails.length == 3) {
             try {
                 taskDesc = taskDetails[0].trim();
+                validateTaskDescription(taskDesc);
                 dueDate = LocalDateTime.parse(taskDetails[1].trim(), INPUT_FORMATTER);
                 taskStatus = TaskStatus.valueOf(taskDetails[2].trim().toUpperCase().replace(" ", "_"));
             } catch (DateTimeParseException e) {
@@ -287,5 +297,16 @@ public class ParserUtil {
         }
 
         return dueDate;
+    }
+
+    /**
+     * Handles edge case to ensure instance where task/ or taskdesc in task/taskdesc, ... is empty.
+     * @param taskDesc
+     * @throws ParseException
+     */
+    private static void validateTaskDescription(String taskDesc) throws ParseException {
+        if (taskDesc.isEmpty()) {
+            throw new ParseException(MESSAGE_EMPTY_TASK_DESC);
+        }
     }
 }
