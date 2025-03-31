@@ -2,8 +2,8 @@ package seedu.address.model.util;
 
 import static seedu.address.logic.parser.ParserUtil.parseTask;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,7 +27,7 @@ import seedu.address.model.task.Task;
  * Contains utility methods for populating {@code AddressBook} with sample data.
  */
 public class SampleDataUtil {
-    private static final List<Task> emptyTaskList = new ArrayList<>();
+    private static final List<Task> emptyTaskList = Collections.emptyList();
     public static Person[] getSamplePersons() {
         return new Person[] {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
@@ -82,13 +82,8 @@ public class SampleDataUtil {
                     getTagSet("colleagues"),
                     getSkillSet(""),
                     getOtherSet(""),
-<<<<<<< HEAD
                     "not started",
                     emptyTaskList),
-=======
-                    "yet to start",
-                    getTask("barbeque, 2025-02-07 17:00, completed")),
->>>>>>> 879b898ac58a152b51704d2d208d5be8908f9312
         };
     }
 
