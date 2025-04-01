@@ -39,3 +39,9 @@ This project has three types of tests:
    e.g. `seedu.address.storage.StorageManagerTest`
 1. Hybrids of unit and integration tests. These test are checking multiple code units as well as how the are connected together.<br>
    e.g. `seedu.address.logic.LogicManagerTest`
+
+### TaskCommmandParserTest
+Test cases for task command parsing are implemented in `TaskCommandParserTest.java`. These cover:
+- Valid and invalid task strings
+- Empty descriptions
+- Flexible parsing of optional fields (description, due date, status)
