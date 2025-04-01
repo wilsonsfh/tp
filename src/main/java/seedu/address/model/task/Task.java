@@ -13,7 +13,6 @@ public class Task {
     private LocalDateTime dueDate;
     private final TaskStatus status;
 
-
     /**
      * Creates a Task with inputted description and status.
      * The due date is initialized to null, indicating that no due date has been set.
@@ -66,7 +65,11 @@ public class Task {
             return false;
         }
         Task otherTask = (Task) other;
-        return description.equals(otherTask.description);
+        boolean isDueDateEqual = (dueDate == null && otherTask.dueDate == null)
+            || (dueDate != null && dueDate.equals(otherTask.dueDate));
+        return description.equals(otherTask.description)
+            && isDueDateEqual
+            && status == otherTask.status;
     }
 
     @Override

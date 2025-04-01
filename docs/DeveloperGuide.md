@@ -113,7 +113,11 @@ Here are the other classes in `Logic` (omitted from the class diagram above) tha
 
 How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
-* All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
+* All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, `TaskCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
+
+For example, the `AddressBookParser` will route `task` commands to `TaskCommandParser`, which parses the input and creates a `TaskCommand` object. The `TaskCommand` class implements the `Command` interface and defines the execution logic for adding tasks to a person.
+
+The `TaskStatus` enum provides a standardized way to represent the state of a task, namely `YET_TO_START`, `IN_PROGRESS`, and `COMPLETED`.
 
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)

@@ -80,14 +80,20 @@ Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`
 
+<<<<<<< HEAD
 **Tip:** A person can have any number of tags (including 0)
 </box>
+=======
+**Tip:** A person can have any number of tags, skills, others and tasks (including 0)
+
+**Note:** Task can have no due date and status (ie task/barbeque or task/barbeque, 2025-05-28 14:00 or task/barbeque, in progress) the default status would be yet to start.
+>>>>>>> 7e73b684004554098b6004aa73356dabb348d022
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street, block 123, #01-01 task/barbeque, 2025-05-28 14:00, yet to start`
-  * `add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start`
-    ![input for 'add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start'](images/addBestyCroweInput.png)
-    ![result for 'add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start'](images/addBestyCroweResult.png)
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start`
+  ![input for 'add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start'](images/addBestyCroweInput.png)
+  ![result for 'add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start'](images/addBestyCroweResult.png)
 
 ### Listing all persons : `list`
 
@@ -99,20 +105,36 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format: `edit INDEX n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
 * You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+    specifying any tags after it. Same for skills, others and tasks.
 
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
-### Locating persons by name: `find`
+### Adding a task to a member: `task`
+
+Adds a task to the specified member.
+
+Format: `task INDEX task/TASK_DESCRIPTION[, yyyy-MM-dd HH:mm, TASK_STATUS]`
+
+- TASK_STATUS can be one of: `yet to start`, `in progress`, `completed`.
+- Date and status are optional. If omitted, status defaults to `yet to start`.
+- There can only exist 1 `task/` prefix for each TaskCommand to be added.  
+
+Examples:
+* `task 2 task/Prepare report, 2025-10-10 10:00, in progress`
+* `task 3 task/Book venue`
+  ![taskBetsyFullCommand.png](images/taskBetsyFullCommand.png)
+  ![taskBerniceTaskDescOnly.png](images/taskBerniceTaskDescOnly.png)
+
+### Locating persons by name, tags, or tasks: `find`
 
 Finding persons by name:
 
@@ -141,6 +163,28 @@ Finds persons whose tags contain any of the given keywords.
 Example Usage:
 * `find t/ colleagues friends` returns all Persons tagged with colleagues or friends
   ![result for 'find t/ colleagues friends'](images/findColleaguesFriendsResult.png)
+
+Finding persons by tasks:
+
+Format: `find task/ KEYWORD [MORE_KEYWORDS]`
+
+Finds persons whose task description contain any of the given keywords.
+
+Example Usage:
+* `find task/ bbq` returns all Persons with task descriptions containing the word 'bbq'.
+  ![result for 'find task/ bbq'](images/findbbqResult.png)
+
+Finding persons by multiple conditions (limited to name, tags and tasks):
+
+Format: `find n/ KEYWORD [MORE_KEYWORDS] t/ KEYWORD [MORE_KEYWORDS] task/ KEYWORD [MORE_KEYWORDS]`
+
+This finds all persons who meets all the conditions in the specified name, tags, and task fields.
+
+Intuitively, you can think about this as an 'AND' operation. For example, if you want to find all interns that are assigned with the barbeque task, you can use the example command shown below.
+
+Example Usage:
+* `find t/ intern task/ bbq` returns all Persons with tags interns AND task descriptions containing the word 'bbq'.
+  ![result for 'find task/ bbq'](images/findbbqResult.png)
 
 ### Deleting a person : `delete`
 
@@ -245,7 +289,7 @@ Format: `report`
 
 Example output:
 
-![generate report for one task](images/reportResult.png)
+![generate report for one task](images/report.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
