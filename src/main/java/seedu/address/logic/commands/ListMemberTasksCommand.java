@@ -48,4 +48,18 @@ public class ListMemberTasksCommand extends Command {
 
         return new CommandResult(taskList.toString());
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        if (!(other instanceof ListMemberTasksCommand)) {
+            return false;
+        }
+
+        ListMemberTasksCommand otherCommand = (ListMemberTasksCommand) other;
+        return index.equals(otherCommand.index);
+    }
 }
