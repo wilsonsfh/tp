@@ -81,6 +81,7 @@ Adds a person to the address book.
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 **Tip:** A person can have any number of tags (including 0)
 </box>
 =======
@@ -88,6 +89,12 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS 
 
 **Note:** Task can have no due date and status (ie task/barbeque or task/barbeque, 2025-05-28 14:00 or task/barbeque, in progress) the default status would be yet to start.
 >>>>>>> 7e73b684004554098b6004aa73356dabb348d022
+=======
+**Tip:** A person can have any number of tags, skills, others and tasks (including 0)
+
+**Note:** Task can have no due date and status (ie task/barbeque or task/barbeque, 2025-05-28 14:00 or task/barbeque, in progress) the default status would be yet to start.
+
+>>>>>>> c505013a5c034079f59ba836ab53b7acfc86b5e2
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street, block 123, #01-01 task/barbeque, 2025-05-28 14:00, yet to start`
@@ -115,8 +122,8 @@ Format: `edit INDEX n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/A
     specifying any tags after it. Same for skills, others and tasks.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+* `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
+* `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
 ### Adding a task to a member: `task`
 
@@ -244,7 +251,6 @@ Examples:
 Set a due date for a specific task of a member.
 
 Format: `setduedate PERSON_INDEX taskint/TASK_INDEX due/yyyy-mm-dd hh:mm`
-
 * Set the due date for a task at `TASK_INDEX` of the person at the specified `PERSON_INDEX`.
 * `TASK_INDEX` refers to the index number shown in the task list of a member.
 * Both indexes **must be a positive integer** 1, 2, 3, …​
