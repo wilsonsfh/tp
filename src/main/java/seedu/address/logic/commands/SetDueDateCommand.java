@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK_INDEX;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +72,7 @@ public class SetDueDateCommand extends Command {
         // Update the due date for the specified task.
         Task taskToUpdate = updatedTasks.get(taskIndex.getZeroBased());
         if (taskToUpdate.getDueDate() != null && taskToUpdate.getDueDate().equals(dueDate)) {
-            throw new CommandException(String.format("Your due date is already: %s", dueDate));
+            throw new CommandException(String.format("Your due date is already: %s", formatDueDate()));
         }
         taskToUpdate.setDueDate(dueDate);
 
@@ -82,7 +83,7 @@ public class SetDueDateCommand extends Command {
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS_SET_DUE_DATE,
-                dueDate, Messages.format(editedPerson)));
+                formatDueDate(), Messages.format(editedPerson)));
     }
 
     private Person editPerson(Person personToEdit, List<Task> updatedTasks) {
@@ -99,6 +100,13 @@ public class SetDueDateCommand extends Command {
                 personToEdit.getTaskStatus(),
                 updatedTasks
         );
+    }
+
+    private String formatDueDate() {
+        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("d MMM yyyy, h:mm a");
+        String formattedDueDate = dueDate.format(displayFormatter);
+
+        return formattedDueDate;
     }
 
     @Override
