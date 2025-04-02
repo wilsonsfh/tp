@@ -87,7 +87,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS 
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street, block 123, #01-01 task/barbeque, 2025-05-28 14:00, yet to start`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/12345678 t/criminal task/barbeque, 2025-05-28 14:00, yet to start`
   ![input for 'add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start'](images/addBestyCroweInput.png)
 
   ![result for 'add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start'](images/addBestyCroweResult.png)
