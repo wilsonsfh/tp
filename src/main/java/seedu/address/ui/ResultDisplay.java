@@ -16,6 +16,11 @@ public class ResultDisplay extends UiPart<Region> {
     @FXML
     private TextArea resultDisplay;
 
+    /**
+     * Creates a new ResultDisplay.
+     * Loads the layout from the associated FXML file, and sets the display properties.
+     * Text wrapping is enabled and editing is disabled.
+     */
     public ResultDisplay() {
         super(FXML);
         resultDisplay.setWrapText(true);
