@@ -225,63 +225,83 @@ public class ParserUtil {
 
         String[] taskDetails = task.split(",");
 
-        String taskDesc;
-        LocalDateTime dueDate = null;
-        TaskStatus taskStatus = null;
-        if (taskDetails.length == 1) {
-            taskDesc = taskDetails[0].trim();
-            validateTaskDescription(taskDesc);
-            return new Task(taskDesc, TaskStatus.YET_TO_START, null);
-        } else if (taskDetails.length == 2) {
-            taskDesc = taskDetails[0].trim();
-            validateTaskDescription(taskDesc);
-            String secondParameter = taskDetails[1].trim();
+        return switch (taskDetails.length) {
+        case 3 -> parseThreeVariableTask(taskDetails[0].trim(), taskDetails[1].trim(), taskDetails[2].trim());
+        case 2 -> parseTwoVariableTask(taskDetails[0].trim(), taskDetails[1].trim());
+        case 1 -> parseOneVariableTask(taskDetails[0].trim());
+        default -> throw new ParseException(MESSAGE_INVALID_TASK_FORMAT);
+        };
+    }
 
+    private static Task parseOneVariableTask(String taskDesc) throws ParseException {
+        validateTaskDescription(taskDesc);
+        return new Task(taskDesc, TaskStatus.YET_TO_START, null);
+    }
+
+    private static Task parseTwoVariableTask(String taskDesc, String secondParameter) throws ParseException {
+        validateTaskDescription(taskDesc);
+        try {
+            TaskStatus taskStatus = TaskStatus.valueOf(secondParameter.toUpperCase().replace(" ", "_"));
+            return new Task(taskDesc, taskStatus, null);
+        } catch (IllegalArgumentException e) {
             try {
-                taskStatus = TaskStatus.valueOf(secondParameter.toUpperCase().replace(" ", "_"));
-                return new Task(taskDesc, taskStatus, null);
-            } catch (IllegalArgumentException e) {
-                try {
-                    dueDate = parseAndValidateDueDate(secondParameter);
-                    return new Task(taskDesc, TaskStatus.YET_TO_START, dueDate);
-                } catch (DateTimeParseException | ParseException e1) {
-                    throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
-                }
+                LocalDateTime dueDate = parseAndValidateDueDate(secondParameter);
+                return new Task(taskDesc, TaskStatus.YET_TO_START, dueDate);
+            } catch (DateTimeParseException | ParseException e1) {
+                throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
             }
-        } else if (taskDetails.length == 3) {
-            try {
-                taskDesc = taskDetails[0].trim();
-                validateTaskDescription(taskDesc);
+        }
+    }
 
-                String dueDateString = taskDetails[1].trim();
-                String taskStatusString = taskDetails[2].trim();
-                StringBuilder errorMessage = new StringBuilder();
+    private static Task parseThreeVariableTask(String taskDesc, String dueDateString, String taskStatusString)
+            throws ParseException {
+        StringBuilder errorMessage = new StringBuilder();
+        validateTaskDescription(taskDesc);
 
-                try {
-                    dueDate = parseAndValidateDueDate(dueDateString);
-                } catch (ParseException e) {
-                    errorMessage.append(e.getMessage());
-                }
+        validateDueDateAndStatus(dueDateString, taskStatusString, errorMessage);
 
-                try {
-                    taskStatus = TaskStatus.valueOf(taskStatusString.toUpperCase().replace(" ", "_"));
-                } catch (IllegalArgumentException e) {
-                    if (errorMessage.length() > 0) {
-                        errorMessage.append("\n");
-                    }
-                    errorMessage.append(MESSAGE_INCORRECT_TASK_STATUS);
-                }
+        if (!errorMessage.isEmpty()) {
+            throw new ParseException(errorMessage.toString().trim());
+        }
 
-                if (errorMessage.length() > 0) {
-                    throw new ParseException(errorMessage.toString().trim());
-                }
+        LocalDateTime dueDate = parseDueDateSilently(dueDateString);
+        TaskStatus taskStatus = parseTaskStatusSilently(taskStatusString);
 
-                return new Task(taskDesc, taskStatus, dueDate);
-            } catch (IllegalArgumentException e) {
-                throw new ParseException(MESSAGE_INCORRECT_TASK_STATUS);
+        return new Task(taskDesc, taskStatus, dueDate);
+    }
+
+    private static void validateDueDateAndStatus(String duedateString, String taskStatusString,
+                                                 StringBuilder errorMessage) {
+        try {
+            parseAndValidateDueDate(duedateString);
+        } catch (ParseException e) {
+            errorMessage.append(e.getMessage());
+        }
+
+        try {
+            TaskStatus.valueOf(taskStatusString.toUpperCase().replace(" ", "_"));
+        } catch (IllegalArgumentException e) {
+            if (!errorMessage.isEmpty()) {
+                errorMessage.append("\n");
             }
-        } else {
-            throw new ParseException(MESSAGE_INVALID_TASK_FORMAT);
+            errorMessage.append(MESSAGE_INCORRECT_TASK_STATUS);
+        }
+
+    }
+
+    private static LocalDateTime parseDueDateSilently(String dueDateString) {
+        try {
+            return parseAndValidateDueDate(dueDateString);
+        } catch (ParseException e) {
+            return null; // Validated earlier
+        }
+    }
+
+    private static TaskStatus parseTaskStatusSilently(String taskStatusString) {
+        try {
+            return TaskStatus.valueOf(taskStatusString.toUpperCase().replace(" ", "_"));
+        } catch (IllegalArgumentException e) {
+            return null; // Validated earlier
         }
     }
 
