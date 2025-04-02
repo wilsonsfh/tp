@@ -14,6 +14,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 import static seedu.address.testutil.Assert.assertThrows;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -154,6 +156,19 @@ public class CommandTestUtil {
         model.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
 
         assertEquals(1, model.getFilteredPersonList().size());
+    }
+
+    /**
+     * Formats the due date for a user-friendly display.
+     *
+     * @param dueDate The due date that might be associated with a {@Code Command}.
+     * @return String The formatted due date.
+     */
+    public static String formatDueDate(LocalDateTime dueDate) {
+        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("d MMM yyyy, h:mm a");
+        String formattedDueDate = dueDate.format(displayFormatter);
+
+        return formattedDueDate;
     }
 
 }

@@ -82,12 +82,16 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS 
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4c4434ca2eac9a99a1dc849f49690db8dadb03a6
 **Tip:** A person can have any number of tags (including 0)
 </box>
 =======
 **Tip:** A person can have any number of tags, skills, others and tasks (including 0)
 
 **Note:** Task can have no due date and status (ie task/barbeque or task/barbeque, 2025-05-28 14:00 or task/barbeque, in progress) the default status would be yet to start.
+<<<<<<< HEAD
 >>>>>>> 7e73b684004554098b6004aa73356dabb348d022
 =======
 **Tip:** A person can have any number of tags, skills, others and tasks (including 0)
@@ -95,6 +99,9 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS 
 **Note:** Task can have no due date and status (ie task/barbeque or task/barbeque, 2025-05-28 14:00 or task/barbeque, in progress) the default status would be yet to start.
 
 >>>>>>> c505013a5c034079f59ba836ab53b7acfc86b5e2
+=======
+>>>>>>> d5b00ecdef90239c22ab9ddc2e9854249b6b1082
+>>>>>>> 4c4434ca2eac9a99a1dc849f49690db8dadb03a6
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street, block 123, #01-01 task/barbeque, 2025-05-28 14:00, yet to start`

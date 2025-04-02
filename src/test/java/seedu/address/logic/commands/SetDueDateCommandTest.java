@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.logic.commands.CommandTestUtil.formatDueDate;
 import static seedu.address.logic.commands.SetDueDateCommand.MESSAGE_SUCCESS_SET_DUE_DATE;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_TASK;
@@ -40,7 +41,8 @@ class SetDueDateCommandTest {
         SetDueDateCommand command = new SetDueDateCommand(newDueDate, INDEX_FIRST_TASK, INDEX_SECOND_PERSON);
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         Person personToEdit = SampleDataUtil.getSamplePersons()[1];
-        String expectedResult = String.format(MESSAGE_SUCCESS_SET_DUE_DATE, Messages.format(personToEdit));
+        String expectedResult = String.format(MESSAGE_SUCCESS_SET_DUE_DATE,
+                formatDueDate(newDueDate), Messages.format(personToEdit));
         assertCommandSuccess(command, model, expectedResult, expectedModel);
     }
 
