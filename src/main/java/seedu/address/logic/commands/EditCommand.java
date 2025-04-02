@@ -9,9 +9,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_POSITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -57,6 +59,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "[" + PREFIX_SKILL + "SKILL]...\n"
             + "[" + PREFIX_OTHER + "OTHER]...\n"
+            + "[" + PREFIX_TASK + "TASK]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
@@ -124,7 +127,7 @@ public class EditCommand extends Command {
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Set<Skill> updatedSkills = editPersonDescriptor.getSkills().orElse(personToEdit.getSkills());
         Set<Other> updatedOthers = editPersonDescriptor.getOthers().orElse(personToEdit.getOthers());
-        List<Task> updatedTasks = personToEdit.getTasks(); // Retaining existing tasks
+        List<Task> updatedTasks = editPersonDescriptor.getTasks().orElse(personToEdit.getTasks());
         String updatedTaskStatus = personToEdit.getTaskStatus(); // Retain or update as needed
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedTelegram, updatedPosition, updatedAddress,
@@ -200,7 +203,8 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, telegram, position, address, tags, skills, others);
+            return CollectionUtil.isAnyNonNull(name, phone, email, telegram, position, address, tags, skills,
+                    others, tasks);
         }
 
         public void setName(Name name) {
@@ -307,7 +311,7 @@ public class EditCommand extends Command {
          * A defensive copy of {@code tasks} is used internally.
          */
         public void setTasks(List<Task> tasks) {
-            this.tasks = (tasks != null) ? new HashSet<>(tasks).stream().toList() : null;
+            this.tasks = (tasks != null) ? new ArrayList<>(tasks) : null;
         }
 
         /**
@@ -339,7 +343,8 @@ public class EditCommand extends Command {
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags)
                     && Objects.equals(skills, otherEditPersonDescriptor.skills)
-                    && Objects.equals(others, otherEditPersonDescriptor.others);
+                    && Objects.equals(others, otherEditPersonDescriptor.others)
+                    && Objects.equals(tasks, otherEditPersonDescriptor.tasks);
         }
 
         @Override
@@ -354,6 +359,7 @@ public class EditCommand extends Command {
                     .add("tags", tags)
                     .add("skills", skills)
                     .add("others", others)
+                    .add("tasks", tasks)
                     .toString();
         }
     }

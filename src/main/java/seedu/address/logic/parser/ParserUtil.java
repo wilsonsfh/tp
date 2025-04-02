@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_EMPTY_TASK_DESC;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_DATE_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_TASK_STATUS;
-import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_TASK_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DUE_DATE;
 
 import java.time.LocalDateTime;
@@ -259,7 +259,7 @@ public class ParserUtil {
             }
             return new Task(taskDesc, taskStatus, dueDate);
         } else {
-            throw new ParseException(MESSAGE_INVALID_COMMAND_FORMAT);
+            throw new ParseException(MESSAGE_INVALID_TASK_FORMAT);
         }
     }
 
