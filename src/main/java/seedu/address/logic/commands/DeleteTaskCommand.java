@@ -3,7 +3,9 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -21,6 +23,8 @@ public class DeleteTaskCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1 2";
 
     public static final String MESSAGE_DELETE_TASK_SUCCESS = "Successfully deleted task: %1$s, for member: %2$s";
+
+    private final Logger logger = LogsCenter.getLogger(DeleteTaskCommand.class);
 
     private final Index personIndex;
 
@@ -44,12 +48,14 @@ public class DeleteTaskCommand extends Command {
 
         Person personToEdit = lastShownList.get(personIndex.getZeroBased());
         int taskInt = taskIndex.getZeroBased();
-        Task taskToRemove = personToEdit.getTasks().get(taskInt);
+        logger.info("----------------[TASK INDEX][" + taskInt + "]");
 
         if (taskInt >= personToEdit.getTasks().size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+            throw new CommandException(String.format(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX,
+                    taskIndex.getOneBased()));
         }
 
+        Task taskToRemove = personToEdit.getTasks().get(taskInt);
         Person updatedPerson = personToEdit.removeTask(taskInt);
 
         model.setPerson(personToEdit, updatedPerson);
