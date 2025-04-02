@@ -52,7 +52,7 @@ public class TaskStatusCommand extends Command {
         List<Task> updatedTasks = new java.util.ArrayList<>(personToEdit.getTasks());
 
         if (taskIndex.getZeroBased() >= updatedTasks.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+            throw new CommandException(String.format(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX, taskIndex.getOneBased()));
         }
 
         Task taskToUpdate = updatedTasks.get(taskIndex.getZeroBased());
