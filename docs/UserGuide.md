@@ -248,12 +248,16 @@ Example Usage:
 
 ### Generate Task Status Report : `report`
 
-Shows a summary of all tasks and their completion statuses.
+Shows a summary of all tasks and their completion statuses. 
+users are associated with their tasks under their status
+'report' command is case-insensitive
 
 Format: `report`
 
 Example output:
-![generate report for one task](images/report.png)
+![generate report for one task](images/report1.png)
+![generate report for one task](images/report2.png)
+![generate report for one task](images/report3.png)
 
 
 ### Deleting a person : `delete`
