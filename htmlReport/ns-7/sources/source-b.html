@@ -1,0 +1,167 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ListMemberTasksCommand</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">seedu.address.logic.commands</a>
+</div>
+
+<h1>Coverage Summary for Class: ListMemberTasksCommand (seedu.address.logic.commands)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ListMemberTasksCommand</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package seedu.address.logic.commands;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import seedu.address.commons.core.index.Index;
+&nbsp;import seedu.address.logic.Messages;
+&nbsp;import seedu.address.logic.commands.exceptions.CommandException;
+&nbsp;import seedu.address.model.Model;
+&nbsp;import seedu.address.model.person.Person;
+&nbsp;import seedu.address.model.task.Task;
+&nbsp;
+&nbsp;/**
+&nbsp; * A command to list all the tasks assigned to a particular member.
+&nbsp; */
+&nbsp;public class ListMemberTasksCommand extends Command {
+&nbsp;    public static final String COMMAND_WORD = &quot;listtasks&quot;;
+&nbsp;    public static final String MESSAGE_USAGE = COMMAND_WORD
+&nbsp;            + &quot;: Lists all tasks for the specified person.\n&quot;
+&nbsp;            + &quot;Parameters: PERSON_INDEX (must be a positive integer)\n&quot;
+&nbsp;            + &quot;Example: &quot; + COMMAND_WORD + &quot; 1&quot;;
+&nbsp;
+&nbsp;    private final Index index;
+&nbsp;
+<b class="nc">&nbsp;    public ListMemberTasksCommand(Index index) {</b>
+<b class="nc">&nbsp;        this.index = index;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public CommandResult execute(Model model) throws CommandException {
+<b class="nc">&nbsp;        List&lt;Person&gt; lastShownList = model.getFilteredPersonList();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (index.getZeroBased() &gt;= lastShownList.size()) {</b>
+<b class="nc">&nbsp;            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        Person person = lastShownList.get(index.getZeroBased());</b>
+<b class="nc">&nbsp;        List&lt;Task&gt; tasks = person.getTasks();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (tasks.isEmpty()) {</b>
+<b class="nc">&nbsp;            return new CommandResult(String.format(Messages.MESSAGE_NO_TASK_FOR_MEM, person.getName()));</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        StringBuilder taskList = new StringBuilder();</b>
+<b class="nc">&nbsp;        taskList.append(String.format(&quot;Tasks for %s:\n&quot;, person.getName()));</b>
+<b class="nc">&nbsp;        for (int i = 0; i &lt; tasks.size(); i++) {</b>
+<b class="nc">&nbsp;            taskList.append(String.format(&quot;%d. %s\n&quot;, i + 1, tasks.get(i)));</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return new CommandResult(taskList.toString());</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-01 20:40</div>
+</div>
+</body>
+</html>

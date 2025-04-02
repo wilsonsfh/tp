@@ -1,0 +1,247 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > EditCommandParser</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">seedu.address.logic.parser</a>
+</div>
+
+<h1>Coverage Summary for Class: EditCommandParser (seedu.address.logic.parser)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EditCommandParser</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/38)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/41)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package seedu.address.logic.parser;
+&nbsp;
+&nbsp;import static java.util.Objects.requireNonNull;
+&nbsp;import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+&nbsp;import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+&nbsp;import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+&nbsp;import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+&nbsp;import static seedu.address.logic.parser.CliSyntax.PREFIX_OTHER;
+&nbsp;import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+&nbsp;import static seedu.address.logic.parser.CliSyntax.PREFIX_POSITION;
+&nbsp;import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
+&nbsp;import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+&nbsp;import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;import seedu.address.commons.core.index.Index;
+&nbsp;import seedu.address.logic.commands.EditCommand;
+&nbsp;import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
+&nbsp;import seedu.address.logic.parser.exceptions.ParseException;
+&nbsp;import seedu.address.model.other.Other;
+&nbsp;import seedu.address.model.skill.Skill;
+&nbsp;import seedu.address.model.tag.Tag;
+&nbsp;
+&nbsp;/**
+&nbsp; * Parses input arguments and creates a new EditCommand object
+&nbsp; */
+<b class="nc">&nbsp;public class EditCommandParser implements Parser&lt;EditCommand&gt; {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Parses the given {@code String} of arguments in the context of the EditCommand
+&nbsp;     * and returns an EditCommand object for execution.
+&nbsp;     * @throws ParseException if the user input does not conform the expected format
+&nbsp;     */
+&nbsp;    public EditCommand parse(String args) throws ParseException {
+<b class="nc">&nbsp;        requireNonNull(args);</b>
+<b class="nc">&nbsp;        ArgumentMultimap argMultimap =</b>
+<b class="nc">&nbsp;                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM,</b>
+&nbsp;                        PREFIX_POSITION, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_SKILL, PREFIX_OTHER);
+&nbsp;
+&nbsp;        Index index;
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            index = ParserUtil.parseIndex(argMultimap.getPreamble());</b>
+&nbsp;        } catch (ParseException pe) {
+<b class="nc">&nbsp;            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE), pe);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,</b>
+&nbsp;                PREFIX_TELEGRAM, PREFIX_POSITION);
+&nbsp;
+<b class="nc">&nbsp;        EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (argMultimap.getValue(PREFIX_NAME).isPresent()) {</b>
+<b class="nc">&nbsp;            editPersonDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {</b>
+<b class="nc">&nbsp;            editPersonDescriptor.setPhone(ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get()));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {</b>
+<b class="nc">&nbsp;            editPersonDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get()));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {</b>
+<b class="nc">&nbsp;            editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (argMultimap.getValue(PREFIX_TELEGRAM).isPresent()) {</b>
+<b class="nc">&nbsp;            editPersonDescriptor.setTelegram(ParserUtil.parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get()));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (argMultimap.getValue(PREFIX_POSITION).isPresent()) {</b>
+<b class="nc">&nbsp;            editPersonDescriptor.setPosition(ParserUtil.parsePosition(argMultimap.getValue(PREFIX_POSITION).get()));</b>
+&nbsp;        }
+<b class="nc">&nbsp;        parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);</b>
+<b class="nc">&nbsp;        parseSkillsForEdit(argMultimap.getAllValues(PREFIX_SKILL)).ifPresent(editPersonDescriptor::setSkills);</b>
+<b class="nc">&nbsp;        parseOthersForEdit(argMultimap.getAllValues(PREFIX_OTHER)).ifPresent(editPersonDescriptor::setOthers);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (!editPersonDescriptor.isAnyFieldEdited()) {</b>
+<b class="nc">&nbsp;            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return new EditCommand(index, editPersonDescriptor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Parses {@code Collection&lt;String&gt; tags} into a {@code Set&lt;Tag&gt;} if {@code tags} is non-empty.
+&nbsp;     * If {@code tags} contain only one element which is an empty string, it will be parsed into a
+&nbsp;     * {@code Set&lt;Tag&gt;} containing zero tags.
+&nbsp;     */
+&nbsp;    private Optional&lt;Set&lt;Tag&gt;&gt; parseTagsForEdit(Collection&lt;String&gt; tags) throws ParseException {
+<b class="nc">&nbsp;        assert tags != null;</b>
+&nbsp;
+<b class="nc">&nbsp;        if (tags.isEmpty()) {</b>
+<b class="nc">&nbsp;            return Optional.empty();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        Collection&lt;String&gt; tagSet = tags.size() == 1 &amp;&amp; tags.contains(&quot;&quot;) ? Collections.emptySet() : tags;</b>
+<b class="nc">&nbsp;        return Optional.of(ParserUtil.parseTags(tagSet));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Parses {@code Collection&lt;String&gt; tags} into a {@code Set&lt;Skill&gt;} if {@code skills} is non-empty.
+&nbsp;     * If {@code skills} contain only one element which is an empty string, it will be parsed into a
+&nbsp;     * {@code Set&lt;Skill&gt;} containing zero skills.
+&nbsp;     */
+&nbsp;    private Optional&lt;Set&lt;Skill&gt;&gt; parseSkillsForEdit(Collection&lt;String&gt; skills) throws ParseException {
+<b class="nc">&nbsp;        assert skills != null;</b>
+&nbsp;
+<b class="nc">&nbsp;        if (skills.isEmpty()) {</b>
+<b class="nc">&nbsp;            return Optional.empty();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        Collection&lt;String&gt; skillSet = skills.size() == 1 &amp;&amp; skills.contains(&quot;&quot;) ? Collections.emptySet() : skills;</b>
+<b class="nc">&nbsp;        return Optional.of(ParserUtil.parseSkills(skillSet));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Parses {@code Collection&lt;String&gt; others} into a {@code Set&lt;Other&gt;} if {@code others} is non-empty.
+&nbsp;     * If {@code others} contain only one element which is an empty string, it will be parsed into a
+&nbsp;     * {@code Set&lt;Other&gt;} containing zero others.
+&nbsp;     */
+&nbsp;    private Optional&lt;Set&lt;Other&gt;&gt; parseOthersForEdit(Collection&lt;String&gt; others) throws ParseException {
+<b class="nc">&nbsp;        assert others != null;</b>
+&nbsp;
+<b class="nc">&nbsp;        if (others.isEmpty()) {</b>
+<b class="nc">&nbsp;            return Optional.empty();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        Collection&lt;String&gt; otherSet = others.size() == 1 &amp;&amp; others.contains(&quot;&quot;) ? Collections.emptySet() : others;</b>
+<b class="nc">&nbsp;        return Optional.of(ParserUtil.parseOthers(otherSet));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-01 20:40</div>
+</div>
+</body>
+</html>
