@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -16,11 +17,7 @@ import seedu.address.model.task.TaskStatus;
  */
 public class ReportCommand extends Command {
     public static final String COMMAND_WORD = "report";
-    public static final String MESSAGE_SUCCESS = "Task Status Report Generated!\n"
-            + "Total Tasks: %d\n"
-            + "Completed: %d\n"
-            + "In Progress: %d\n"
-            + "Yet to Start: %d";
+    public static final String MESSAGE_SUCCESS = "Task Status Report Generated!";
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
@@ -28,24 +25,35 @@ public class ReportCommand extends Command {
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         List<Person> personList = model.getFilteredPersonList();
 
-        int totalTasks = 0;
-        int completed = 0;
-        int inProgress = 0;
-        int yetToStart = 0;
+        List<Person> completedTasks = new ArrayList<>();
+        List<Person> inProgressTasks = new ArrayList<>();
+        List<Person> yetToStartTasks = new ArrayList<>();
 
+        // For each person, check if they have tasks in each category.
         for (Person person : personList) {
+            boolean hasCompleted = false;
+            boolean hasInProgress = false;
+            boolean hasYetToStart = false;
+
             for (Task task : person.getTasks()) {
-                totalTasks++;
                 if (task.getStatus().equals(TaskStatus.COMPLETED)) {
-                    completed++;
+                    hasCompleted = true;
                 } else if (task.getStatus().equals(TaskStatus.IN_PROGRESS)) {
-                    inProgress++;
+                    hasInProgress = true;
                 } else if (task.getStatus().equals(TaskStatus.YET_TO_START)) {
-                    yetToStart++;
+                    hasYetToStart = true;
                 }
             }
+            if (hasCompleted) {
+                completedTasks.add(person);
+            }
+            if (hasInProgress) {
+                inProgressTasks.add(person);
+            }
+            if (hasYetToStart) {
+                yetToStartTasks.add(person);
+            }
         }
-
-        return new CommandResult(String.format(MESSAGE_SUCCESS, totalTasks, completed, inProgress, yetToStart));
+        return new CommandResult(MESSAGE_SUCCESS, completedTasks, inProgressTasks, yetToStartTasks);
     }
 }

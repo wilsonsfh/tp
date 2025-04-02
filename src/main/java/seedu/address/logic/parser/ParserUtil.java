@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_EMPTY_TASK_DESC;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_DATE_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_TASK_STATUS;
-import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_TASK_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DUE_DATE;
 
 import java.time.LocalDateTime;
@@ -34,7 +34,7 @@ import seedu.address.model.task.TaskStatus;
  */
 public class ParserUtil {
 
-    public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_INVALID_INDEX = "Index is not an integer greater zero.";
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     /**
@@ -225,41 +225,83 @@ public class ParserUtil {
 
         String[] taskDetails = task.split(",");
 
-        String taskDesc;
-        LocalDateTime dueDate;
-        TaskStatus taskStatus;
-        if (taskDetails.length == 1) {
-            taskDesc = taskDetails[0].trim();
-            validateTaskDescription(taskDesc);
-            return new Task(taskDesc, TaskStatus.YET_TO_START, null);
-        } else if (taskDetails.length == 2) {
-            taskDesc = taskDetails[0].trim();
-            validateTaskDescription(taskDesc);
+        return switch (taskDetails.length) {
+        case 3 -> parseThreeVariableTask(taskDetails[0].trim(), taskDetails[1].trim(), taskDetails[2].trim());
+        case 2 -> parseTwoVariableTask(taskDetails[0].trim(), taskDetails[1].trim());
+        case 1 -> parseOneVariableTask(taskDetails[0].trim());
+        default -> throw new ParseException(MESSAGE_INVALID_TASK_FORMAT);
+        };
+    }
+
+    private static Task parseOneVariableTask(String taskDesc) throws ParseException {
+        validateTaskDescription(taskDesc);
+        return new Task(taskDesc, TaskStatus.YET_TO_START, null);
+    }
+
+    private static Task parseTwoVariableTask(String taskDesc, String secondParameter) throws ParseException {
+        validateTaskDescription(taskDesc);
+        try {
+            TaskStatus taskStatus = TaskStatus.valueOf(secondParameter.toUpperCase().replace(" ", "_"));
+            return new Task(taskDesc, taskStatus, null);
+        } catch (IllegalArgumentException e) {
             try {
-                dueDate = LocalDateTime.parse(taskDetails[1].trim(), INPUT_FORMATTER);
+                LocalDateTime dueDate = parseAndValidateDueDate(secondParameter);
                 return new Task(taskDesc, TaskStatus.YET_TO_START, dueDate);
-            } catch (DateTimeParseException e) {
-                try {
-                    taskStatus = TaskStatus.valueOf(taskDetails[1].trim().toUpperCase().replace(" ", "_"));
-                    return new Task(taskDesc, taskStatus, null);
-                } catch (IllegalArgumentException e1) {
-                    throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
-                }
-            }
-        } else if (taskDetails.length == 3) {
-            try {
-                taskDesc = taskDetails[0].trim();
-                validateTaskDescription(taskDesc);
-                dueDate = LocalDateTime.parse(taskDetails[1].trim(), INPUT_FORMATTER);
-                taskStatus = TaskStatus.valueOf(taskDetails[2].trim().toUpperCase().replace(" ", "_"));
-            } catch (DateTimeParseException e) {
+            } catch (DateTimeParseException | ParseException e1) {
                 throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
-            } catch (IllegalArgumentException e) {
-                throw new ParseException(MESSAGE_INCORRECT_TASK_STATUS);
             }
-            return new Task(taskDesc, taskStatus, dueDate);
-        } else {
-            throw new ParseException(MESSAGE_INVALID_COMMAND_FORMAT);
+        }
+    }
+
+    private static Task parseThreeVariableTask(String taskDesc, String dueDateString, String taskStatusString)
+            throws ParseException {
+        StringBuilder errorMessage = new StringBuilder();
+        validateTaskDescription(taskDesc);
+
+        validateDueDateAndStatus(dueDateString, taskStatusString, errorMessage);
+
+        if (!errorMessage.isEmpty()) {
+            throw new ParseException(errorMessage.toString().trim());
+        }
+
+        LocalDateTime dueDate = parseDueDateSilently(dueDateString);
+        TaskStatus taskStatus = parseTaskStatusSilently(taskStatusString);
+
+        return new Task(taskDesc, taskStatus, dueDate);
+    }
+
+    private static void validateDueDateAndStatus(String duedateString, String taskStatusString,
+                                                 StringBuilder errorMessage) {
+        try {
+            parseAndValidateDueDate(duedateString);
+        } catch (ParseException e) {
+            errorMessage.append(e.getMessage());
+        }
+
+        try {
+            TaskStatus.valueOf(taskStatusString.toUpperCase().replace(" ", "_"));
+        } catch (IllegalArgumentException e) {
+            if (!errorMessage.isEmpty()) {
+                errorMessage.append("\n");
+            }
+            errorMessage.append(MESSAGE_INCORRECT_TASK_STATUS);
+        }
+
+    }
+
+    private static LocalDateTime parseDueDateSilently(String dueDateString) {
+        try {
+            return parseAndValidateDueDate(dueDateString);
+        } catch (ParseException e) {
+            return null; // Validated earlier
+        }
+    }
+
+    private static TaskStatus parseTaskStatusSilently(String taskStatusString) {
+        try {
+            return TaskStatus.valueOf(taskStatusString.toUpperCase().replace(" ", "_"));
+        } catch (IllegalArgumentException e) {
+            return null; // Validated earlier
         }
     }
 
@@ -309,6 +351,26 @@ public class ParserUtil {
     private static void validateTaskDescription(String taskDesc) throws ParseException {
         if (taskDesc.isEmpty()) {
             throw new ParseException(MESSAGE_EMPTY_TASK_DESC);
+        }
+    }
+
+    /**
+     * Parses and validates a due date string into a LocalDateTime.
+     * Throws a ParseException if the format is invalid or the date is in the past.
+     *
+     * @param dueDateString The due date string.
+     * @return A validated LocalDateTime object.
+     * @throws ParseException if format is wrong or date is in the past.
+     */
+    public static LocalDateTime parseAndValidateDueDate(String dueDateString) throws ParseException {
+        try {
+            LocalDateTime dueDate = LocalDateTime.parse(dueDateString.trim(), INPUT_FORMATTER);
+            if (dueDate.isBefore(LocalDateTime.now())) {
+                throw new ParseException("Due date is in the past!");
+            }
+            return dueDate;
+        } catch (DateTimeParseException e) {
+            throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
         }
     }
 }
