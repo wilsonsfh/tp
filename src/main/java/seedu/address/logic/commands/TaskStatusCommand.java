@@ -3,12 +3,10 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.logic.parser.TaskCommandParser;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.model.task.Task;
@@ -18,10 +16,10 @@ import seedu.address.model.task.TaskStatus;
  * Updates a task with a new status for a specific person.
  */
 public class TaskStatusCommand extends Command {
-    private static final Logger logger = Logger.getLogger(TaskStatusCommand.class.getName());
 
     public static final String COMMAND_WORD = "mark";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Updates the status of a specific existing task for a team member.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+        + ": Updates the status of a specific existing task for a team member.\n"
         + "Usage:\n"
         + "  " + COMMAND_WORD + " PERSON_INDEX TASK_INDEX STATUS\n"
         + "\n"
