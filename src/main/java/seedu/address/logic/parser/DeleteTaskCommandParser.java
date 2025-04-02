@@ -6,6 +6,9 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.DeleteTaskCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
+/**
+ * Parses user input that aims to delete a task and returns a DeleteTaskCommand.
+ */
 public class DeleteTaskCommandParser implements Parser<DeleteTaskCommand> {
     @Override
     public DeleteTaskCommand parse(String userInput) throws ParseException {

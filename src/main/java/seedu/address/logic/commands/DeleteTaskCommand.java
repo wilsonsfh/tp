@@ -13,6 +13,10 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.model.task.Task;
 
+/**
+ * Deletes a task from a person identified using their displayed index from the address book.
+ * The task to be deleted is identified by its index in the person's task list.
+ */
 public class DeleteTaskCommand extends Command {
     public static final String COMMAND_WORD = "deltask";
 
@@ -30,6 +34,12 @@ public class DeleteTaskCommand extends Command {
 
     private final Index taskIndex;
 
+    /**
+     * Creates a DeleteTaskCommand to delete the specified task from the specified person.
+     *
+     * @param personIndex The index of the person in the filtered person list.
+     * @param taskIndex The index of the task in the person's task list.
+     */
     public DeleteTaskCommand(Index personIndex, Index taskIndex) {
         requireNonNull(personIndex);
         requireNonNull(taskIndex);
