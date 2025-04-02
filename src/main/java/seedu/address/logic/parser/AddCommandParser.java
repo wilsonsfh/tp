@@ -63,6 +63,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         Set<Other> otherList = ParserUtil.parseOthers(argMultimap.getAllValues(PREFIX_OTHER));
         List<Task> taskList = ParserUtil.parseTasks(argMultimap.getAllValues(PREFIX_TASK)).stream().toList();
 
+
         // Set a default task status.
         String taskStatus = "not started";
 
@@ -79,4 +80,5 @@ public class AddCommandParser implements Parser<AddCommand> {
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
+
 }

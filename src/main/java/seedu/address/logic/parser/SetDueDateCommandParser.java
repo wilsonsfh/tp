@@ -2,6 +2,7 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INCORRECT_DATE_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INCORRECT_PREFIX;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DUE_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK_INDEX;
@@ -24,6 +25,10 @@ public class SetDueDateCommandParser implements Parser<SetDueDateCommand> {
         requireNonNull(userInput);
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(userInput, PREFIX_TASK_INDEX, PREFIX_DUE_DATE);
+
+        if (argMultimap.getSize() < 3) {
+            throw new ParseException(MESSAGE_INCORRECT_PREFIX + "\n" + SetDueDateCommand.MESSAGE_USAGE);
+        }
 
         Index taskIndex;
         Index personIndex;

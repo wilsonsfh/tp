@@ -32,7 +32,7 @@ public class SetDueDateCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1 " + PREFIX_TASK_INDEX + " 1 "
             + PREFIX_DUE_DATE + "2025/01/01 23:59";
 
-    public static final String MESSAGE_SUCCESS_SET_DUE_DATE = "Task due date updated!";
+    public static final String MESSAGE_SUCCESS_SET_DUE_DATE = "Task due date updated! Person: %1$s";
 
     private final LocalDateTime dueDate;
     private final Index taskIndex;
@@ -64,12 +64,15 @@ public class SetDueDateCommand extends Command {
         List<Task> updatedTasks = new ArrayList<>(personToEdit.getTasks());
 
         if (taskIndex.getZeroBased() >= updatedTasks.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX
-                    + taskIndex.getOneBased());
+            throw new CommandException(String.format(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX,
+                    taskIndex.getOneBased()));
         }
 
         // Update the due date for the specified task.
         Task taskToUpdate = updatedTasks.get(taskIndex.getZeroBased());
+        if (taskToUpdate.getDueDate().equals(dueDate)) {
+            throw new CommandException(String.format("Your due date is already: %s", dueDate));
+        }
         taskToUpdate.setDueDate(dueDate);
 
         // Create a new Person with the updated tasks.
