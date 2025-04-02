@@ -3,6 +3,7 @@ package seedu.address.model.task;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Represents a Task associated with a Person in address book.
@@ -48,9 +49,16 @@ public class Task {
         return new Task(this.description, newStatus, this.dueDate);
     }
 
+    private String formatDueDate() {
+        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("d MMM yyyy, h:mm a");
+        String formattedDueDate = dueDate.format(displayFormatter);
+
+        return formattedDueDate;
+    }
+
     @Override
     public String toString() {
-        String formattedDueDate = (dueDate == null) ? "No due date set yet." : dueDate.toString();
+        String formattedDueDate = (dueDate == null) ? "No due date set yet." : formatDueDate();
         return "DESCRIPTION: " + description
                 + " | DUE DATE: " + formattedDueDate
                 + " | STATUS: " + status + " |";

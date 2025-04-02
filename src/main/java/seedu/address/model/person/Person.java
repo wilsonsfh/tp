@@ -113,6 +113,20 @@ public class Person {
     }
 
     /**
+     * Returns a new Person object with the specified task deleted.
+     *
+     * @param i The index (zero-based) of the task in the person's task list.
+     * @return A new Person object with the updated task list.
+     */
+    public Person removeTask(int i) {
+        List<Task> updatedTasks = new ArrayList<>(tasks);
+        updatedTasks.remove(i);
+
+        return new Person(name, phone, email, telegram, position, address, tags,
+                skills, others, taskStatus, updatedTasks);
+    }
+
+    /**
      * Returns true if both persons have the same identity fields.
      * This defines a weaker notion of equality between two persons where
      * only the name is compared. Two persons with the same name are considered the same person,

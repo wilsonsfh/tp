@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK_INDEX;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class SetDueDateCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1 " + PREFIX_TASK_INDEX + " 1 "
             + PREFIX_DUE_DATE + "2025/01/01 23:59";
 
-    public static final String MESSAGE_SUCCESS_SET_DUE_DATE = "Task due date updated! Person: %1$s";
+    public static final String MESSAGE_SUCCESS_SET_DUE_DATE = "Task due date updated to %1$s! Person: %2$s";
 
     private final LocalDateTime dueDate;
     private final Index taskIndex;
@@ -70,13 +71,23 @@ public class SetDueDateCommand extends Command {
 
         // Update the due date for the specified task.
         Task taskToUpdate = updatedTasks.get(taskIndex.getZeroBased());
-        if (taskToUpdate.getDueDate().equals(dueDate)) {
-            throw new CommandException(String.format("Your due date is already: %s", dueDate));
+        if (taskToUpdate.getDueDate() != null && taskToUpdate.getDueDate().equals(dueDate)) {
+            throw new CommandException(String.format("Your due date is already: %s", formatDueDate()));
         }
         taskToUpdate.setDueDate(dueDate);
 
         // Create a new Person with the updated tasks.
-        Person editedPerson = new Person(
+        Person editedPerson = editPerson(personToEdit, updatedTasks);
+
+        model.setPerson(personToEdit, editedPerson);
+        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+
+        return new CommandResult(String.format(MESSAGE_SUCCESS_SET_DUE_DATE,
+                formatDueDate(), Messages.format(editedPerson)));
+    }
+
+    private Person editPerson(Person personToEdit, List<Task> updatedTasks) {
+        return new Person(
                 personToEdit.getName(),
                 personToEdit.getPhone(),
                 personToEdit.getEmail(),
@@ -89,11 +100,13 @@ public class SetDueDateCommand extends Command {
                 personToEdit.getTaskStatus(),
                 updatedTasks
         );
+    }
 
-        model.setPerson(personToEdit, editedPerson);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    private String formatDueDate() {
+        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("d MMM yyyy, h:mm a");
+        String formattedDueDate = dueDate.format(displayFormatter);
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS_SET_DUE_DATE, Messages.format(editedPerson)));
+        return formattedDueDate;
     }
 
     @Override
