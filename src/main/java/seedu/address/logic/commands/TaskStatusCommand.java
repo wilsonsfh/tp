@@ -19,9 +19,27 @@ public class TaskStatusCommand extends Command {
 
     public static final String COMMAND_WORD = "mark";
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Update a task with status (completed, in-progress, yet-to-start) for a particular person.\n"
-            + "Example: " + COMMAND_WORD + " 1 2 completed";
-    public static final String MESSAGE_MARK_TASK_SUCCESS = "Marked task: %1$s with status: %2$s under %3$s";
+        + ": Updates the status of a specific existing task for a team member.\n"
+        + "Usage:\n"
+        + "  " + COMMAND_WORD + " PERSON_INDEX TASK_INDEX STATUS\n"
+        + "\n"
+        + "Parameters:\n"
+        + "  PERSON_INDEX   - A positive integer indicating the person in the displayed list.\n"
+        + "  TASK_INDEX     - A positive integer indicating the task under the selected person.\n"
+        + "  STATUS         - New task status. One of: 'yet to start', 'in progress', 'completed'\n"
+        + "\n"
+        + "Notes:\n"
+        + "  • The status is case-insensitive.\n"
+        + "  • You can view task indexes by using the 'listtasks PERSON_INDEX' command.\n"
+        + "\n"
+        + "Examples:\n"
+        + "  " + COMMAND_WORD + " 1 2 completed\n"
+        + "  " + COMMAND_WORD + " 2 1 in progress\n"
+        + "  " + COMMAND_WORD + " 3 3 yet to start";
+
+    public static final String MESSAGE_MARK_TASK_SUCCESS =
+        "Successfully updated task \"%1$s\" to status \"%2$s\" for %3$s.\n"
+            + "Tip: Use the 'listtasks %4$d' command to view all tasks for this team member.";
 
     private final Index personIndex;
     private final Index taskIndex;
@@ -41,6 +59,10 @@ public class TaskStatusCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
+        assert personIndex != null;
+        assert taskIndex != null;
+        assert newStatus != null;
+
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
 
@@ -52,7 +74,8 @@ public class TaskStatusCommand extends Command {
         List<Task> updatedTasks = new java.util.ArrayList<>(personToEdit.getTasks());
 
         if (taskIndex.getZeroBased() >= updatedTasks.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+            throw new CommandException(String.format(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX,
+                taskIndex.getOneBased()));
         }
 
         Task taskToUpdate = updatedTasks.get(taskIndex.getZeroBased());
@@ -63,26 +86,27 @@ public class TaskStatusCommand extends Command {
         // Assuming Person has a method addTask is immutable and returns a new Person,
         // here we build a new Person using the existing data but with updated tasks.
         Person updatedPerson = new Person(
-                personToEdit.getName(),
-                personToEdit.getPhone(),
-                personToEdit.getEmail(),
-                personToEdit.getTelegram(),
-                personToEdit.getPosition(),
-                personToEdit.getAddress(),
-                personToEdit.getTags(),
-                personToEdit.getSkills(),
-                personToEdit.getOthers(),
-                personToEdit.getTaskStatus(),
-                updatedTasks
+            personToEdit.getName(),
+            personToEdit.getPhone(),
+            personToEdit.getEmail(),
+            personToEdit.getTelegram(),
+            personToEdit.getPosition(),
+            personToEdit.getAddress(),
+            personToEdit.getTags(),
+            personToEdit.getSkills(),
+            personToEdit.getOthers(),
+            personToEdit.getTaskStatus(),
+            updatedTasks
         );
 
         model.setPerson(personToEdit, updatedPerson);
 
         return new CommandResult(String.format(
-                MESSAGE_MARK_TASK_SUCCESS,
-                updatedTask.getDescription(),
-                updatedTask.getStatus(),
-                updatedPerson.getName()
+            MESSAGE_MARK_TASK_SUCCESS,
+            updatedTask.getDescription(),
+            updatedTask.getStatus(),
+            updatedPerson.getName(),
+            personIndex.getOneBased()
         ));
     }
 }

@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.LogsCenter;
@@ -170,7 +171,9 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        logger.info("Starting AddressBook " + MainApp.VERSION);
+        logger.info("Starting TeamScape " + MainApp.VERSION);
+        primaryStage.setTitle("TeamScape");
+        primaryStage.getIcons().add(new Image("/images/TeamScape_icon_32.png"));
         ui.start(primaryStage);
     }
 
