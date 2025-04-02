@@ -18,7 +18,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-2. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+2. Download the latest `.jar` file from [here](https://github.com/AY2425S2-CS2103-F09-4/tp/releases).
 
 3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
@@ -31,7 +31,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -65,6 +65,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
+
 ### Viewing help : `help`
 
 Shows a message explaning how to access the help page.
@@ -80,33 +81,41 @@ Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-**Tip:** A person can have any number of tags (including 0)
-</box>
-=======
 **Tip:** A person can have any number of tags, skills, others and tasks (including 0)
 
 **Note:** Task can have no due date and status (ie task/barbeque or task/barbeque, 2025-05-28 14:00 or task/barbeque, in progress) the default status would be yet to start.
->>>>>>> 7e73b684004554098b6004aa73356dabb348d022
-=======
-**Tip:** A person can have any number of tags, skills, others and tasks (including 0)
-
-**Note:** Task can have no due date and status (ie task/barbeque or task/barbeque, 2025-05-28 14:00 or task/barbeque, in progress) the default status would be yet to start.
-
->>>>>>> c505013a5c034079f59ba836ab53b7acfc86b5e2
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street, block 123, #01-01 task/barbeque, 2025-05-28 14:00, yet to start`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start`
   ![input for 'add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start'](images/addBestyCroweInput.png)
+
   ![result for 'add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start'](images/addBestyCroweResult.png)
+
+### Adding a task to a member: `task`
+
+Adds a task to the specified member.
+
+Format: `task INDEX task/TASK_DESCRIPTION[, yyyy-MM-dd HH:mm, TASK_STATUS]`
+
+- TASK_STATUS can be one of: `yet to start`, `in progress`, `completed`.
+- Date and status are optional. If omitted, status defaults to `yet to start`.
+- There can only exist 1 `task/` prefix for each TaskCommand to be added.
+
+Examples:
+* `task 2 task/Prepare report, 2025-10-10 10:00, in progress`
+* `task 3 task/Book venue`
+  ![taskBetsyFullCommand.png](images/taskBetsyFullCommand.png)
+
+  ![taskBerniceTaskDescOnly.png](images/taskBerniceTaskDescOnly.png)
+
 
 ### Listing all persons : `list`
 
 Shows a list of all persons in the address book.
 
 Format: `list`
+
 
 ### Editing a person : `edit`
 
@@ -124,22 +133,65 @@ Format: `edit INDEX n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/A
 Examples:
 * `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 * `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+  ![input for 'edit 2 n/Betsy Crower t/'](images/editBestyCroweInput.png)
 
-### Adding a task to a member: `task`
+  ![result for 'edit 2 n/Betsy Crower t/'](images/editBestyCroweResult.png)
 
-Adds a task to the specified member.
 
-Format: `task INDEX task/TASK_DESCRIPTION[, yyyy-MM-dd HH:mm, TASK_STATUS]`
+### Setting due date for a task : `setduedate`
 
-- TASK_STATUS can be one of: `yet to start`, `in progress`, `completed`.
-- Date and status are optional. If omitted, status defaults to `yet to start`.
-- There can only exist 1 `task/` prefix for each TaskCommand to be added.  
+Set a due date for a specific task of a member.
+
+Format: `setduedate PERSON_INDEX taskint/TASK_INDEX due/yyyy-mm-dd hh:mm`
+* Set the due date for a task at `TASK_INDEX` of the person at the specified `PERSON_INDEX`.
+* `TASK_INDEX` refers to the index number shown in the task list of a member.
+* Both indexes **must be a positive integer** 1, 2, 3, …​
+* Due date must be inputted in the format of `yyyy-mm-dd hh:mm`.
 
 Examples:
-* `task 2 task/Prepare report, 2025-10-10 10:00, in progress`
-* `task 3 task/Book venue`
-  ![taskBetsyFullCommand.png](images/taskBetsyFullCommand.png)
-  ![taskBerniceTaskDescOnly.png](images/taskBerniceTaskDescOnly.png)
+* `setduedate 2 taskint/1 due/2025-12-10 23:59`
+![set due date for a task](images/setduedate.png)
+
+
+### Listing tasks assigned to a member : `listtasks`
+
+Lists the tasks of
+the specified person from the address book.
+
+Format: `listtasks INDEX`
+
+* Lists the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
+Examples:
+* `list` followed by `listtasks 2` list the tasks the 2nd person in the address book has.
+* `find n/ Alex` followed by `listtasks 1` lists the tasks of 1st person in the results of the `find` command.
+
+Example results for member without task:
+* ![listtasks for person without a task](images/listtasksJohn1.png)
+* ![listtasks for person without a task](images/listtasksJohn2.png)
+
+Example results for member with tasks:
+* ![listtasks for person with a task](images/listtasksBetsy.png)
+
+
+### Updating status for a task : `mark`
+
+Mark the task status for a specific task of a member.
+
+Format: `mark PERSON_INDEX TASK_INDEX task_status`
+
+* Set the due date for a task at `TASK_INDEX` of the person at the specified `PERSON_INDEX`.
+* `TASK_INDEX` refers to the index number shown in the task list of a member.
+* Both indexes **must be a positive integer** 1, 2, 3, …​
+* Only valid inputs are only `yet-to-start`, `in-progress` and `completed`.
+
+Examples:
+* `listtasks 2` followed by `mark 3 2 in-progress` sets the task status for the second task of the third person in the displayed person list to be **in-progress**.
+* `find n/ Betsy` followed by `mark 2 1 completed` sets the task status for the first task of the second person in the results of the `find` command to be **completed**.
+![mark a task in progress](images/markTaskResult.png)
+
 
 ### Locating persons by name, tags, or tasks: `find`
 
@@ -178,8 +230,8 @@ Format: `find task/ KEYWORD [MORE_KEYWORDS]`
 Finds persons whose task description contain any of the given keywords.
 
 Example Usage:
-* `find task/ bbq` returns all Persons with task descriptions containing the word 'bbq'.
-  ![result for 'find task/ bbq'](images/findbbqResult.png)
+* `find task/ barbeque` returns all Persons with task descriptions containing the word 'bbq'.
+  ![result for 'find task/ barbeque'](images/findbbqResult.png)
 
 Finding persons by multiple conditions (limited to name, tags and tasks):
 
@@ -191,7 +243,18 @@ Intuitively, you can think about this as an 'AND' operation. For example, if you
 
 Example Usage:
 * `find t/ intern task/ bbq` returns all Persons with tags interns AND task descriptions containing the word 'bbq'.
-  ![result for 'find task/ bbq'](images/findbbqResult.png)
+  ![result for 'find t/ intern task/ bbq'](images/findInternBBQResult.png)
+
+
+### Generate Task Status Report : `report`
+
+Shows a summary of all tasks and their completion statuses.
+
+Format: `report`
+
+Example output:
+![generate report for one task](images/report.png)
+
 
 ### Deleting a person : `delete`
 
@@ -207,60 +270,6 @@ Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
 * `find n/ Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
-### Listing tasks assigned to a member : `listtasks`
-
-Lists the tasks of
-the specified person from the address book.
-
-Format: `listtasks INDEX`
-
-* Lists the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
-
-Example results for member without task:
-* ![listtasks for person without a task](images/listtasksAlex1.png)
-* ![listtasks for person without a task](images/listtasksAlex2.png)
-
-Example results for member with tasks:
-* ![listtasks for person with a task](images/listtasksJungkook.png)
-
-Examples:
-* `list` followed by `listtasks 2` list the tasks the 2nd person in the address book has.
-* `find n/ Alex` followed by `listtasks 1` lists the tasks of 1st person in the results of the `find` command.
-
-### Updating status for a task : `mark`
-
-Mark the task status for a specific task of a member.
-
-Format: `mark PERSON_INDEX TASK_INDEX task_status`
-
-* Set the due date for a task at `TASK_INDEX` of the person at the specified `PERSON_INDEX`.
-* `TASK_INDEX` refers to the index number shown in the task list of a member.
-* Both indexes **must be a positive integer** 1, 2, 3, …​
-* Only valid inputs are only `yet-to-start`, `in-progress` and `completed`.
-
-![mark a task in progress](images/markTaskResult.png)
-
-Examples:
-* `listtasks 2` followed by `mark 3 2 in-progress` sets the task status for the second task of the third person in the displayed person list to be **in-progress**.
-* `find n/ Betsy` followed by `mark 2 1 completed` sets the task status for the first task of the second person in the results of the `find` command to be **completed**.
-
-### Setting due date for a task : `setduedate`
-
-Set a due date for a specific task of a member.
-
-Format: `setduedate PERSON_INDEX taskint/TASK_INDEX due/yyyy-mm-dd hh:mm`
-* Set the due date for a task at `TASK_INDEX` of the person at the specified `PERSON_INDEX`.
-* `TASK_INDEX` refers to the index number shown in the task list of a member.
-* Both indexes **must be a positive integer** 1, 2, 3, …​
-* Due date must be inputted in the format of `yyyy-mm-dd hh:mm`.
-
-![set due date for a task](images/setduedate.png)
-
-Examples:
-* `listtasks 2` followed by `setduedate 2 taskint/1 due/2025-10-10 23:59` set the due date for the first task of the second person in the displayed person list to be 2025-10-10 23:59. 
-* `find n/ Betsy` followed by `setduedate 1 taskint/2 due/2025-10-10 23:59` set the due date for the second task of the first person in the results of the `find` command. to be 2025-10-10 23:59.
 
 ### Clearing all entries : `clear`
 
@@ -268,15 +277,18 @@ Clears all entries from the address book.
 
 Format: `clear`
 
+
 ### Exiting the program : `exit`
 
 Exits the program.
 
 Format: `exit`
 
+
 ### Saving the data
 
 AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+
 
 ### Editing the data file
 
@@ -285,17 +297,7 @@ AddressBook data are saved automatically as a JSON file `[JAR file location]/dat
 **Caution:**
 If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
-</box>
 
-### Generate Task Status Report : `report`
-
-Shows a summary of all tasks and their completion statuses.
-
-Format: `report`
-
-Example output:
-
-![generate report for one task](images/report.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -317,10 +319,10 @@ Example output:
 
 | Action             | Format, Examples |
 |--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Add**            | `add n/NAME p/PHONE e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]… [s/SKILL]… [o/OTHER]… [task/TASK]…`<br> e.g., `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street task/barbeque, 2025-05-28 14:00, yet to start` |
+| **Add**            | `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`<br> e.g., `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street task/barbeque, 2025-05-28 14:00, yet to start` |
 | **Clear**          | `clear` |
 | **Delete**         | `delete INDEX`<br> e.g., `delete 3` |
-| **Edit**           | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…`<br> e.g., `edit 2 n/Betsy Crower t/` |
+| **Edit**           | `edit INDEX n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`<br> e.g., `edit 2 n/Betsy Crower t/` |
 | **Find (Name)**    | `find n/ KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n/ alex david` |
 | **Find (Tag)**     | `find t/ KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/ colleagues friends` |
 | **List**           | `list` |

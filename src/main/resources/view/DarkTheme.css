@@ -113,12 +113,16 @@
 }
 
 .list-cell:filled:selected #cardPane {
-    -fx-border-color: #3e7b91;
+    -fx-border-color: transparent;
     -fx-border-width: 1;
 }
 
 .list-cell .label {
     -fx-text-fill: white;
+}
+
+.list-cell:empty {
+    -fx-background-color: transparent;
 }
 
 .cell_big_label {
@@ -211,7 +215,7 @@
 }
 
 .menu .left-container {
-    -fx-background-color: black;
+    -fx-background-color: transparent;
 }
 
 /*
@@ -264,11 +268,11 @@
 }
 
 .dialog-pane {
-    -fx-background-color: #1d1d1d;
+    -fx-background-color: transparent;
 }
 
 .dialog-pane > *.button-bar > *.container {
-    -fx-background-color: #1d1d1d;
+    -fx-background-color: transparent;
 }
 
 .dialog-pane > *.label.content {
@@ -278,7 +282,7 @@
 }
 
 .dialog-pane:header *.header-panel {
-    -fx-background-color: derive(#1d1d1d, 25%);
+    -fx-background-color: transparent;
 }
 
 .dialog-pane:header *.header-panel *.label {
