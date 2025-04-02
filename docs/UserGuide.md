@@ -249,8 +249,9 @@ Example Usage:
 ### Generate Task Status Report : `report`
 
 Shows a summary of all tasks and their completion statuses. 
-users are associated with their tasks under their status
-'report' command is case-insensitive
+
+* Users are associated with their tasks under their status
+*'report' command is case-insensitive
 
 Format: `report`
 
