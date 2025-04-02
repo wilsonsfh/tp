@@ -73,7 +73,7 @@ public class TaskCommandParserTest {
     @Test
     public void parse_invalidDateFormat_failure() {
         String userInput = "1 task/Do homework, 31-12-2025 23:59, yet to start";
-        assertParseFailure(parser, userInput, MESSAGE_INCORRECT_DATE_FORMAT);
+        assertParseFailure(parser, userInput, MESSAGE_INCORRECT_DATE_FORMAT.trim());
     }
 
     @Test
