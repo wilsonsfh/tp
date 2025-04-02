@@ -235,14 +235,16 @@ public class ParserUtil {
         } else if (taskDetails.length == 2) {
             taskDesc = taskDetails[0].trim();
             validateTaskDescription(taskDesc);
+            String secondParameter = taskDetails[1].trim();
+
             try {
-                dueDate = parseAndValidateDueDate(taskDetails[1]);
-                return new Task(taskDesc, TaskStatus.YET_TO_START, dueDate);
-            } catch (DateTimeParseException e) {
+                taskStatus = TaskStatus.valueOf(secondParameter.toUpperCase().replace(" ", "_"));
+                return new Task(taskDesc, taskStatus, null);
+            } catch (IllegalArgumentException e) {
                 try {
-                    taskStatus = TaskStatus.valueOf(taskDetails[1].trim().toUpperCase().replace(" ", "_"));
-                    return new Task(taskDesc, taskStatus, null);
-                } catch (IllegalArgumentException e1) {
+                    dueDate = parseAndValidateDueDate(secondParameter);
+                    return new Task(taskDesc, TaskStatus.YET_TO_START, dueDate);
+                } catch (DateTimeParseException | ParseException e1) {
                     throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
                 }
             }
@@ -258,12 +260,15 @@ public class ParserUtil {
                 try {
                     dueDate = parseAndValidateDueDate(dueDateString);
                 } catch (ParseException e) {
-                    errorMessage.append(e.getMessage()).append("\n");
+                    errorMessage.append(e.getMessage());
                 }
 
                 try {
                     taskStatus = TaskStatus.valueOf(taskStatusString.toUpperCase().replace(" ", "_"));
                 } catch (IllegalArgumentException e) {
+                    if (errorMessage.length() > 0) {
+                        errorMessage.append("\n");
+                    }
                     errorMessage.append(MESSAGE_INCORRECT_TASK_STATUS);
                 }
 
