@@ -288,10 +288,12 @@ public class ParserUtil {
 
         // handles parsing date
         try {
-            dueDate = LocalDateTime.parse(argMultimap.getValue(PREFIX_DUE_DATE).get(), INPUT_FORMATTER);
+            String dateString = argMultimap.getValue(PREFIX_DUE_DATE).get();
+            dueDate = LocalDateTime.parse(dateString, INPUT_FORMATTER);
             if (dueDate.isBefore(LocalDateTime.now())) {
                 throw new ParseException("Due date is in the past!");
             }
+
         } catch (DateTimeParseException e) {
             throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
         }
