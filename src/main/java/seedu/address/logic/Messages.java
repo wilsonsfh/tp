@@ -29,6 +29,8 @@ public class Messages {
                                                              + "yet to start | in progress | completed";
     public static final String MESSAGE_INCORRECT_PREFIX = "The prefix you typed might be incorrect. "
             + "Check again against the command usage.";
+    public static final String MESSAGE_INVALID_TASK_FORMAT = "The task should only comprise description, date and "
+            + "status.";
 
     /**
      * Returns an error message indicating the duplicate prefixes.

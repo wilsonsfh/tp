@@ -10,10 +10,12 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_POSITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,6 +26,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.other.Other;
 import seedu.address.model.skill.Skill;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.task.Task;
 
 /**
  * Parses input arguments and creates a new EditCommand object
@@ -39,7 +42,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM,
-                        PREFIX_POSITION, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_SKILL, PREFIX_OTHER);
+                        PREFIX_POSITION, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_SKILL, PREFIX_OTHER, PREFIX_TASK);
 
         Index index;
 
@@ -75,6 +78,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
         parseSkillsForEdit(argMultimap.getAllValues(PREFIX_SKILL)).ifPresent(editPersonDescriptor::setSkills);
         parseOthersForEdit(argMultimap.getAllValues(PREFIX_OTHER)).ifPresent(editPersonDescriptor::setOthers);
+        parseTasksForEdit(argMultimap.getAllValues(PREFIX_TASK)).ifPresent(editPersonDescriptor::setTasks);
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
@@ -128,4 +132,18 @@ public class EditCommandParser implements Parser<EditCommand> {
         return Optional.of(ParserUtil.parseOthers(otherSet));
     }
 
+    /**
+     * Parses {@code Collection<String> tasks} into a {@code Set<Task>} if {@code tasks} is non-empty.
+     * If {@code tasks} contain only one element which is an empty string, it will be parsed into a
+     * {@code Set<Task>} containing zero others.
+     */
+    private Optional<List<Task>> parseTasksForEdit(Collection<String> tasks) throws ParseException {
+        assert tasks != null;
+
+        if (tasks.isEmpty()) {
+            return Optional.empty();
+        }
+        Collection<String> taskSet = tasks.size() == 1 && tasks.contains("") ? Collections.emptyList() : tasks;
+        return Optional.of(ParserUtil.parseTasks(taskSet).stream().toList());
+    }
 }

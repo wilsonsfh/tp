@@ -8,8 +8,10 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_POSITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TASK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 
+import java.util.List;
 import java.util.Set;
 
 import seedu.address.logic.commands.AddCommand;
@@ -18,6 +20,7 @@ import seedu.address.model.other.Other;
 import seedu.address.model.person.Person;
 import seedu.address.model.skill.Skill;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.task.Task;
 
 /**
  * A utility class for Person.
@@ -50,6 +53,13 @@ public class PersonUtil {
         );
         person.getOthers().stream().forEach(
                 s -> sb.append(PREFIX_OTHER + s.other + " ")
+        );
+        person.getTasks().stream().forEach(
+                s -> sb.append(String.format("%s %s, %s, %s",
+                        PREFIX_TASK,
+                        s.getDescription(),
+                        s.getDueDate().toString(),
+                        s.getStatus().toString()))
         );
         return sb.toString();
     }
@@ -87,6 +97,16 @@ public class PersonUtil {
                 sb.append(PREFIX_OTHER).append(" ");
             } else {
                 others.forEach(s -> sb.append(PREFIX_OTHER).append(s.other).append(" "));
+            }
+        }
+        if (descriptor.getTasks().isPresent()) {
+            List<Task> tasks = descriptor.getTasks().get();
+            if (tasks.isEmpty()) {
+                sb.append(PREFIX_TASK).append(" "); // explicit clearing
+            } else {
+                for (Task task : tasks) {
+                    sb.append(PREFIX_TASK).append(task.toString()).append(" ");
+                }
             }
         }
         return sb.toString();

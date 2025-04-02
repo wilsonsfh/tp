@@ -70,6 +70,7 @@ public class EditPersonDescriptorTest {
                 + ", tags=" + editPersonDescriptor.getTags().orElse(null)
                 + ", skills=" + editPersonDescriptor.getSkills().orElse(null)
                 + ", others=" + editPersonDescriptor.getOthers().orElse(null)
+                + ", tasks=" + editPersonDescriptor.getTasks().orElse(null)
                 + "}";
         assertEquals(expected, editPersonDescriptor.toString());
     }

@@ -51,6 +51,14 @@ public class PersonCard extends UiPart<Region> {
     private FlowPane others;
     @FXML
     private FlowPane tasks;
+    @FXML
+    private HBox tagsContainer;
+    @FXML
+    private HBox skillsContainer;
+    @FXML
+    private HBox othersContainer;
+    @FXML
+    private HBox tasksContainer;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -60,11 +68,11 @@ public class PersonCard extends UiPart<Region> {
         this.person = person;
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-        telegram.setText(person.getTelegram().value);
-        position.setText(person.getPosition().value);
-        address.setText(person.getAddress().value);
-        email.setText(person.getEmail().value);
+        phone.setText("Phone: " + person.getPhone().value);
+        telegram.setText("Telegram: " + person.getTelegram().value);
+        position.setText("Position: " + person.getPosition().value);
+        address.setText("Address: " + person.getAddress().value);
+        email.setText("Email: " + person.getEmail().value);
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
@@ -83,5 +91,21 @@ public class PersonCard extends UiPart<Region> {
                 taskLabel.getStyleClass().add("task-label");
                 tasks.getChildren().add(taskLabel);
             });
+        if (person.getTags().isEmpty()) {
+            tagsContainer.setManaged(false);
+            tagsContainer.setVisible(false);
+        }
+        if (person.getSkills().isEmpty()) {
+            skillsContainer.setManaged(false);
+            skillsContainer.setVisible(false);
+        }
+        if (person.getOthers().isEmpty()) {
+            othersContainer.setManaged(false);
+            othersContainer.setVisible(false);
+        }
+        if (person.getTasks().isEmpty()) {
+            tasksContainer.setManaged(false);
+            tasksContainer.setVisible(false);
+        }
     }
 }

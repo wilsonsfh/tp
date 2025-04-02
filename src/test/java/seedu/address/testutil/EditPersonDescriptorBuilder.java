@@ -136,18 +136,15 @@ public class EditPersonDescriptorBuilder {
      * that we are building.
      */
     public EditPersonDescriptorBuilder withTasks(String... tasks) {
-        List<Task> taskList;
-        try {
-            List<Task> list = new ArrayList<>();
-            for (String task : tasks) {
-                Task parseTask = ParserUtil.parseTask(task);
-                list.add(parseTask);
+        List<Task> taskList = new ArrayList<>();
+        for (String task : tasks) {
+            try {
+                taskList.add(ParserUtil.parseTask(task));
+            } catch (ParseException e) {
+                throw new RuntimeException("Invalid task: " + task, e);
             }
-            taskList = list;
-        } catch (ParseException e) {
-            taskList = null;
         }
-        descriptor.setTasks(taskList);
+        descriptor.setTasks(taskList.stream().toList()); // <-- always sets it, even if empty
         return this;
     }
 
