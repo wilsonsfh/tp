@@ -76,4 +76,20 @@ public class DeleteTaskCommand extends Command {
                 updatedPerson.getName()
         ));
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof DeleteTaskCommand)) {
+            return false;
+        }
+
+        DeleteTaskCommand otherCommand = (DeleteTaskCommand) other;
+        return personIndex.equals(otherCommand.personIndex)
+                && taskIndex.equals(otherCommand.taskIndex);
+    }
 }
