@@ -1,13 +1,35 @@
----
+<!--
   layout: default.md
   title: "Developer Guide"
   pageNav: 3
----
+-->
 
 # TeamScape Developer Guide
 
-<!-- * Table of Contents -->
-<page-nav-print />
+## Table of Contents  
+- [Acknowledgements](#acknowledgements)  
+- [Setting up, getting started](#setting-up-getting-started)  
+- [Design](#design)  
+  - [Architecture](#architecture)  
+  - [UI component](#ui-component)  
+  - [Logic component](#logic-component)  
+  - [Model component](#model-component)  
+  - [Storage component](#storage-component)  
+  - [Common classes](#common-classes)  
+- [Implementation](#implementation)  
+  - [Proposed Undo/redo feature](#proposed-undoredo-feature)  
+  - [Proposed Data archiving](#proposed-data-archiving)  
+- [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)  
+- [Appendix: Requirements](#appendix-requirements)  
+  - [Product scope](#product-scope)  
+  - [User stories](#user-stories)  
+  - [Use cases](#use-cases)  
+  - [Non-Functional Requirements](#non-functional-requirements)  
+  - [Glossary](#glossary)  
+- [Appendix: Instructions for manual testing](#appendix-instructions-for-manual-testing)  
+  - [Launch and shutdown](#launch-and-shutdown)  
+  - [Deleting a person](#deleting-a-person)  
+  - [Saving data](#saving-data)  
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -650,12 +672,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 Given below are instructions to test the app manually.
 
-<box type="info" seamless>
-
 **Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
-
-</box>
 
 ### Launch and shutdown
 
@@ -663,16 +681,179 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   2. Double-click the jar file or run file with `java -jar teamscape.jar`(recommended) <br> Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
-1. Saving window preferences
+2. Saving window preferences
 
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
+   2. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+### Adding a person
+
+**Prerequisites:**
+- List all persons using the `list` command.
+- Ensure there are no persons with the same details you're about to add.
+
+1. Test case: `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street, block 123, #01-01` 
+<br>
+**Expected**:
+   - New contact is added to the list.
+   - Details of the added contact shown in the status message.
+   - Contact list updated with the new person.
+
+2. Test case: `add n/John Doe p/98765432` (missing required fields)
+<br>
+**Expected**:
+   - No person is added. 
+   - Error details shown in the status message.
+   - Member list not updated.
+
+3. Other incorrect add commands to try:
+- `add n/John Doe` (missing required fields)
+- `add p/98765432 e/johnd@example.com` (missing name)
+- `add n/John Doe p/invalid e/invalid` (invalid formats)
+<br>
+  **Expected**: Similar to previous error case.
+
+### Adding a task to a member
+
+**Prerequisites:**
+- Have at least one person in the address book.
+- View this person using `list` or `find` command.
+
+1. Test case: `task 1 task/Prepare report, 2025-10-10 10:00, in progress` <br>
+**Expected**:
+   - Task is added to the first person's task list. 
+   - Status message shows task was added. 
+
+2. Test case: `task 1 task/Book venue` (minimal task) <br>
+**Expected**:
+   - Task is added with default "yet to start" status. 
+   - Status message confirms addition.
+
+3. Test case: `task 0 task/Invalid task` <br>
+**Expected**:
+   - No task added. 
+   - Error shown for invalid index.
+
+### Editing a person
+
+**Prerequisites:**
+- Have at least one person in the address book.
+- View this person using `list` command.
+
+1. Test case: `edit 1 p/91234567 e/johndoe@example.com` <br>
+**Expected**:
+   - First person's phone and email are updated. 
+   - Status message shows changes.
+
+2. Test case: `edit 1 t/` (clearing tags) <br>
+**Expected**:
+   - All tags removed from first person. 
+   - Status message confirms changes.
+
+3. Test case: `edit 0 n/Invalid` <br>
+**Expected**:
+   - No changes made. 
+   - Error shown for invalid index.
+
+### Setting due date for a task
+
+**Prerequisites:**
+- Have at least one person with at least one task.
+
+1. Test case: `setduedate 1 taskint/1 due/2026-02-28 23:59` <br>
+**Expected**:
+   - Due date set for first task of first person. 
+   - Status message confirms change.
+
+2. Test case: `setduedate 1 taskint/1 due/2020-01-01 00:00` (past date) <br>
+**Expected**:
+   - No changes made. 
+   - Error message shown.
+
+3. Other incorrect commands to try: `setduedate 1 taskint/1 due/2025-10-10`, `setduedate 1 /taskint 1 due/2025-10-10 23:59` <br>
+**Expected**:
+   - Error message similar to that of point 2. 
+
+### Listing tasks assigned to a member
+
+**Prerequisites:**
+- Have at least one person with tasks.
+
+1. Test case: `listtasks 1`<br>
+**Expected**:
+   - Tasks for first person displayed. 
+   - Status bar shows command success.
+
+2. Test case: `listtasks 0`<br>
+**Expected**:
+   - No tasks shown.
+   - Error about invalid index.
+
+### Deleting a task under a member
+
+**Prerequisites:**
+- Have at least one person with at least one task.
+
+1. Test case: `deltask 1 1` <br>
+**Expected**:
+   - First task of first person deleted. 
+   - Status message confirms deletion.
+
+2. Test case: `deltask 1 0` <br>
+**Expected**:
+   - No task deleted. 
+   - Error about invalid index.
+
+### Updating status for a task
+
+**Prerequisites:**
+- Have at least one person with at least one task.
+
+1. Test case: `mark 1 1 completed` <br>
+**Expected**:
+   - First task of first person marked as completed. 
+   - Status message confirms change.
+
+2. Test case: `mark 1 1 invalid-status` <br>
+**Expected**:
+   - No changes made. 
+   - Error about invalid status.
+
+### Finding persons
+
+**Prerequisites:**
+- Have several persons with different names, tags, and tasks.
+
+1. Test case: `find n/ john` <br>
+**Expected**:
+   - Persons with "john" in name displayed. 
+   - Status shows number of matches.
+
+2. Test case: `find t/ friend` <br>
+**Expected**:
+   - Persons with "friend" tag displayed.
+
+3. Test case: `find task/ report` <br>
+**Expected**:
+   - Persons with tasks containing "report" displayed.
+
+4. Test case: `find n/ john t/ friend` <br>
+**Expected**:
+   - Persons matching both name and tag criteria displayed.
+
+### Generating Task Status Report
+
+**Prerequisites:**
+- Have several persons with tasks in different statuses.
+
+1. Test case: `report` <br>
+**Expected**:
+   - Summary report displayed showing tasks grouped by status.
+   - Status bar shows command success.
 
 ### Deleting a person
 
@@ -680,21 +861,26 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
+   2. Test case: `delete 1`<br>
       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
-   1. Test case: `delete 0`<br>
+   3. Test case: `delete 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+   4. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
+--------------------------------------------------------------------------------------------------------------------
 
-1. _{ more test cases …​ }_
+## **Appendix: Effort**
+While this project is a spin-off from AB3, the project was harder due to the introduction of new functions and the purpose of helping team manager to manage tasks. Hence, we needed to create more entities (Classes) to encapsulate attributes and relationships between entity interactions. 
 
-### Saving data
+Major challenges encountered includes collaboration between team members especially when there are frequent merge conflicts, introduction of new classes and commands which requires deep understanding of AB3 dependencies, and consensus about certain feature design/UI within the team.
 
-1. Dealing with missing/corrupted data files
+As per our implementation, we achieved a brand new Command Line Interface (CLI) application which not only helps users to manage contacts and their information, our target audience, team leaders, can also reap the benefits of task management. 
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+Using of app, managers can assign multiple tasks under a specific member, check the tasks information such as due date and status under the member, remove task, and generate a holistic task report to check progress and status. 
 
-1. _{ more test cases …​ }_
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Planned Enhancements**
+_coming soon after PE-D_.
