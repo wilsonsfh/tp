@@ -115,7 +115,10 @@ public class UpdateTaskCommand extends Command {
         }
 
         for (int i = 0; i < tasks.size(); i++) {
-            if (i == taskIndex.getZeroBased()) continue;
+            //Skip the task currently updating to avoid false duplication check
+            if (i == taskIndex.getZeroBased()) {
+                continue;
+            };
 
             Task otherTask = tasks.get(i);
             if (newDescription.isPresent()
