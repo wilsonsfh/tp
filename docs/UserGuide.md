@@ -1,15 +1,36 @@
----
+<!--
   layout: default.md
   title: "User Guide"
   pageNav: 3
----
+-->
 
-# AB-3 User Guide
+# TeamScape User Guide
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a  Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+AddressBook Level 3 (AB3) is a **desktop app for managing contacts and the tasks under it, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, TeamScape can get your contact/task management tasks done faster than traditional GUI apps. Adopted from AB3.
 
 <!-- * Table of Contents -->
-<page-nav-print />
+## Table of Contents
+1. [Quick Start](#quick-start)
+2. [Features](#features)
+    - [Viewing Help](#viewing-help--help)
+    - [Adding a Person](#adding-a-person--add)
+    - [Adding a Task to a Member](#adding-a-task-to-a-member--task)
+    - [Listing All Persons](#listing-all-persons--list)
+    - [Editing a Person](#editing-a-person--edit)
+    - [Setting Due Date for a Task](#setting-due-date-for-a-task--setduedate)
+    - [Listing Tasks Assigned to a Member](#listing-tasks-assigned-to-a-member--listtasks)
+    - [Deleting a Task Under a Member](#deleting-a-task-under-a-member--deltask)
+    - [Updating Status for a Task](#updating-status-for-a-task--mark)
+    - [Locating Persons by Name, Tags, or Tasks](#locating-persons-by-name-tags-or-tasks--find)
+    - [Generate Task Status Report](#generate-task-status-report--report)
+    - [Deleting a Person](#deleting-a-person--delete)
+    - [Clearing All Entries](#clearing-all-entries--clear)
+    - [Exiting the Program](#exiting-the-program--exit)
+    - [Saving the Data](#saving-the-data)
+    - [Editing the Data File](#editing-the-data-file)
+3. [FAQ](#faq)
+4. [Known Issues](#known-issues)
+5. [Command Summary](#command-summary)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -75,13 +96,13 @@ Shows a message explaning how to access the help page.
 Format: `help`
 
 
-### Adding a person: `add`
+### Adding a person: `add` 
 
 Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`
 
-**Tip:** A person can have any number of tags, skills, others and tasks (including 0)
+**Tip:** A person can have any number of tags, skills, others and tasks (including 0). See "Adding a task to a member" section for more information regarding task creation.
 
 **Note:** Task can have no due date and status (ie task/barbeque or task/barbeque, 2025-05-28 14:00 or task/barbeque, in progress) the default status would be yet to start.
 
@@ -101,9 +122,10 @@ Format: `task INDEX task/TASK_DESCRIPTION[, yyyy-MM-dd HH:mm, TASK_STATUS]`
 - TASK_STATUS can be one of: `yet to start`, `in progress`, `completed`.
 - Date and status are optional. If omitted, status defaults to `yet to start`.
 - There can only exist 1 `task/` prefix for each TaskCommand to be added.
+- See "Setting due date for a task" section for more information on due dates.
 
 Examples:
-* `task 2 task/Prepare report, 2025-10-10 10:00, in progress`
+* `task 3 task/Prepare report, 2025-10-10 10:00, in progress`
 * `task 3 task/Book venue`
   ![taskBetsyFullCommand.png](images/taskBetsyFullCommand.png)
 
@@ -124,7 +146,7 @@ Edits an existing person in the address book.
 Format: `edit INDEX n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of the optional fields must be provided.
+* At least one of the fields must be provided. 
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
 * You can remove all the person’s tags by typing `t/` without
@@ -135,7 +157,6 @@ Examples:
 * `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
   ![input for 'edit 2 n/Betsy Crower t/'](images/editBestyCroweInput.png)
 
-  ![result for 'edit 2 n/Betsy Crower t/'](images/editBestyCroweResult.png)
 
 
 ### Setting due date for a task : `setduedate`
@@ -147,9 +168,12 @@ Format: `setduedate PERSON_INDEX taskint/TASK_INDEX due/yyyy-mm-dd hh:mm`
 * `TASK_INDEX` refers to the index number shown in the task list of a member.
 * Both indexes **must be a positive integer** 1, 2, 3, …​
 * Due date must be inputted in the format of `yyyy-mm-dd hh:mm`.
+* Due date cannot be in the past.
+* If due date is already set as such, user will be notified gracefully.
+* Special case for February: set to the last day of that year if user types in 29th Feb during a non-leap year.
 
 Examples:
-* `setduedate 2 taskint/1 due/2025-12-10 23:59`
+* `setduedate 2 taskint/1 due/2026-02-29 23:59`
 ![set due date for a task](images/setduedate.png)
 
 
@@ -169,12 +193,23 @@ Examples:
 * `find n/ Alex` followed by `listtasks 1` lists the tasks of 1st person in the results of the `find` command.
 
 Example results for member without task:
-* ![listtasks for person without a task](images/listtasksJohn1.png)
-* ![listtasks for person without a task](images/listtasksJohn2.png)
+* ![listtasks for person without a task](images/listtasksAlex.png)
 
 Example results for member with tasks:
 * ![listtasks for person with a task](images/listtasksBetsy.png)
 
+### Deleting a task under a member : `deltask`
+
+Delete a specific task of a member.
+
+Format: `deltask PERSON_INDEX TASK_INDEX`
+
+* Delete a task at `TASK_INDEX` of the person at the specified `PERSON_INDEX`.
+* `TASK_INDEX` refers to the index number shown in the task list of a member.
+* Both indexes **must be a positive integer** 1, 2, 3, …​
+
+Examples:
+* `listtasks 2` followed by `deltask 3 2` deletes the second task of the third person in the displayed person list.
 
 ### Updating status for a task : `mark`
 
@@ -182,7 +217,7 @@ Mark the task status for a specific task of a member.
 
 Format: `mark PERSON_INDEX TASK_INDEX task_status`
 
-* Set the due date for a task at `TASK_INDEX` of the person at the specified `PERSON_INDEX`.
+* Update the task status of a task at `TASK_INDEX` of the person at the specified `PERSON_INDEX`.
 * `TASK_INDEX` refers to the index number shown in the task list of a member.
 * Both indexes **must be a positive integer** 1, 2, 3, …​
 * Only valid inputs are only `yet-to-start`, `in-progress` and `completed`.
@@ -220,8 +255,8 @@ Format: `find t/ KEYWORD [MORE_KEYWORDS]`
 Finds persons whose tags contain any of the given keywords.
 
 Example Usage:
-* `find t/ colleagues friends` returns all Persons tagged with colleagues or friends
-  ![result for 'find t/ colleagues friends'](images/findColleaguesFriendsResult.png)
+* `find t/ colleagues friend` returns all Persons tagged with colleagues or friends
+  ![result for 'find t/ colleagues friend'](images/findColleaguesFriendResult.png)
 
 Finding persons by tasks:
 
@@ -322,18 +357,21 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 
 ## Command Summary
 
-| Action             | Format, Examples |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Add**            | `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`<br> e.g., `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street task/barbeque, 2025-05-28 14:00, yet to start` |
-| **Clear**          | `clear` |
-| **Delete**         | `delete INDEX`<br> e.g., `delete 3` |
-| **Edit**           | `edit INDEX n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`<br> e.g., `edit 2 n/Betsy Crower t/` |
-| **Find (Name)**    | `find n/ KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n/ alex david` |
-| **Find (Tag)**     | `find t/ KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/ colleagues friends` |
-| **List**           | `list` |
-| **List Tasks**     | `listtasks INDEX`<br> e.g., `listtasks 2` |
-| **Mark Task**      | `mark PERSON_INDEX TASK_INDEX task_status`<br> e.g., `mark 3 2 in-progress` |
-| **Set Due Date**   | `setduedate PERSON_INDEX taskint/TASK_INDEX due/yyyy-mm-dd hh:mm`<br> e.g., `setduedate 2 taskint/1 due/2025-10-10 23:59` |
-| **Report**         | `report` |
-| **Help**           | `help` |
-| **Exit**           | `exit` |
+| Action           | Format, Examples                                                                                                                                                                                                                                                      |
+|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Add**          | `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`<br> e.g., `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street task/barbeque, 2025-05-28 14:00, yet to start` |
+| **Clear**        | `clear`                                                                                                                                                                                                                                                               |
+| **Delete**       | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                                                                                                   |
+| **Edit**         | `edit INDEX n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`<br> e.g., `edit 2 n/Betsy Crower t/`                                                                                                  |
+| **Find (Name)**  | `find n/ KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n/ alex david`                                                                                                                                                                                                      |
+| **Find (Tag)**   | `find t/ KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/ colleagues friends`                                                                                                                                                                                              |
+| **Add Task**     | `task INDEX task/TASK_DESCRIPTION[, yyyy-MM-dd HH:mm, TASK_STATUS]` <br> e.g., `task 3 task/Book venue`                                                                                                                                                               |
+| **Delete task**  | `deltask PERSON_INDEX TASK_INDEX`<br> e.g., `deltask 3 2`                                                                                                                                                                                                             |
+| **Mark**         | `mark PERSON_INDEX TASK_INDEX task_status` <br> e.g. `mark 1 1 in-progress`                                                                                                                                                                                           |
+| **List**         | `list`                                                                                                                                                                                                                                                                |
+| **List Tasks**   | `listtasks INDEX`<br> e.g., `listtasks 2`                                                                                                                                                                                                                             |
+| **Mark Task**    | `mark PERSON_INDEX TASK_INDEX task_status`<br> e.g., `mark 3 2 in-progress`                                                                                                                                                                                           |
+| **Set Due Date** | `setduedate PERSON_INDEX taskint/TASK_INDEX due/yyyy-mm-dd hh:mm`<br> e.g., `setduedate 2 taskint/1 due/2025-10-10 23:59`                                                                                                                                             |
+| **Report**       | `report`                                                                                                                                                                                                                                                              |
+| **Help**         | `help`                                                                                                                                                                                                                                                                |
+| **Exit**         | `exit`                                                                                                                                                                                                                                                                |
