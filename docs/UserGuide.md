@@ -135,10 +135,11 @@ In other words, another task with the same description cannot be added.
 - There can only exist 1 `task/` prefix for each TaskCommand to be added.
 - When only 1 task field is provided (e.g. `completed`), and it matches with a valid task status or due date format, 
 it will be interpreted strictly as such regardless of the intention.
+- When invalid date format is provided for a 1 task field, it is accepted as valid task description.
 
 **Limitations:**
-- Task command does not check for special characters. When invalid date format is provided for a 1 task field, it is accepted as valid task description.
 - When there exists multiple errors with the command input by the user, the error message will only show up one by one at a time.
+- When date format and status are both provided for a 2 task field, it is accepted as valid task description.
 
 
 **Related:**
