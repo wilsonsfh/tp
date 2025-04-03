@@ -241,7 +241,7 @@ public class ParserUtil {
     private static Task parseTwoVariableTask(String taskDesc, String secondParameter) throws ParseException {
         validateTaskDescription(taskDesc);
         try {
-            TaskStatus taskStatus = TaskStatus.valueOf(secondParameter.toUpperCase().replace(" ", "_"));
+            TaskStatus taskStatus = TaskStatus.fromString(secondParameter);
             return new Task(taskDesc, taskStatus, null);
         } catch (IllegalArgumentException e) {
             try {
@@ -279,7 +279,7 @@ public class ParserUtil {
         }
 
         try {
-            TaskStatus.valueOf(taskStatusString.toUpperCase().replace(" ", "_"));
+            TaskStatus.fromString(taskStatusString);
         } catch (IllegalArgumentException e) {
             if (!errorMessage.isEmpty()) {
                 errorMessage.append("\n");
@@ -299,7 +299,7 @@ public class ParserUtil {
 
     private static TaskStatus parseTaskStatusSilently(String taskStatusString) {
         try {
-            return TaskStatus.valueOf(taskStatusString.toUpperCase().replace(" ", "_"));
+            return TaskStatus.fromString(taskStatusString);
         } catch (IllegalArgumentException e) {
             return null; // Validated earlier
         }
