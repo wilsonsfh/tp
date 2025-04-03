@@ -102,9 +102,9 @@ Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`
 
-**Tip:** A person can have any number of tags, skills, others and tasks (including 0). See "Adding a task to a member" section for more information regarding task creation.
-
 **Note:** Task can have no due date and status (ie task/barbeque or task/barbeque, 2025-05-28 14:00 or task/barbeque, in progress) the default status would be yet to start.
+
+**Tip:** A person can have any number of tags, skills, others and tasks (including 0). See "Adding a task to a member" section for more information regarding task creation.
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street, block 123, #01-01 task/barbeque, 2025-05-28 14:00, yet to start`
