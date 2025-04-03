@@ -69,7 +69,8 @@ public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
                     if (TaskStatus.isValidStatus(second)) {
                         status = Optional.of(TaskStatus.fromString(second));
                     } else {
-                        throw new ParseException("Second parameter must be a valid date (yyyy-MM-dd HH:mm) or task status.");
+                        throw new ParseException("Second parameter must be a valid date (yyyy-MM-dd HH:mm) "
+                            + "or task status.");
                     }
                 }
             }
@@ -91,7 +92,10 @@ public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
             if (TaskStatus.isValidStatus(third)) {
                 status = Optional.of(TaskStatus.fromString(third));
             } else {
-                throw new ParseException("Third parameter must be a valid task status: 'yet to start', 'in progress', 'completed'.");
+                throw new ParseException("Third parameter must be a valid task status: "
+                    + "'yet to start', "
+                    + "'in progress', "
+                    + "'completed'.");
             }
         }
 
