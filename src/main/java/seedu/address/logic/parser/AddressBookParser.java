@@ -13,7 +13,6 @@ import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.DeleteTaskCommand;
-import seedu.address.logic.commands.UpdateTaskCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
@@ -24,6 +23,7 @@ import seedu.address.logic.commands.ReportCommand;
 import seedu.address.logic.commands.SetDueDateCommand;
 import seedu.address.logic.commands.TaskCommand;
 import seedu.address.logic.commands.TaskStatusCommand;
+import seedu.address.logic.commands.UpdateTaskCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
