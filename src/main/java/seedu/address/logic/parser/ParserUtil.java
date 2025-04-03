@@ -235,6 +235,15 @@ public class ParserUtil {
 
     private static Task parseOneVariableTask(String taskDesc) throws ParseException {
         validateTaskDescription(taskDesc);
+        String normalizedTaskDesc = taskDesc.trim().toLowerCase();
+        if (normalizedTaskDesc.equals("completed")
+            || normalizedTaskDesc.equals("in progress")
+            || normalizedTaskDesc.equals("yet to start")) {
+            throw new ParseException(
+                "It looks like you tried to supply a status ('" + taskDesc.trim() + "') in the description field.\n"
+                    + "Use a comma to separate them:\n"
+                    + "e.g., task/Do something, " + taskDesc.trim());
+        }
         return new Task(taskDesc, TaskStatus.YET_TO_START, null);
     }
 
