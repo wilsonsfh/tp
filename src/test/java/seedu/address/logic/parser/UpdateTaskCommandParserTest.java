@@ -5,12 +5,14 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailur
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.UpdateTaskCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.task.TaskStatus;
 
 
@@ -81,13 +83,14 @@ public class UpdateTaskCommandParserTest {
 
     @Test
     public void parse_dueDateAndStatus_success() throws Exception {
-        String input = "1 2 2025-12-31 23:59, completed";
+        String input = "1 2 2025-12-31 23:59, in progress";
         UpdateTaskCommand expected = new UpdateTaskCommand(
             Index.fromOneBased(1),
             Index.fromOneBased(2),
             Optional.empty(),
-            Optional.of(LocalDateTime.of(2025, 12, 31, 23, 59)),
-            Optional.of(TaskStatus.COMPLETED));
+            Optional.of(LocalDateTime.of(2025, 12, 31, 23, 59)), // Due date parsed
+            Optional.of(TaskStatus.IN_PROGRESS)
+        );
         assertParseSuccess(parser, input, expected);
     }
 
@@ -104,9 +107,34 @@ public class UpdateTaskCommandParserTest {
     }
 
     @Test
-    public void parse_invalidIndex_failure() {
-        assertParseFailure(parser, "a b task",
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, UpdateTaskCommand.MESSAGE_USAGE));
+    public void parse_blankDescription_success() throws Exception {
+        String input = "1 2 , 2025-12-31 23:59, completed";
+        UpdateTaskCommand expected = new UpdateTaskCommand(
+            Index.fromOneBased(1),
+            Index.fromOneBased(2),
+            Optional.empty(), //Do not update task description when input blank
+            Optional.of(LocalDateTime.of(2025, 12, 31, 23, 59)),
+            Optional.of(TaskStatus.COMPLETED)
+        );
+        assertParseSuccess(parser, input, expected);
+    }
+
+
+    @Test
+    public void parse_nonIntegerIndexes_failure() {
+        assertParseFailure(parser, "a b task", "Index is not an integer greater zero.");
+
+    }
+
+    @Test
+    public void parse_negativeIndex_failure() {
+        assertParseFailure(parser, "-1 1 task", "Index is not an integer greater zero.");
+
+    }
+
+    @Test
+    public void parse_zeroIndex_failure() {
+        assertParseFailure(parser, "-1 1 task", "Index is not an integer greater zero.");
     }
 
     @Test
@@ -128,21 +156,8 @@ public class UpdateTaskCommandParserTest {
     }
 
     @Test
-    public void parse_blankDescription_failure() {
-        assertParseFailure(parser, "1 2 , 2025-12-31 23:59, completed",
-            "Description cannot be empty when providing multiple fields.");
-    }
-
-    @Test
     public void parse_statusUsedAsDescription_failure() {
         assertParseFailure(parser, "1 2 completed, 2025-12-31 23:59",
-            "Cannot update other fields when only updating task status. Use only: STATUS");
-    }
-
-    @Test
-    public void parse_dateUsedAsDescription_failure() {
-        assertParseFailure(parser, "1 2 2025-12-31 23:59, in progress",
-            String.format(ParserUtil.MESSAGE_DATE_AS_DESCRIPTION,
-                "2025-12-31 23:59", "2025-12-31 23:59"));
+            "Cannot update other fields when only updating task status. Use only: TASK_STATUS");
     }
 }

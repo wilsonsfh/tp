@@ -247,8 +247,6 @@ Format: `updatetask PERSON_INDEX TASK_INDEX [TASK_DESCRIPTION][, DUE_DATE][, STA
     - **Description** _(if any)_
     - **Due Date** *(if any)* – Format: `yyyy-MM-dd HH:mm`
     - **Status** *(if any)* – One of: `yet to start`, `in progress`, `completed` (case-insensitive)
-- For task fields provided (e.g. `completed`), it will be assigned to the most relevant parameters 
-(task status, due date, or task description).
 
 **Limitations:**
 - When invalid date format is provided for the task description field, it is accepted as valid as there is no restriction of 

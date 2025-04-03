@@ -23,7 +23,7 @@ public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
     private static final String ERROR_INVALID_TWO_FIELDS =
         "Second parameter must be a valid date (yyyy-MM-dd HH:mm) or task status.";
     private static final String ERROR_INVALID_STATUS_ONLY_COMBO =
-        "Cannot update other fields when only updating task status. Use only: STATUS";
+        "Cannot update other fields when only updating task status. Use only: TASK_STATUS";
     private static final String ERROR_MISSING_DESCRIPTION =
         "Description cannot be empty when providing multiple fields.";
     private static final String ERROR_INVALID_SECOND_DATE =
@@ -83,12 +83,6 @@ public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
 
     private UpdateTaskCommand parseTwoFields(String first, String second,
                                              Index personIndex, Index taskIndex) throws ParseException {
-        try {
-            LocalDateTime.parse(first.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-            throw new ParseException(String.format(ParserUtil.MESSAGE_DATE_AS_DESCRIPTION, first.trim(), first.trim()));
-        } catch (DateTimeParseException ignored) {
-            // If not a valid date, continue
-        }
 
         Optional<String> description = Optional.empty();
         Optional<LocalDateTime> dueDate = Optional.empty();
@@ -124,18 +118,8 @@ public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
 
     private UpdateTaskCommand parseThreeFields(String first, String second, String third,
                                                Index personIndex, Index taskIndex) throws ParseException {
-        if (first.isEmpty()) {
-            throw new ParseException(ERROR_MISSING_DESCRIPTION);
-        }
 
-        try {
-            LocalDateTime.parse(first.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-            throw new ParseException(String.format(ParserUtil.MESSAGE_DATE_AS_DESCRIPTION, first.trim(), first.trim()));
-        } catch (DateTimeParseException ignored) {
-            // It's not a valid date, continue
-        }
-
-        Optional<String> description = Optional.of(first);
+        Optional<String> description = first.isBlank() ? Optional.empty() : Optional.of(first.trim());
         Optional<LocalDateTime> dueDate;
         Optional<TaskStatus> status;
 

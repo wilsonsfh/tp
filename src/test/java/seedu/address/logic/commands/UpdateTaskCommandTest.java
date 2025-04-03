@@ -8,6 +8,7 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_TASK;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +51,8 @@ public class UpdateTaskCommandTest {
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         Person personToEdit = expectedModel.getFilteredPersonList().get(personIndex.getZeroBased());
-        List<Task> updatedTasks = personToEdit.getTasks();
+        List<Task> updatedTasks = new ArrayList<>(personToEdit.getTasks());
+
         updatedTasks.set(taskIndex.getZeroBased(), expectedTask);
 
         Person editedPerson = new Person(
@@ -79,7 +81,7 @@ public class UpdateTaskCommandTest {
 
     @Test
     public void execute_invalidPersonIndex_throwsCommandException() {
-        Index outOfBoundsPersonIndex = Index.fromZeroBased(100); // deliberately invalid
+        Index outOfBoundsPersonIndex = Index.fromZeroBased(100);
         UpdateTaskCommand command = new UpdateTaskCommand(outOfBoundsPersonIndex, INDEX_FIRST_TASK,
             Optional.of("Update report"), Optional.empty(), Optional.empty());
 
@@ -88,7 +90,7 @@ public class UpdateTaskCommandTest {
 
     @Test
     public void execute_invalidTaskIndex_throwsCommandException() {
-        Index outOfBoundsTaskIndex = Index.fromZeroBased(100); // deliberately invalid
+        Index outOfBoundsTaskIndex = Index.fromZeroBased(100);
         UpdateTaskCommand command = new UpdateTaskCommand(INDEX_FIRST_PERSON, outOfBoundsTaskIndex,
             Optional.of("Update report"), Optional.empty(), Optional.empty());
 
