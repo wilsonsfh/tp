@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_DUPLICATE_TASK;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ import seedu.address.model.task.TaskStatus;
 public class UpdateTaskCommand extends Command {
 
     public static final String COMMAND_WORD = "updatetask";
+
     public static final String MESSAGE_USAGE = COMMAND_WORD
         + ": Updates an existing task for the specified team member.\n"
         + "Usage:\n"
@@ -39,7 +41,7 @@ public class UpdateTaskCommand extends Command {
         + "  • Use commas (,) to separate multiple fields.\n"
         + "  • Order of parameters matters.\n"
         + "\n"
-        + "Examples: (all different possible combinations)\n"
+        + "Examples:\n"
         + "  " + COMMAND_WORD + " 1 2 Buy milk\n"
         + "  " + COMMAND_WORD + " 1 2 Submit report, in progress\n"
         + "  " + COMMAND_WORD + " 2 1 Finalize project, 2025-12-31 23:59, completed\n"
@@ -47,8 +49,9 @@ public class UpdateTaskCommand extends Command {
         + "  " + COMMAND_WORD + " 3 2 completed\n"
         + "  " + COMMAND_WORD + " 4 1 2025-12-31 23:59, in progress";
 
-
-
+    private static final String TASK_UPDATED_MESSAGE = "Successfully updated task for %s:\n"
+        + "• Description: %s\n• Due Date: %s\n• Status: %s\n"
+        + "Tip: Use the 'listtasks %d' command to view all tasks for this team member.";
 
     private final Index personIndex;
     private final Index taskIndex;
@@ -58,12 +61,6 @@ public class UpdateTaskCommand extends Command {
 
     /**
      * Constructs an UpdateTaskCommand.
-     *
-     * @param personIndex Index of the team member.
-     * @param taskIndex Index of the task in the team member's task list.
-     * @param newDescription Optional new task description.
-     * @param newDueDate Optional new due date.
-     * @param newStatus Optional new task status.
      */
     public UpdateTaskCommand(Index personIndex, Index taskIndex, Optional<String> newDescription,
                              Optional<LocalDateTime> newDueDate, Optional<TaskStatus> newStatus) {
@@ -73,7 +70,7 @@ public class UpdateTaskCommand extends Command {
         requireNonNull(newDueDate);
         requireNonNull(newStatus);
 
-        if (!newDescription.isPresent() && !newDueDate.isPresent() && !newStatus.isPresent()) {
+        if (newDescription.isEmpty() && newDueDate.isEmpty() && newStatus.isEmpty()) {
             throw new IllegalArgumentException(Messages.MESSAGE_NOT_UPDATED);
         }
 
@@ -87,18 +84,33 @@ public class UpdateTaskCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Person> lastShownList = model.getFilteredPersonList();
+        List<Person> personList = model.getFilteredPersonList();
 
-        if (personIndex.getZeroBased() >= lastShownList.size()) {
+        Person personToEdit = getPerson(personList);
+        List<Task> updatedTasks = new ArrayList<>(personToEdit.getTasks());
+
+        Task updatedTask = getUpdatedTask(updatedTasks);
+        checkForDuplicateTaskDescription(updatedTasks);
+        updatedTasks.set(taskIndex.getZeroBased(), updatedTask);
+
+        Person updatedPerson = recreatePersonWithTasks(personToEdit, updatedTasks);
+        model.setPerson(personToEdit, updatedPerson);
+
+        assert updatedTasks.size() == updatedPerson.getTasks().size();
+
+        return new CommandResult(buildSuccessMessage(updatedPerson, updatedTask));
+    }
+
+    private Person getPerson(List<Person> personList) throws CommandException {
+        if (personIndex.getZeroBased() >= personList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
+        return personList.get(personIndex.getZeroBased());
+    }
 
-        Person personToEdit = lastShownList.get(personIndex.getZeroBased());
-        List<Task> tasks = new ArrayList<>(personToEdit.getTasks());
-
+    private Task getUpdatedTask(List<Task> tasks) throws CommandException {
         if (taskIndex.getZeroBased() >= tasks.size()) {
             throw new CommandException(String.format(MESSAGE_INVALID_TASK_DISPLAYED_INDEX, taskIndex.getOneBased()));
-
         }
 
         Task taskToUpdate = tasks.get(taskIndex.getZeroBased());
@@ -114,91 +126,63 @@ public class UpdateTaskCommand extends Command {
             updatedTask = updatedTask.withStatus(newStatus.get());
         }
 
+        return updatedTask;
+    }
+
+    private void checkForDuplicateTaskDescription(List<Task> tasks) throws CommandException {
         for (int i = 0; i < tasks.size(); i++) {
-            //Skip the task currently updating to avoid false duplication check
             if (i == taskIndex.getZeroBased()) {
                 continue;
             }
-
-            Task otherTask = tasks.get(i);
             if (newDescription.isPresent()
-                && otherTask.getDescription().equals(newDescription.get())) {
-                throw new CommandException("Such task is already present for this person.\n"
-                                            + "You cannot update to a task description that exists!\n");
+                && tasks.get(i).getDescription().equals(newDescription.get())) {
+                throw new CommandException(MESSAGE_DUPLICATE_TASK);
             }
         }
+    }
 
-        tasks.set(taskIndex.getZeroBased(), updatedTask);
-
-        // Create a new Person with the updated tasks list.
-        Person updatedPerson = new Person(
-            personToEdit.getName(),
-            personToEdit.getPhone(),
-            personToEdit.getEmail(),
-            personToEdit.getTelegram(),
-            personToEdit.getPosition(),
-            personToEdit.getAddress(),
-            personToEdit.getTags(),
-            personToEdit.getSkills(),
-            personToEdit.getOthers(),
-            personToEdit.getTaskStatus(),
-            tasks
+    private Person recreatePersonWithTasks(Person person, List<Task> updatedTasks) {
+        return new Person(
+            person.getName(),
+            person.getPhone(),
+            person.getEmail(),
+            person.getTelegram(),
+            person.getPosition(),
+            person.getAddress(),
+            person.getTags(),
+            person.getSkills(),
+            person.getOthers(),
+            person.getTaskStatus(),
+            updatedTasks
         );
+    }
 
-        model.setPerson(personToEdit, updatedPerson);
-
-        String message;
-        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-        //For user-friendly display
+    private String buildSuccessMessage(Person updatedPerson, Task updatedTask) {
         String formattedDueDate = Optional.ofNullable(updatedTask.getDueDate())
-            .map(date -> date.format(displayFormatter))
+            .map(date -> date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
             .orElse("No due date set");
 
-        if (newDescription.isEmpty() && newDueDate.isEmpty() && newStatus.isPresent()) {
-            // Status-only case (like `mark`)
-            message = String.format("Successfully updated task \"%s\" to status \"%s\" for %s.\n"
-                    + "• Description: %s\n"
-                    + "• Due Date: %s\n"
-                    + "• Status: %s\n"
-                    + "Tip: Use the 'listtasks %d' command to view all tasks for this team member.",
-                updatedTask.getDescription(),
-                updatedTask.getStatus(),
-                updatedPerson.getName(),
-                updatedTask.getDescription(),
-                formattedDueDate,
-                updatedTask.getStatus(),
-                personIndex.getOneBased());
-        } else {
-            // Generic update case
-            message = String.format("Successfully updated task for %s:\n"
-                    + "• Description: %s\n"
-                    + "• Due Date: %s\n"
-                    + "• Status: %s\n"
-                    + "Tip: Use the 'listtasks %d' command to view all tasks for this team member.",
-                updatedPerson.getName(),
-                updatedTask.getDescription(),
-                formattedDueDate,
-                updatedTask.getStatus(),
-                personIndex.getOneBased());
-        }
-
-        return new CommandResult(message);
+        return String.format(TASK_UPDATED_MESSAGE,
+            updatedPerson.getName(),
+            updatedTask.getDescription(),
+            formattedDueDate,
+            updatedTask.getStatus(),
+            personIndex.getOneBased());
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object other) {
+        if (this == other) {
             return true;
         }
-        if (!(obj instanceof UpdateTaskCommand)) {
+        if (!(other instanceof UpdateTaskCommand)) {
             return false;
         }
-        UpdateTaskCommand other = (UpdateTaskCommand) obj;
-        return personIndex.equals(other.personIndex)
-            && taskIndex.equals(other.taskIndex)
-            && newDescription.equals(other.newDescription)
-            && newDueDate.equals(other.newDueDate)
-            && newStatus.equals(other.newStatus);
+        UpdateTaskCommand otherCommand = (UpdateTaskCommand) other;
+        return personIndex.equals(otherCommand.personIndex)
+            && taskIndex.equals(otherCommand.taskIndex)
+            && newDescription.equals(otherCommand.newDescription)
+            && newDueDate.equals(otherCommand.newDueDate)
+            && newStatus.equals(otherCommand.newStatus);
     }
 }

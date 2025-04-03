@@ -35,6 +35,16 @@ import seedu.address.model.task.TaskStatus;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not an integer greater zero.";
+    public static final String MESSAGE_STATUS_AS_DESCRIPTION =
+        "Looks like you tried to supply a task status ('%s') in the description field.\n"
+            + "Use a comma to separate them:\n"
+            + "e.g., task/TASK_DESCRIPTION, %s";
+
+    public static final String MESSAGE_DATE_AS_DESCRIPTION =
+        "Looks like you tried to supply a due date ('%s') in the description field.\n"
+            + "Use a comma to separate them:\n"
+            + "e.g., task/TASK_DESCRIPTION, %s";
+
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     /**
@@ -240,17 +250,13 @@ public class ParserUtil {
             || normalizedTaskDesc.equals("in progress")
             || normalizedTaskDesc.equals("yet to start")) {
             throw new ParseException(
-                "Looks like you tried to supply a task status ('" + taskDesc.trim() + "') in the description field.\n"
-                    + "Use a comma to separate them:\n"
-                    + "e.g., task/TASK_DESCRIPTION, " + taskDesc.trim());
+                String.format(MESSAGE_STATUS_AS_DESCRIPTION, taskDesc.trim(), taskDesc.trim()));
         }
 
         try {
             LocalDateTime.parse(taskDesc.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             throw new ParseException(
-                "Looks like you tried to supply a due date ('" + taskDesc.trim() + "') in the description field.\n"
-                    + "Use a comma to separate them:\n"
-                    + "e.g., task/TASK_DESCRIPTION, " + taskDesc.trim());
+                String.format(MESSAGE_DATE_AS_DESCRIPTION, taskDesc.trim(), taskDesc.trim()));
         } catch (DateTimeParseException e) {
             // Not a valid due date, continue
         }

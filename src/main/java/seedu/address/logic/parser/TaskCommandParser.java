@@ -19,36 +19,28 @@ public class TaskCommandParser implements Parser<TaskCommand> {
 
     @Override
     public TaskCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap =
-            ArgumentTokenizer.tokenize(args, PREFIX_TASK);
-
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_TASK);
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_TASK);
 
         Index index;
-
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
             logger.info("Parsed index: " + index.getOneBased());
         } catch (ParseException pe) {
-            throw new ParseException(
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, TaskCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TaskCommand.MESSAGE_USAGE), pe);
         }
 
         if (argMultimap.getAllValues(PREFIX_TASK).size() > 1) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TaskCommand.MESSAGE_USAGE));
         }
 
-        // Get task string safely
         String taskString = argMultimap.getValue(PREFIX_TASK).orElse("").trim();
-
         if (taskString.isEmpty()) {
             throw new ParseException(MESSAGE_EMPTY_TASK_DESC);
         }
 
         logger.info("Task string: " + taskString);
-
         Task task = ParserUtil.parseTask(taskString);
         return new TaskCommand(index, task);
     }
 }
-
