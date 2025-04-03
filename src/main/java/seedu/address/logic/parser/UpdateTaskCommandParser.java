@@ -16,9 +16,10 @@ import seedu.address.model.task.TaskStatus;
  */
 public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
 
-    private static final String ERROR_TOO_MANY_FIELDS = "Too many fields. Use: DESCRIPTION[, DUE_DATE][, STATUS]";
-    private static final String ERROR_INVALID_TWO_FIELDS = "Second parameter must be a valid date (yyyy-MM-dd HH:mm) "
-        + "or task status.";
+    private static final String ERROR_TOO_MANY_FIELDS =
+        "Too many fields. Use: DESCRIPTION[, DUE_DATE][, STATUS]";
+    private static final String ERROR_INVALID_TWO_FIELDS =
+        "Second parameter must be a valid date (yyyy-MM-dd HH:mm) or task status.";
     private static final String ERROR_INVALID_STATUS_ONLY_COMBO =
         "Cannot update other fields when only updating task status. Use only: STATUS";
     private static final String ERROR_MISSING_DESCRIPTION =
@@ -43,33 +44,34 @@ public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
             throw new ParseException(ERROR_TOO_MANY_FIELDS);
         }
 
-        Optional<String> description = Optional.empty();
-        Optional<LocalDateTime> dueDate = Optional.empty();
-        Optional<TaskStatus> status = Optional.empty();
+        return parseFieldCombination(fields, personIndex, taskIndex);
+    }
 
+    private UpdateTaskCommand parseFieldCombination(String[] fields, Index personIndex,
+                                                    Index taskIndex) throws ParseException {
         String first = fields[0].trim();
 
         if (fields.length == 1) {
-            return handleSingleField(first, personIndex, taskIndex);
+            return parseOneField(first, personIndex, taskIndex);
         } else if (fields.length == 2) {
-            return handleTwoFields(fields[0].trim(), fields[1].trim(), personIndex, taskIndex);
+            return parseTwoFields(first, fields[1].trim(), personIndex, taskIndex);
         } else {
-            return handleThreeFields(fields[0].trim(), fields[1].trim(), fields[2].trim(), personIndex, taskIndex);
+            return parseThreeFields(first, fields[1].trim(), fields[2].trim(), personIndex, taskIndex);
         }
     }
 
-    private UpdateTaskCommand handleSingleField(String first, Index personIndex, Index taskIndex) throws ParseException {
+    private UpdateTaskCommand parseOneField(String field, Index personIndex, Index taskIndex) throws ParseException {
         Optional<String> description = Optional.empty();
         Optional<LocalDateTime> dueDate = Optional.empty();
         Optional<TaskStatus> status = Optional.empty();
 
-        if (TaskStatus.isValidStatus(first)) {
-            status = Optional.of(TaskStatus.fromString(first));
+        if (TaskStatus.isValidStatus(field)) {
+            status = Optional.of(TaskStatus.fromString(field));
         } else {
             try {
-                dueDate = Optional.of(ParserUtil.parseAndValidateDueDate(first));
+                dueDate = Optional.of(ParserUtil.parseAndValidateDueDate(field));
             } catch (ParseException e) {
-                description = Optional.of(first);
+                description = Optional.of(field);
             }
         }
 
@@ -77,8 +79,8 @@ public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
         return new UpdateTaskCommand(personIndex, taskIndex, description, dueDate, status);
     }
 
-    private UpdateTaskCommand handleTwoFields(String first, String second, Index personIndex, Index taskIndex)
-        throws ParseException {
+    private UpdateTaskCommand parseTwoFields(String first, String second,
+                                             Index personIndex, Index taskIndex) throws ParseException {
         Optional<String> description = Optional.empty();
         Optional<LocalDateTime> dueDate = Optional.empty();
         Optional<TaskStatus> status = Optional.empty();
@@ -92,7 +94,7 @@ public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
             if (TaskStatus.isValidStatus(second)) {
                 status = Optional.of(TaskStatus.fromString(second));
             } else {
-                throw new ParseException("Second parameter must be a valid task status when first is a due date.");
+                throw new ParseException(ERROR_INVALID_TWO_FIELDS);
             }
         } catch (ParseException e) {
             description = Optional.of(first);
@@ -111,8 +113,8 @@ public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
         return new UpdateTaskCommand(personIndex, taskIndex, description, dueDate, status);
     }
 
-    private UpdateTaskCommand handleThreeFields(String first, String second, String third,
-                                                Index personIndex, Index taskIndex) throws ParseException {
+    private UpdateTaskCommand parseThreeFields(String first, String second, String third,
+                                               Index personIndex, Index taskIndex) throws ParseException {
         if (first.isEmpty()) {
             throw new ParseException(ERROR_MISSING_DESCRIPTION);
         }
