@@ -59,7 +59,7 @@ When the user inputs a command like `task 1 t/Finish draft`:
 
 ### 4. Class Diagram
 
-<include src="diagrams/tracing/TaskModelClassDiagram.puml" />
+<include src="diagrams/TaskModelClassDiagram.puml" />
 
 This diagram shows the relationship between `Person`, `Task`, and `TaskStatus`.
 
@@ -67,7 +67,7 @@ This diagram shows the relationship between `Person`, `Task`, and `TaskStatus`.
 
 ### 5. Sequence Diagram
 
-<include src="diagrams/tracing/TaskCommandSequenceDiagram.puml" />
+<include src="diagrams/TaskCommandSequenceDiagram.puml" />
 
 This diagram shows how a `task` command is parsed and executed from UI input through Logic and into the Model.
 
