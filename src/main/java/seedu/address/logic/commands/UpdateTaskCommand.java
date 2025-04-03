@@ -120,8 +120,8 @@ public class UpdateTaskCommand extends Command {
             Task otherTask = tasks.get(i);
             if (newDescription.isPresent()
                 && otherTask.getDescription().equals(newDescription.get())) {
-                throw new CommandException("Such task is already present for this member.\n"
-                                            + "You cannot update to a task description that exists.\n");
+                throw new CommandException("Such task is already present for this person.\n"
+                                            + "You cannot update to a task description that exists!\n");
             }
         }
 

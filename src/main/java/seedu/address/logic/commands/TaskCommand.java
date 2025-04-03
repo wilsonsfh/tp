@@ -65,7 +65,7 @@ public class TaskCommand extends Command {
 
         for (Task existingTask : updatedTasks) {
             if (existingTask.getDescription().equals(task.getDescription())) {
-                throw new CommandException("This task already exists for the selected member.\n"
+                throw new CommandException("This task already exists for the selected person.\n"
                 + "Task description cannot be the same!");
             }
         }
