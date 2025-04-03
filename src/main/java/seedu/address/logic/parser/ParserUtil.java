@@ -240,9 +240,9 @@ public class ParserUtil {
             || normalizedTaskDesc.equals("in progress")
             || normalizedTaskDesc.equals("yet to start")) {
             throw new ParseException(
-                "It looks like you tried to supply a status ('" + taskDesc.trim() + "') in the description field.\n"
+                "It looks like you tried to supply a task status ('" + taskDesc.trim() + "') in the description field.\n"
                     + "Use a comma to separate them:\n"
-                    + "e.g., task/Do something, " + taskDesc.trim());
+                    + "e.g., task/TASK_DESCRIPTION, " + taskDesc.trim());
         }
         return new Task(taskDesc, TaskStatus.YET_TO_START, null);
     }

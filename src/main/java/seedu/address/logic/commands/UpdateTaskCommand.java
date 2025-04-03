@@ -24,19 +24,21 @@ public class UpdateTaskCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
         + ": Updates an existing task for the specified team member.\n"
         + "Usage:\n"
-        + "  " + COMMAND_WORD + " PERSON_INDEX TASK_INDEX [desc/NEW_DESCRIPTION] [due/NEW_DUE_DATE] [status/NEW_STATUS]\n"
+        + "  " + COMMAND_WORD + " PERSON_INDEX TASK_INDEX DESCRIPTION[, DUE_DATE][, STATUS]\n"
         + "\n"
         + "Parameters:\n"
-        + "  PERSON_INDEX    - A positive integer representing the team member's index in the displayed list.\n"
-        + "  TASK_INDEX      - A positive integer representing the task's index in the team member's task list.\n"
-        + "  desc/           - (Optional) New task description.\n"
-        + "  due/            - (Optional) New due date in the format yyyy-MM-dd HH:mm.\n"
-        + "  status/         - (Optional) New task status. One of: 'yet to start', 'in progress', 'completed'.\n"
+        + "  PERSON_INDEX - A positive integer representing the team member's index in the displayed list.\n"
+        + "  TASK_INDEX   - A positive integer representing the task's index in the team member's task list.\n"
+        + "  DESCRIPTION  - The new task description.\n"
+        + "  DUE_DATE     - (Optional) New due date in format yyyy-MM-dd HH:mm.\n"
+        + "  STATUS       - (Optional) New task status: 'yet to start', 'in progress', 'completed'.\n"
         + "\n"
-        + "Example:\n"
-        + "  " + COMMAND_WORD + " 1 2 desc/Submit revised report due/2025-12-31 23:59 status/in progress";
-    public static final String MESSAGE_UPDATE_TASK_SUCCESS = "Updated task for %1$s: %2$s";
-    public static final String MESSAGE_NOT_UPDATED = "At least one field to update must be provided.";
+        + "Examples:\n"
+        + "  " + COMMAND_WORD + " 1 2 Buy milk\n"
+        + "  " + COMMAND_WORD + " 1 2 Submit report, in progress\n"
+        + "  " + COMMAND_WORD + " 2 1 Finalize project, 2025-12-31 23:59, completed";
+
+
 
     private final Index personIndex;
     private final Index taskIndex;
@@ -62,7 +64,7 @@ public class UpdateTaskCommand extends Command {
         requireNonNull(newStatus);
 
         if (!newDescription.isPresent() && !newDueDate.isPresent() && !newStatus.isPresent()) {
-            throw new IllegalArgumentException(MESSAGE_NOT_UPDATED);
+            throw new IllegalArgumentException(Messages.MESSAGE_NOT_UPDATED);
         }
 
         this.personIndex = personIndex;
@@ -80,12 +82,17 @@ public class UpdateTaskCommand extends Command {
         Person personToEdit = lastShownList.get(personIndex.getZeroBased());
         List<Task> tasks = new ArrayList<>(personToEdit.getTasks());
 
-        if (personIndex.getZeroBased() >= lastShownList.size() || personIndex.getZeroBased() >= tasks.size()) {
+        if (personIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        }
+
+        if (taskIndex.getZeroBased() >= tasks.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
         }
 
         Task taskToUpdate = tasks.get(taskIndex.getZeroBased());
         Task updatedTask = taskToUpdate;
+
         if (newDescription.isPresent()) {
             updatedTask = updatedTask.withDescription(newDescription.get());
         }
@@ -114,8 +121,31 @@ public class UpdateTaskCommand extends Command {
         );
 
         model.setPerson(personToEdit, updatedPerson);
-        return new CommandResult(String.format(MESSAGE_UPDATE_TASK_SUCCESS,
-            updatedPerson.getName(), updatedTask.getDescription()));
+
+        String message;
+        if (newDescription.isEmpty() && newDueDate.isEmpty() && newStatus.isPresent()) {
+            // Status-only case (like `mark`)
+            message = String.format("Successfully updated task \"%s\" to status \"%s\" for %s.\n"
+                    + "Tip: Use the 'listtasks %d' command to view all tasks for this team member.",
+                updatedTask.getDescription(),
+                updatedTask.getStatus(),
+                updatedPerson.getName(),
+                personIndex.getOneBased());
+        } else {
+            // Generic update case
+            message = String.format("Successfully updated task for %s:\n"
+                    + "• Description: %s\n"
+                    + "• Due Date: %s\n"
+                    + "• Status: %s\n"
+                    + "Tip: Use the 'listtasks %d' command to view the updated task list.",
+                updatedPerson.getName(),
+                updatedTask.getDescription(),
+                updatedTask.getDueDate() == null ? "None" : updatedTask.getDueDate().toString(),
+                updatedTask.getStatus(),
+                personIndex.getOneBased());
+        }
+
+        return new CommandResult(message);
     }
 
     @Override
