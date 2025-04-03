@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.TaskCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.Model;
 import seedu.address.model.task.Task;
 
 /**
@@ -21,6 +22,8 @@ public class TaskCommandParser implements Parser<TaskCommand> {
     public TaskCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
             ArgumentTokenizer.tokenize(args, PREFIX_TASK);
+
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_TASK);
 
         Index index;
 

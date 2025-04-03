@@ -114,6 +114,17 @@ public class UpdateTaskCommand extends Command {
             updatedTask = updatedTask.withStatus(newStatus.get());
         }
 
+        for (int i = 0; i < tasks.size(); i++) {
+            if (i == taskIndex.getZeroBased()) continue;
+
+            Task otherTask = tasks.get(i);
+            if (newDescription.isPresent()
+                && otherTask.getDescription().equals(newDescription.get())) {
+                throw new CommandException("Such task is already present for this member.\n"
+                                            + "You cannot update to a task description that exists.\n");
+            }
+        }
+
         tasks.set(taskIndex.getZeroBased(), updatedTask);
 
         // Create a new Person with the updated tasks list.

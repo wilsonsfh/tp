@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import seedu.address.commons.core.index.Index;
@@ -59,6 +60,17 @@ public class TaskCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
+
+        List<Task> updatedTasks = new ArrayList<>(personToEdit.getTasks());
+
+        for (Task existingTask : updatedTasks) {
+            if (existingTask.getDescription().equals(task.getDescription())) {
+                throw new CommandException("This task already exists for the selected member.\n"
+                + "Task description cannot be the same!");
+            }
+        }
+        updatedTasks.add(task);
+
         Person updatedPerson = personToEdit.addTask(task);
 
         model.setPerson(personToEdit, updatedPerson);
