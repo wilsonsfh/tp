@@ -22,6 +22,8 @@ public class TaskCommandParser implements Parser<TaskCommand> {
         ArgumentMultimap argMultimap =
             ArgumentTokenizer.tokenize(args, PREFIX_TASK);
 
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_TASK);
+
         Index index;
 
         try {
