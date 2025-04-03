@@ -23,6 +23,7 @@ import seedu.address.logic.commands.ReportCommand;
 import seedu.address.logic.commands.SetDueDateCommand;
 import seedu.address.logic.commands.TaskCommand;
 import seedu.address.logic.commands.TaskStatusCommand;
+import seedu.address.logic.commands.UpdateTaskCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -76,6 +77,9 @@ public class AddressBookParser {
 
         case TaskStatusCommand.COMMAND_WORD:
             return new TaskStatusCommandParser().parse(arguments);
+
+        case UpdateTaskCommand.COMMAND_WORD:
+            return new UpdateTaskCommandParser().parse(arguments);
 
         case DeleteTaskCommand.COMMAND_WORD:
             return new DeleteTaskCommandParser().parse(arguments);

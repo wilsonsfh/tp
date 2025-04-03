@@ -45,8 +45,37 @@ public class Task {
         return status;
     }
 
+    /**
+     * Returns a copy of this task with the given status and the same description and due date.
+     *
+     * @param newStatus The new status to assign to the task.
+     * @return A new Task instance with the updated status.
+     */
     public Task withStatus(TaskStatus newStatus) {
+        requireNonNull(newStatus);
         return new Task(this.description, newStatus, this.dueDate);
+    }
+
+    /**
+     * Returns a copy of this task with the given description and the same status and due date.
+     *
+     * @param newDescription The new description to assign to the task.
+     * @return A new Task instance with the updated description.
+     */
+    public Task withDescription(String newDescription) {
+        requireNonNull(newDescription);
+        return new Task(newDescription, this.status, this.dueDate);
+    }
+
+    /**
+     * Returns a copy of this task with the given due date, while keeping the same description and status.
+     *
+     * @param newDueDate The new due date to assign to the task. Can be {@code null} to indicate no due date.
+     * @return A new Task instance with the updated due date.
+     */
+    public Task withDueDate(LocalDateTime newDueDate) {
+        // newDueDate can be null, thus requireNonNull not required
+        return new Task(this.description, this.status, newDueDate);
     }
 
     private String formatDueDate() {
@@ -84,4 +113,5 @@ public class Task {
     public int hashCode() {
         return description.hashCode();
     }
+
 }
