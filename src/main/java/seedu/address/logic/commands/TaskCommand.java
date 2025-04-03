@@ -85,10 +85,10 @@ public class TaskCommand extends Command {
         model.setPerson(personToEdit, updatedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_ADD_TASK_SUCCESS,
-            updatedPerson.getName(),       // %1$s
-            task.getDescription(),         // %2$s
-            formattedDueDate,              // %3$s
-            task.getStatus().toString(),   // %4$s
+            updatedPerson.getName(), // %1$s
+            task.getDescription(), // %2$s
+            formattedDueDate, // %3$s
+            task.getStatus().toString(), // %4$s
             index.getOneBased()));
     }
 
