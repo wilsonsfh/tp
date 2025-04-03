@@ -23,7 +23,8 @@ public enum TaskStatus {
      * @throws IllegalArgumentException if the input string does not match any known task status
      */
     public static TaskStatus fromString(String str) {
-        switch (str.toLowerCase()) {
+        String normalised = str.trim().toLowerCase();
+        switch (normalised) {
         case "yet to start":
             return TaskStatus.YET_TO_START;
         case "in progress":
