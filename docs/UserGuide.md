@@ -220,21 +220,39 @@ Examples:
 * ![output for `deltask 3 2`](images/deltaskOutput.png)
 
 
-### Updating status for a task : `mark`
+### Updating a task under a member : `updatetask`
 
-Mark the task status for a specific task of a member.
+Update a specific task of a member. 
 
-Format: `mark PERSON_INDEX TASK_INDEX task_status`
+You may update the description, due date, and/or status.
 
-* Update the task status of a task at `TASK_INDEX` of the person at the specified `PERSON_INDEX`.
-* `TASK_INDEX` refers to the index number shown in the task list of a member.
-* Both indexes **must be a positive integer** 1, 2, 3, …​
-* Only valid inputs are only `yet to start`, `in progress` and `completed`.
+Format: `updatetask PERSON_INDEX TASK_INDEX [DESCRIPTION][, DUE_DATE][, STATUS]`
+- `PERSON_INDEX` refers to the member in the currently displayed list.
+- `TASK_INDEX` refers to the task under the specified member.
+- Parameters must be separated by commas (`,`).
+- You can update (order matters):
+    - **Description** (Optional)
+    - **Due Date** *(Optional)* – Format: `yyyy-MM-dd HH:mm`
+    - **Status** *(Optional)* – One of: `yet to start`, `in progress`, `completed` (case-insensitive)
+    - It is safe to omit parameters that you do not wish to update, however, order of parameters must be followed.
+
+- Limitations: if there’s only 1 task parameter, certain keywords will trigger the most relevant task parameter.
+
+**Examples:**
+- `updatetask 1 2 Fix backend bug`
+  Updates only the task description.
+- `updatetask 1 2 Fix backend bug, 2025-10-31 14:00`  
+  Updates the task description and due date.
+- `updatetask 1 2 2025-12-12 23:59, completed`
+  Updates the due date and status.
+- `updatetask 1 2 completed`
+  Updates only the task status.
+- `updatetask 1 2 Fix backend bug, 2025-10-31 14:00, completed`  
+  Updates all three fields.
 
 Examples:
-* `listtasks 2` followed by `mark 3 2 in progress` sets the task status for the second task of the third person in the displayed person list to be **in progress**.
-* `find n/ Betsy` followed by `mark 2 1 completed` sets the task status for the first task of the second person in the results of the `find` command to be **completed**.
-![mark a task in progress](images/markTaskResult.png)
+* `listtasks 2` followed by `updatetask 3 2 in progress` sets the task status for the second task of the third person in the displayed person list to be **in progress**.
+* `find n/ Betsy` followed by `updatetask 2 1 2025-12-12 23:59` sets the due date for the first task of the second person in the results of the `find` command to be **2025-12-12 23:59**.
 
 
 ### Locating persons by name, tags, or tasks: `find`

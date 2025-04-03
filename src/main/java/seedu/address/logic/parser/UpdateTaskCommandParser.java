@@ -19,73 +19,91 @@ public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
     @Override
     public UpdateTaskCommand parse(String args) throws ParseException {
         String[] parts = args.trim().split("\\s+", 3);
-
         if (parts.length < 3) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                UpdateTaskCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UpdateTaskCommand.MESSAGE_USAGE));
         }
 
         Index personIndex = ParserUtil.parseIndex(parts[0]);
         Index taskIndex = ParserUtil.parseIndex(parts[1]);
-        String fieldSegment = parts[2].trim();
+        String[] fields = parts[2].split(",", -1);
 
         Optional<String> description = Optional.empty();
         Optional<LocalDateTime> dueDate = Optional.empty();
         Optional<TaskStatus> status = Optional.empty();
 
-        // Case 1: Status-only update (e.g. updatetask 1 2 completed)
-        try {
-            status = Optional.of(TaskStatus.fromString(fieldSegment));
-            return new UpdateTaskCommand(personIndex, taskIndex, description, dueDate, status);
-        } catch (IllegalArgumentException ignored) {
-            // Fall through to parse as multiple fields
+        if (fields.length > 3) {
+            throw new ParseException("Too many fields. Use: DESCRIPTION[, DUE_DATE][, STATUS]");
         }
 
-        // Case 2: Parse comma-separated fields
-        String[] fields = fieldSegment.split(",");
+        String first = fields[0].trim();
 
-        if (fields.length >= 1) {
-            String descCandidate = fields[0].trim();
-            if (!descCandidate.isEmpty()) {
-                description = Optional.of(descCandidate);
-            }
-        }
-
-        if (fields.length == 2) {
-            String second = fields[1].trim();
-            try {
-                dueDate = Optional.of(ParserUtil.parseAndValidateDueDate(second));
-            } catch (ParseException pe) {
+        if (fields.length == 1) {
+            if (TaskStatus.isValidStatus(first)) {
+                status = Optional.of(TaskStatus.fromString(first));
+            } else {
                 try {
-                    status = Optional.of(TaskStatus.fromString(second));
-                } catch (IllegalArgumentException e) {
-                    throw new ParseException("Second parameter must be a valid date (yyyy-MM-dd HH:mm) "
-                                            + "or task status.");
+                    dueDate = Optional.of(ParserUtil.parseAndValidateDueDate(first));
+                } catch (ParseException e) {
+                    description = Optional.of(first);
                 }
             }
-        }
+        } else if (fields.length == 2) {
+            String second = fields[1].trim();
 
-        if (fields.length == 3) {
-            try {
-                dueDate = Optional.of(ParserUtil.parseAndValidateDueDate(fields[1].trim()));
-            } catch (ParseException e) {
-                throw new ParseException("Second field must be a valid due date in yyyy-MM-dd HH:mm format.");
+            if (TaskStatus.isValidStatus(first)) {
+                throw new ParseException("Cannot update other fields when only updating task status. Use only: STATUS");
             }
 
             try {
-                status = Optional.of(TaskStatus.fromString(fields[2].trim()));
-            } catch (IllegalArgumentException e) {
-                throw new ParseException("Third field must be a valid status: "
+                dueDate = Optional.of(ParserUtil.parseAndValidateDueDate(first));
+                if (TaskStatus.isValidStatus(second)) {
+                    status = Optional.of(TaskStatus.fromString(second));
+                } else {
+                    throw new ParseException("Second parameter must be a valid task status when first is a due date.");
+                }
+            } catch (ParseException e) {
+                description = Optional.of(first);
+                try {
+                    dueDate = Optional.of(ParserUtil.parseAndValidateDueDate(second));
+                } catch (ParseException ex) {
+                    if (TaskStatus.isValidStatus(second)) {
+                        status = Optional.of(TaskStatus.fromString(second));
+                    } else {
+                        throw new ParseException("Second parameter must be a valid date (yyyy-MM-dd HH:mm) "
+                            + "or task status.");
+                    }
+                }
+            }
+        } else if (fields.length == 3) {
+            String second = fields[1].trim();
+            String third = fields[2].trim();
+
+            if (first.isEmpty()) {
+                throw new ParseException("Description cannot be empty when providing multiple fields.");
+            }
+            description = Optional.of(first);
+
+            try {
+                dueDate = Optional.of(ParserUtil.parseAndValidateDueDate(second));
+            } catch (ParseException e) {
+                throw new ParseException("Second parameter must be a valid date (yyyy-MM-dd HH:mm).");
+            }
+
+            if (TaskStatus.isValidStatus(third)) {
+                status = Optional.of(TaskStatus.fromString(third));
+            } else {
+                throw new ParseException("Third parameter must be a valid task status: "
                     + "'yet to start', "
-                    + "'in progress', or "
+                    + "'in progress', "
                     + "'completed'.");
             }
         }
 
-        if (!description.isPresent() && !dueDate.isPresent() && !status.isPresent()) {
+        if (description.isEmpty() && dueDate.isEmpty() && status.isEmpty()) {
             throw new ParseException(Messages.MESSAGE_NOT_UPDATED);
         }
 
         return new UpdateTaskCommand(personIndex, taskIndex, description, dueDate, status);
     }
+
 }

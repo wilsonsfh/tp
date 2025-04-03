@@ -35,4 +35,16 @@ public enum TaskStatus {
             throw new IllegalArgumentException("Invalid task status: " + str);
         }
     }
+
+    /**
+     * Checks if task status is valid
+     */
+    public static boolean isValidStatus(String status) {
+        try {
+            TaskStatus.fromString(status);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
 }
