@@ -287,7 +287,7 @@ We use an `enum TaskStatus` to define task states:
 | `setduedate`   | Sets a due date for a specific task           |
 | `mark`         | Updates the task’s status                     |
 | `listtasks`    | Lists tasks for a specific person             |
-| `report`       | Generates a task completion summary           |
+| `report`       | Generates a task status summary               |
 
 #### Key Implementation Notes
 - Tasks are embedded inside the `Person` model.
@@ -870,11 +870,15 @@ testers are expected to do more *exploratory* testing.
 
 **Prerequisites:**
 - Have several persons with tasks in different statuses.
+- Tasks should be categorized into statuses: Yet to Start, In Progress, and Completed.
+- Person should have at least one task to be included in the report.
 
 1. Test case: `report` <br>
 **Expected**:
-   - Summary report displayed showing tasks grouped by status.
-   - Status bar shows command success.
+   - A summary report is displayed, grouping tasks by their status (Yet to Start, In Progress, Completed).
+   - Each status section shows the number of person with tasks in parentheses.
+   - Person under each status have their tasks listed in the order they were assigned.
+   - Status bar confirms successful execution
 
 ### Deleting a person
 
