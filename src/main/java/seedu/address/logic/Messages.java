@@ -34,6 +34,8 @@ public class Messages {
     public static final String MESSAGE_UPDATE_TASK_SUCCESS = "Updated task for %1$s: %2$s";
     public static final String MESSAGE_NOT_UPDATED = "At least one task field parameter must be provided: "
                                                    + "TASK_DESCRIPTION | TASK_STATUS | TASK_DATE";
+    public static final String MESSAGE_DUPLICATE_TASK = "Such task is already present for this person.\n"
+                                                   + "You cannot update to a task description that exists!\n";
 
     /**
      * Returns an error message indicating the duplicate prefixes.
