@@ -10,6 +10,7 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_TASK;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
+import seedu.address.model.task.Task;
 import seedu.address.model.util.SampleDataUtil;
 
 class SetDueDateCommandTest {
@@ -40,9 +42,27 @@ class SetDueDateCommandTest {
     void execute_validIndexes_success() {
         SetDueDateCommand command = new SetDueDateCommand(newDueDate, INDEX_FIRST_TASK, INDEX_SECOND_PERSON);
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+
         Person personToEdit = SampleDataUtil.getSamplePersons()[1];
+        List<Task> updatedTasks = personToEdit.getTasks();
+        Task taskToUpdate = updatedTasks.get(INDEX_FIRST_TASK.getZeroBased());
+        taskToUpdate.setDueDate(newDueDate);
+        Person editedPerson = new Person(
+                personToEdit.getName(),
+                personToEdit.getPhone(),
+                personToEdit.getEmail(),
+                personToEdit.getTelegram(),
+                personToEdit.getPosition(),
+                personToEdit.getAddress(),
+                personToEdit.getTags(),
+                personToEdit.getSkills(),
+                personToEdit.getOthers(),
+                personToEdit.getTaskStatus(),
+                updatedTasks
+        );
+
         String expectedResult = String.format(MESSAGE_SUCCESS_SET_DUE_DATE,
-                formatDueDate(newDueDate), Messages.format(personToEdit));
+                formatDueDate(newDueDate), Messages.format(editedPerson));
         assertCommandSuccess(command, model, expectedResult, expectedModel);
     }
 

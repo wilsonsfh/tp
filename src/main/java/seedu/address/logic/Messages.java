@@ -69,6 +69,8 @@ public class Messages {
         person.getSkills().forEach(builder::append);
         builder.append("; Others: ");
         person.getOthers().forEach(builder::append);
+        builder.append("; Tasks: ");
+        person.getTasks().forEach(task -> builder.append("[" + task + "]"));
         return builder.toString();
     }
 
