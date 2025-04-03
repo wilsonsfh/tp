@@ -5,6 +5,7 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
@@ -33,7 +34,11 @@ public class TaskCommand extends Command {
         + "  " + COMMAND_WORD + " 2 task/Buy groceries\n"
         + "  " + COMMAND_WORD + " 3 task/Plan meeting, 2025-10-01 09:00";
 
-    public static final String MESSAGE_ADD_TASK_SUCCESS = "Added task to member: %1$s";
+    public static final String MESSAGE_ADD_TASK_SUCCESS = "Successfully added task to %1$s:\n"
+        + "• Description: %2$s\n"
+        + "• Due Date: %3$s\n"
+        + "• Status: %4$s\n"
+        + "Tip: Use the 'listtasks %5$d' command to view all tasks for this team member.";
 
     private final Index index;
     private final Task task;
@@ -73,9 +78,18 @@ public class TaskCommand extends Command {
 
         Person updatedPerson = personToEdit.addTask(task);
 
+        String formattedDueDate = Optional.ofNullable(task.getDueDate())
+            .map(d -> d.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+            .orElse("No due date set");
+
         model.setPerson(personToEdit, updatedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_ADD_TASK_SUCCESS, updatedPerson.getName()));
+        return new CommandResult(String.format(MESSAGE_ADD_TASK_SUCCESS,
+            updatedPerson.getName(),       // %1$s
+            task.getDescription(),         // %2$s
+            formattedDueDate,              // %3$s
+            task.getStatus().toString(),   // %4$s
+            index.getOneBased()));
     }
 
     @Override
