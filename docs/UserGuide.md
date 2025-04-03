@@ -113,12 +113,14 @@ Examples:
 
   ![result for 'add n/Betsy Crowe t/friend e/betsycrowe@example.com tele/@besty pos/teacher a/Newgate Prison p/1234567 t/criminal task/barbeque, 2025-05-28 14:00, yet to start'](images/addBestyCroweResult.png)
 
+
 ### Adding a task to a member: `task`
 
 Adds a task to the specified member.
 
-Format: `task INDEX task/TASK_DESCRIPTION[, yyyy-MM-dd HH:mm, TASK_STATUS]`
+Format: `task INDEX task/[TASK_DESCRIPTION, YYYY-MM-DD HH:mm, TASK_STATUS]`
 
+- INDEX: Index of the person in the displayed list.
 - TASK_STATUS can be one of: `yet to start`, `in progress`, `completed`.
 - Date and status are optional. If omitted, status defaults to `yet to start`.
 - There can only exist 1 `task/` prefix for each TaskCommand to be added.
@@ -156,6 +158,8 @@ Examples:
 * `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 * `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
   ![input for 'edit 2 n/Betsy Crower t/'](images/editBestyCroweInput.png)
+
+  ![result for 'edit 2 n/Betsy Crower t/'](images/editBestyCroweResult.png)
 
 
 
@@ -198,6 +202,7 @@ Example results for member without task:
 Example results for member with tasks:
 * ![listtasks for person with a task](images/listtasksBetsy.png)
 
+
 ### Deleting a task under a member : `deltask`
 
 Delete a specific task of a member.
@@ -209,7 +214,11 @@ Format: `deltask PERSON_INDEX TASK_INDEX`
 * Both indexes **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `listtasks 2` followed by `deltask 3 2` deletes the second task of the third person in the displayed person list.
+* `deltask 3 2` deletes the second task of the third person in the displayed person list.
+* ![input for `deltask 3 2`](images/deltaskInput.png)
+
+* ![output for `deltask 3 2`](images/deltaskOutput.png)
+
 
 ### Updating status for a task : `mark`
 
@@ -367,7 +376,6 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 | **Find (Tag)**   | `find t/ KEYWORD [MORE_KEYWORDS]`<br> e.g., `find t/ colleagues friends`                                                                                                                                                                                              |
 | **Add Task**     | `task INDEX task/TASK_DESCRIPTION[, yyyy-MM-dd HH:mm, TASK_STATUS]` <br> e.g., `task 3 task/Book venue`                                                                                                                                                               |
 | **Delete task**  | `deltask PERSON_INDEX TASK_INDEX`<br> e.g., `deltask 3 2`                                                                                                                                                                                                             |
-| **Mark**         | `mark PERSON_INDEX TASK_INDEX task_status` <br> e.g. `mark 1 1 in-progress`                                                                                                                                                                                           |
 | **List**         | `list`                                                                                                                                                                                                                                                                |
 | **List Tasks**   | `listtasks INDEX`<br> e.g., `listtasks 2`                                                                                                                                                                                                                             |
 | **Mark Task**    | `mark PERSON_INDEX TASK_INDEX task_status`<br> e.g., `mark 3 2 in-progress`                                                                                                                                                                                           |
