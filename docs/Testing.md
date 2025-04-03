@@ -1,47 +1,67 @@
 ---
-  layout: default.md
-  title: "Testing guide"
-  pageNav: 3
+layout: default.md
+title: "Testing guide"
+pageNav: 3
 ---
 
-# Testing guide
+# 🧪 Testing Guide
 
-<!-- * Table of Contents -->
 <page-nav-print />
 
-<!-- -------------------------------------------------------------------------------------------------------------------- -->
+---
 
-## Running tests
+## ✅ Running Tests
 
-There are two ways to run tests.
+There are two ways to run the test suite:
 
-* **Method 1: Using IntelliJ JUnit test runner**
-  * To run all tests, right-click on the `src/test/java` folder and choose `Run 'All Tests'`
-  * To run a subset of tests, you can right-click on a test package,
-    test class, or a test and choose `Run 'ABC'`
-* **Method 2: Using Gradle**
-  * Open a console and run the command `gradlew clean test` (Mac/Linux: `./gradlew clean test`)
+### Method 1: Using IntelliJ (JUnit Runner)
+
+- To run all tests:  
+  Right-click on `src/test/java` → `Run 'All Tests'`
+- To run specific tests:  
+  Right-click on a test **class**, **method**, or **package** → `Run 'XYZ'`
+
+### Method 2: Using Gradle
+
+- On Windows: `gradlew clean test`
+- On macOS/Linux: `./gradlew clean test`
 
 <box type="info" seamless>
-
-**Link**: Read [this Gradle Tutorial from the se-edu/guides](https://se-education.org/guides/tutorials/gradle.html) to learn more about using Gradle.
+💡 Need help with Gradle?  
+Check the [Gradle Tutorial](https://se-education.org/guides/tutorials/gradle.html) from se-edu.
 </box>
 
---------------------------------------------------------------------------------------------------------------------
+---
 
-## Types of tests
+## 🧩 Types of Tests in TeamScape
 
-This project has three types of tests:
+We use a combination of the following test types:
 
-1. *Unit tests* targeting the lowest level methods/classes.<br>
-   e.g. `seedu.address.commons.StringUtilTest`
-1. *Integration tests* that are checking the integration of multiple code units (those code units are assumed to be working).<br>
-   e.g. `seedu.address.storage.StorageManagerTest`
-1. Hybrids of unit and integration tests. These test are checking multiple code units as well as how the are connected together.<br>
-   e.g. `seedu.address.logic.LogicManagerTest`
+### 1. **Unit Tests**
+- Test individual classes and methods.
+- Example: `StringUtilTest`, `TaskTest`, `TaskStatusCommandTest`
 
-### TaskCommmandParserTest
-Test cases for task command parsing are implemented in `TaskCommandParserTest.java`. These cover:
-- Valid and invalid task strings
-- Empty descriptions
-- Flexible parsing of optional fields (description, due date, status)
+### 2. **Integration Tests**
+- Check how components interact when combined.
+- Example: `StorageManagerTest`, `JsonAdaptedPersonTest`
+
+### 3. **Hybrid (Unit + Integration) Tests**
+- Simulate full command flows from parsing to execution.
+- Example: `LogicManagerTest`, `CommandSystemTest`
+
+---
+
+## 🧪 Task Feature Test Cases
+
+### ✅ Command Parsing
+
+File: `TaskCommandParserTest.java`
+
+Covers:
+- Valid task input with all fields
+- Missing fields (e.g., description only)
+- Invalid field values (e.g., bad date format, invalid status)
+
+Example test:
+```java
+assertParseSuccess(parser, "1 t/Submit report d/2025-10-10 10:00 s/in progress", expectedCommand);

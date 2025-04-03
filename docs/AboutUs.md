@@ -35,7 +35,6 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](https://github.com/awc1116)]
 [[portfolio](team/awc1116.md)]
 
-
 * Role: Developer
 
 ### Tang Ming Shan
@@ -48,7 +47,6 @@ We are a team based in the [School of Computing, National University of Singapor
 
 * Role: Developer
 
-
 ### Wei Tianyue
 
 <img src="images/jeremiah33-3.png" width="200px">
@@ -56,6 +54,4 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](http://github.com/jeremiah33-3)]
 [[portfolio](team/jeremiah33-3.md)]
 
-
 * Role: Developer
-
