@@ -652,12 +652,13 @@ Based on the latest implementation of TeamScape:
 4. Command input should be case-insensitive and provide informative error messages on incorrect format.
 5. Should recover the last known good state if the app crashes unexpectedly.
 6. Should allow real-time UI refresh when task status or due date is updated.
-7. Should complete most task operations (e.g., add, delete, update) within 200ms. 
+7. Should complete most operations (e.g., add, delete, update) within 200ms. 
 8. Should retrieve and display 1000 records within 1.5s. 
-9. Should not allow duplicate tasks to be added for a person. 
-10. Should highlight invalid commands with contextual prompts and guide users on correct input format. 
-11. Should ensure extensibility of task logic by modularizing task parser, validator, and model layers. 
-12. Should keep memory usage under 200MB during peak load.
+9. Should not allow duplicate tasks to be added for a person.
+10. Should not allow duplicate persons.
+11. Should highlight invalid commands with contextual prompts and guide users on correct input format. 
+12. Should ensure extensibility of task logic by modularizing command parser, validator, and model layers. 
+13. Should keep memory usage under 200MB during peak load.
 
 ### Glossary
 

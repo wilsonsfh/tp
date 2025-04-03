@@ -132,9 +132,10 @@ In other words, another task with the same description cannot be added.
 - There can only exist 1 `task/` prefix for each TaskCommand to be added.
 - When only 1 task field is provided (e.g. `completed`), and it matches with a valid task status or due date format, 
 it will be interpreted strictly as such regardless of the intention.
-- When invalid date format is provided for a 1 task field, it is accepted as valid task description.
 
 **Limitations:**
+- When invalid date format is provided for the task description field, it is accepted as valid as there is no restriction of
+  input standardisation.
 - When there exists multiple errors with the command input by the user, the error message will only show up one by one at a time.
 
 **Related:**
@@ -250,6 +251,8 @@ Format: `updatetask PERSON_INDEX TASK_INDEX [TASK_DESCRIPTION][, DUE_DATE][, STA
 (task status, due date, or task description).
 
 **Limitations:**
+- When invalid date format is provided for the task description field, it is accepted as valid as there is no restriction of 
+input standardisation.
 - When there exists multiple errors with the command input by the user, the error message will only show up one by one at a time.
 
 **Examples: (all possible combinations)**
