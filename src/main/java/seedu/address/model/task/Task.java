@@ -46,7 +46,18 @@ public class Task {
     }
 
     public Task withStatus(TaskStatus newStatus) {
+        requireNonNull(newStatus);
         return new Task(this.description, newStatus, this.dueDate);
+    }
+
+    public Task withDescription(String newDescription) {
+        requireNonNull(newDescription);
+        return new Task(newDescription, this.status, this.dueDate);
+    }
+
+    public Task withDueDate(LocalDateTime newDueDate) {
+        // newDueDate can be null, thus requireNonNull not required
+        return new Task(this.description, this.status, newDueDate);
     }
 
     private String formatDueDate() {
@@ -84,4 +95,5 @@ public class Task {
     public int hashCode() {
         return description.hashCode();
     }
+
 }
