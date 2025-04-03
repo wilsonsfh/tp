@@ -334,6 +334,12 @@ Shows a summary of all tasks and their completion statuses.
 
 * Users are associated with their tasks under their status
 * report command is case-insensitive
+* The report is divided into three sections: ‘Yet to Start’, ‘In Progress’, and ‘Completed’
+* The number in parentheses next to each task status represents how many person have tasks in that status.
+* Under each task status, the names of the person are listed, followed by their assigned tasks in parentheses
+* If a person has multiple tasks, they are displayed in the order the tasks were added
+* For example, if Bryan first received the task 'Sleep' and later received the task 'Swim', the report will show:
+Bryan (Sleep, Swim), indicating that 'Sleep' was assigned first, followed by 'Swim'
 
 Format: `report`
 
