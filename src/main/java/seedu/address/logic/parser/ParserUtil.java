@@ -267,6 +267,13 @@ public class ParserUtil {
     private static Task parseTwoVariableTask(String taskDesc, String secondParameter) throws ParseException {
         validateTaskDescription(taskDesc);
         try {
+            LocalDateTime.parse(taskDesc.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            throw new ParseException(String.format(MESSAGE_DATE_AS_DESCRIPTION, taskDesc.trim(), taskDesc.trim()));
+        } catch (DateTimeParseException ignored) {
+            // not a date, continue
+        }
+
+        try {
             TaskStatus taskStatus = TaskStatus.fromString(secondParameter);
             return new Task(taskDesc, taskStatus, null);
         } catch (IllegalArgumentException e) {

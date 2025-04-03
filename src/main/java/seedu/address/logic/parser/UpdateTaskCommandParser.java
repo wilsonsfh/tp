@@ -3,6 +3,8 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
@@ -81,6 +83,13 @@ public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
 
     private UpdateTaskCommand parseTwoFields(String first, String second,
                                              Index personIndex, Index taskIndex) throws ParseException {
+        try {
+            LocalDateTime.parse(first.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            throw new ParseException(String.format(ParserUtil.MESSAGE_DATE_AS_DESCRIPTION, first.trim(), first.trim()));
+        } catch (DateTimeParseException ignored) {
+            // If not a valid date, continue
+        }
+
         Optional<String> description = Optional.empty();
         Optional<LocalDateTime> dueDate = Optional.empty();
         Optional<TaskStatus> status = Optional.empty();
@@ -117,6 +126,13 @@ public class UpdateTaskCommandParser implements Parser<UpdateTaskCommand> {
                                                Index personIndex, Index taskIndex) throws ParseException {
         if (first.isEmpty()) {
             throw new ParseException(ERROR_MISSING_DESCRIPTION);
+        }
+
+        try {
+            LocalDateTime.parse(first.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            throw new ParseException(String.format(ParserUtil.MESSAGE_DATE_AS_DESCRIPTION, first.trim(), first.trim()));
+        } catch (DateTimeParseException ignored) {
+            // It's not a valid date, continue
         }
 
         Optional<String> description = Optional.of(first);

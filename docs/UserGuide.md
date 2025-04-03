@@ -125,9 +125,6 @@ Format: `task PERSON_INDEX task/TASK_DESCRIPTION[, DUE_DATE[, TASK_STATUS]`
 - Task description is mandatory.
 - Task Status can be one of: `yet to start`, `in progress`, `completed`.
 - Date and task status are optional. If omitted, status defaults to `yet to start`.
-
-
-**Constraints:**
 - All task details must be separated by commas `,` in the correct order: description, due date (if any), 
 and then status (if any).
 - There can only exist 1 task with a unique task description. 
@@ -139,8 +136,6 @@ it will be interpreted strictly as such regardless of the intention.
 
 **Limitations:**
 - When there exists multiple errors with the command input by the user, the error message will only show up one by one at a time.
-- When date format and status are both provided for a 2 task field, it is accepted as valid task description.
-
 
 **Related:**
 - See "Setting due date for a task" section for more information on due dates.
@@ -251,10 +246,8 @@ Format: `updatetask PERSON_INDEX TASK_INDEX [TASK_DESCRIPTION][, DUE_DATE][, STA
     - **Description** _(if any)_
     - **Due Date** *(if any)* – Format: `yyyy-MM-dd HH:mm`
     - **Status** *(if any)* – One of: `yet to start`, `in progress`, `completed` (case-insensitive)
-
-**Constraints:** 
-  - For task fields provided (e.g. `completed`), it will be assigned to the most relevant parameters 
-  (task status, due date, or task description).
+- For task fields provided (e.g. `completed`), it will be assigned to the most relevant parameters 
+(task status, due date, or task description).
 
 **Limitations:**
 - When there exists multiple errors with the command input by the user, the error message will only show up one by one at a time.
