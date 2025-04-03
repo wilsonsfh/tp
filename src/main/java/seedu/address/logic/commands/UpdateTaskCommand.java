@@ -37,9 +37,9 @@ public class UpdateTaskCommand extends Command {
         + "\n"
         + "Notes:\n"
         + "  • Use commas (,) to separate multiple fields.\n"
-        + "  • Order of parameters matters."
+        + "  • Order of parameters matters.\n"
         + "\n"
-        + "Examples:\n"
+        + "Examples: (all different possible combinations)\n"
         + "  " + COMMAND_WORD + " 1 2 Buy milk\n"
         + "  " + COMMAND_WORD + " 1 2 Submit report, in progress\n"
         + "  " + COMMAND_WORD + " 2 1 Finalize project, 2025-12-31 23:59, completed\n"
@@ -118,7 +118,7 @@ public class UpdateTaskCommand extends Command {
             //Skip the task currently updating to avoid false duplication check
             if (i == taskIndex.getZeroBased()) {
                 continue;
-            };
+            }
 
             Task otherTask = tasks.get(i);
             if (newDescription.isPresent()

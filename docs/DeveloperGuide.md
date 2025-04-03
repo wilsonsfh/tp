@@ -280,14 +280,14 @@ We use an `enum TaskStatus` to define task states:
 - `COMPLETED`
 
 #### Commands
-| Command        | Description                                   |
-|----------------|-----------------------------------------------|
-| `task`         | Adds a task to a person                       |
-| `deltask`      | Deletes a task from a person                  |
-| `setduedate`   | Sets a due date for a specific task           |
-| `mark`         | Updates the task’s status                     |
-| `listtasks`    | Lists tasks for a specific person             |
-| `report`       | Generates a task status summary               |
+| Command      | Description                         |
+|--------------|-------------------------------------|
+| `task`       | Adds a task to a person             |
+| `deltask`    | Deletes a task from a person        |
+| `setduedate` | Sets a due date for a specific task |
+| `updatetask` | Updates a task for a person         |
+| `listtasks`  | Lists tasks for a specific person   |
+| `report`     | Generates a task completion summary |
 
 #### Key Implementation Notes
 - Tasks are embedded inside the `Person` model.
@@ -645,32 +645,19 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 *{More to be added}*
 
 ### Non-Functional Requirements
-*Based on the AB3 brown-field project*
-1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2. Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-4. Should not require a persistent internet connection and be able to use the whole system fully offline and locally.
-5. Should minimize data loss to 1-minute worth of user input for resilience in unexpected shutdowns.
-6. A user needs to confirm when handling duplicate entries instead of allowing silent overwrites.
-7. Should work on both 32-bit and 64-bit operating systems for compatibility inclusion.
-8. Should be compatible with Windows, macOS, and Linux for cross-platform usage.
-9. Should follow a modular code structure, allowing for future enhancements and maintainability.
-10. Should complete all CRUD operations (Add, Remove, Update) within 200 milliseconds.
-11. Should retrieve and display a list of 1000 members within 1.5 second.
-12. Should generate task status reports within a maximum of 3 seconds.
-15. Should prevent accidental data loss by implementing confirmation prompts for deletions.
-16. Should support automatic backups at periodic intervals or before performing bulk actions.
-17. Should process command inputs in a case-insensitive manner to improve usability.
-18. Should provide explicit and user-friendly error messages for troubleshooting.
-19. Should provide a user manual detailing all available commands.
-20. Should document code using JavaDoc for maintainability by future developers.
-21. Should allow data recovery from the last saved state in case of crashes.
-22. Should consume less than 200MB of memory during normal operations.
-23. Should generate reports in a structured format, ensuring usability with spreadsheet applications.
-24. Should include unit tests covering at least 80% of core functionalities.
-25. Should encrypt or obfuscate sensitive data if required.
-26. Should ensure that commands follow a consistent pattern to reduce user confusion.
-27. Should return task search results within 1 second.
+Based on the latest implementation of TeamScape:
+1. Should work on any mainstream OS with specifically Java 17.
+2. Should support up to 1 person and their associated tasks with minimal performance degradation.
+3. Application should function fully offline with no internet connection.  
+4. Command input should be case-insensitive and provide informative error messages on incorrect format.
+5. Should recover the last known good state if the app crashes unexpectedly.
+6. Should allow real-time UI refresh when task status or due date is updated.
+7. Should complete most task operations (e.g., add, delete, update) within 200ms. 
+8. Should retrieve and display 1000 records within 1.5s. 
+9. Should not allow duplicate tasks to be added for a person. 
+10. Should highlight invalid commands with contextual prompts and guide users on correct input format. 
+11. Should ensure extensibility of task logic by modularizing task parser, validator, and model layers. 
+12. Should keep memory usage under 200MB during peak load.
 
 ### Glossary
 
@@ -738,7 +725,7 @@ testers are expected to do more *exploratory* testing.
 <br>
   **Expected**: Similar to previous error case.
 
-### Adding a task to a member
+### Adding a task to a person
 
 **Prerequisites:**
 - Have at least one person in the address book.
@@ -829,20 +816,26 @@ testers are expected to do more *exploratory* testing.
    - No task deleted. 
    - Error about invalid index.
 
-### Updating status for a task
+### Updating task for a person
 
 **Prerequisites:**
 - Have at least one person with at least one task.
 
-1. Test case: `mark 1 1 completed` <br>
+1. Test case: `updatetask 1 1 completed` <br>
 **Expected**:
-   - First task of first person marked as completed. 
-   - Status message confirms change.
+   - First task of first person updated as completed from its previous state. 
+   - Successful message confirms update and shows new task details.
 
-2. Test case: `mark 1 1 invalid-status` <br>
+2. Test case: `updatetask 3 2 project milestone 1 sprint, 2025-05-12 10:00, in progress` <br>
 **Expected**:
-   - No changes made. 
-   - Error about invalid status.
+   - Third task of second person updated as completed from its previous state. 
+   - Successful message to confirms update and shows new task details.
+
+3Test case: `updatetask 3 2 project milestone 1 sprint, invalidDateorTaskStatus` <br>
+   **Expected**:
+    - No change to the specified task
+    - Error message shows specific error.
+
 
 ### Finding persons
 

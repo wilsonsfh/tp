@@ -83,14 +83,24 @@ public class PersonCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(other -> other.other))
                 .forEach(other -> others.getChildren().add(new Label(other.other)));
         person.getTasks().stream()
-            .forEach((Task task) -> {
-                Label taskLabel = new Label(task.getDescription()
-                                            + " ["
-                                            + task.getStatus().name().toLowerCase().replace("_", " ")
-                                            + "]");
-                taskLabel.getStyleClass().add("task-label");
-                tasks.getChildren().add(taskLabel);
-            });
+                .forEach((Task task) -> {
+                    StringBuilder taskDisplay = new StringBuilder(task.getDescription());
+
+                    if (task.getDueDate() != null) {
+                        taskDisplay.append(", ")
+                            .append(task.getDueDate()
+                                        .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                    }
+
+                    taskDisplay.append(" [")
+                        .append(task.getStatus().name().toLowerCase().replace("_", " "))
+                        .append("]");
+
+                    Label taskLabel = new Label(taskDisplay.toString());
+                    taskLabel.getStyleClass().add("task-label");
+                    tasks.getChildren().add(taskLabel);
+                });
+
         if (person.getTags().isEmpty()) {
             tagsContainer.setManaged(false);
             tagsContainer.setVisible(false);

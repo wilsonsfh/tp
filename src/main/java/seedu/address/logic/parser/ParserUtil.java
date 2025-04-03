@@ -244,6 +244,17 @@ public class ParserUtil {
                     + "Use a comma to separate them:\n"
                     + "e.g., task/TASK_DESCRIPTION, " + taskDesc.trim());
         }
+
+        try {
+            LocalDateTime.parse(taskDesc.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            throw new ParseException(
+                "Looks like you tried to supply a due date ('" + taskDesc.trim() + "') in the description field.\n"
+                    + "Use a comma to separate them:\n"
+                    + "e.g., task/TASK_DESCRIPTION, " + taskDesc.trim());
+        } catch (DateTimeParseException e) {
+            // Not a valid due date, continue
+        }
+
         return new Task(taskDesc, TaskStatus.YET_TO_START, null);
     }
 
@@ -256,7 +267,7 @@ public class ParserUtil {
             try {
                 LocalDateTime dueDate = parseAndValidateDueDate(secondParameter);
                 return new Task(taskDesc, TaskStatus.YET_TO_START, dueDate);
-            } catch (DateTimeParseException | ParseException e1) {
+            } catch (DateTimeParseException e1) {
                 throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
             }
         }
@@ -372,14 +383,17 @@ public class ParserUtil {
      * @throws ParseException if format is wrong or date is in the past.
      */
     public static LocalDateTime parseAndValidateDueDate(String dueDateString) throws ParseException {
+        LocalDateTime dueDate;
         try {
-            LocalDateTime dueDate = LocalDateTime.parse(dueDateString.trim(), INPUT_FORMATTER);
-            if (dueDate.isBefore(LocalDateTime.now())) {
-                throw new ParseException("Due date is in the past!");
-            }
-            return dueDate;
+            dueDate = LocalDateTime.parse(dueDateString.trim(), INPUT_FORMATTER);
         } catch (DateTimeParseException e) {
             throw new ParseException(MESSAGE_INCORRECT_DATE_FORMAT);
         }
+
+        if (dueDate.isBefore(LocalDateTime.now())) {
+            throw new ParseException("Due date is in the past!");
+        }
+
+        return dueDate;
     }
 }
