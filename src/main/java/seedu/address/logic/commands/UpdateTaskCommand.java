@@ -1,8 +1,10 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,14 +31,22 @@ public class UpdateTaskCommand extends Command {
         + "Parameters:\n"
         + "  PERSON_INDEX - A positive integer representing the team member's index in the displayed list.\n"
         + "  TASK_INDEX   - A positive integer representing the task's index in the team member's task list.\n"
-        + "  DESCRIPTION  - The new task description.\n"
+        + "  DESCRIPTION  - The new task description (optional if only updating due date or status).\n"
         + "  DUE_DATE     - (Optional) New due date in format yyyy-MM-dd HH:mm.\n"
         + "  STATUS       - (Optional) New task status: 'yet to start', 'in progress', 'completed'.\n"
+        + "\n"
+        + "Notes:\n"
+        + "  • Use commas (,) to separate multiple fields.\n"
+        + "  • Order of parameters matters."
         + "\n"
         + "Examples:\n"
         + "  " + COMMAND_WORD + " 1 2 Buy milk\n"
         + "  " + COMMAND_WORD + " 1 2 Submit report, in progress\n"
-        + "  " + COMMAND_WORD + " 2 1 Finalize project, 2025-12-31 23:59, completed";
+        + "  " + COMMAND_WORD + " 2 1 Finalize project, 2025-12-31 23:59, completed\n"
+        + "  " + COMMAND_WORD + " 1 1 2025-12-31 23:59\n"
+        + "  " + COMMAND_WORD + " 3 2 completed\n"
+        + "  " + COMMAND_WORD + " 4 1 2025-12-31 23:59, in progress";
+
 
 
 
@@ -79,15 +89,16 @@ public class UpdateTaskCommand extends Command {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
 
-        Person personToEdit = lastShownList.get(personIndex.getZeroBased());
-        List<Task> tasks = new ArrayList<>(personToEdit.getTasks());
-
         if (personIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
+        Person personToEdit = lastShownList.get(personIndex.getZeroBased());
+        List<Task> tasks = new ArrayList<>(personToEdit.getTasks());
+
         if (taskIndex.getZeroBased() >= tasks.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+            throw new CommandException(String.format(MESSAGE_INVALID_TASK_DISPLAYED_INDEX, taskIndex.getOneBased()));
+
         }
 
         Task taskToUpdate = tasks.get(taskIndex.getZeroBased());
@@ -123,13 +134,26 @@ public class UpdateTaskCommand extends Command {
         model.setPerson(personToEdit, updatedPerson);
 
         String message;
+        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        //For user-friendly display
+        String formattedDueDate = Optional.ofNullable(updatedTask.getDueDate())
+            .map(date -> date.format(displayFormatter))
+            .orElse("No due date set");
+
         if (newDescription.isEmpty() && newDueDate.isEmpty() && newStatus.isPresent()) {
             // Status-only case (like `mark`)
             message = String.format("Successfully updated task \"%s\" to status \"%s\" for %s.\n"
+                    + "• Description: %s\n"
+                    + "• Due Date: %s\n"
+                    + "• Status: %s\n"
                     + "Tip: Use the 'listtasks %d' command to view all tasks for this team member.",
                 updatedTask.getDescription(),
                 updatedTask.getStatus(),
                 updatedPerson.getName(),
+                updatedTask.getDescription(),
+                formattedDueDate,
+                updatedTask.getStatus(),
                 personIndex.getOneBased());
         } else {
             // Generic update case
@@ -137,10 +161,10 @@ public class UpdateTaskCommand extends Command {
                     + "• Description: %s\n"
                     + "• Due Date: %s\n"
                     + "• Status: %s\n"
-                    + "Tip: Use the 'listtasks %d' command to view the updated task list.",
+                    + "Tip: Use the 'listtasks %d' command to view all tasks for this team member.",
                 updatedPerson.getName(),
                 updatedTask.getDescription(),
-                updatedTask.getDueDate() == null ? "None" : updatedTask.getDueDate().toString(),
+                formattedDueDate,
                 updatedTask.getStatus(),
                 personIndex.getOneBased());
         }
