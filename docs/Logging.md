@@ -1,13 +1,31 @@
 ---
-  layout: default.md
-  title: "Logging guide"
+layout: default.md
+title: "Logging guide"
 ---
 
-# Logging guide
+# Logging Guide
 
-* We are using `java.util.logging` package for logging.
-* The `LogsCenter` class is used to manage the logging levels and logging destinations.
-*  The `Logger` for a class can be obtained using `LogsCenter.getLogger(Class)` which will log messages according to the specified logging level.
-*  Log messages are output through the console and to a `.log` file.
-*  The output logging level can be controlled using the `logLevel` setting in the configuration file (See the [Configuration guide](Configuration.md) section).
-* **When choosing a level for a log message**, follow the conventions given in [_[se-edu/guides] Java: Logging conventions_](https://se-education.org/guides/conventions/java/logging.html).
+This guide explains how TeamScape uses logging to monitor runtime behavior and help with debugging.
+
+---
+
+## 📋 Overview
+
+TeamScape uses the `java.util.logging` (JUL) package for logging, with a custom `LogsCenter` utility to manage loggers across the codebase.
+
+Log messages are output to both:
+- The **console**
+- A **log file** (`logs/teamscape.log` by default)
+
+The logging level (e.g., `INFO`, `WARNING`, `SEVERE`) can be configured via [`config.json`](Configuration.md#configuration-fields).
+
+---
+
+## 🧰 Usage
+
+### ✅ How to get a logger
+
+For any class, you can create a logger like this:
+
+```java
+private static final Logger logger = LogsCenter.getLogger(YourClassName.class);

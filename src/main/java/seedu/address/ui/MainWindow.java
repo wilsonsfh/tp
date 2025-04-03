@@ -175,13 +175,13 @@ public class MainWindow extends UiPart<Stage> {
                 StringBuilder reportBuilder = new StringBuilder(commandResult.getFeedbackToUser())
                         .append("\n\n");
 
-                //Completed Tasks
-                reportBuilder.append("Completed Tasks (")
-                        .append(commandResult.getCompletedTasks().size())
+                //Yet To Start Tasks
+                reportBuilder.append("Yet to Start Tasks (")
+                        .append(commandResult.getYetToStartTasks().size())
                         .append("):\n");
-                commandResult.getCompletedTasks().forEach(person -> {
+                commandResult.getYetToStartTasks().forEach(person -> {
                     String tasks = person.getTasks().stream()
-                            .filter(task -> task.getStatus().equals(TaskStatus.COMPLETED))
+                            .filter(task -> task.getStatus().equals(TaskStatus.YET_TO_START))
                             .map(Task::getDescription)
                             .collect(Collectors.joining(", "));
                     reportBuilder.append(person.getName())
@@ -207,13 +207,13 @@ public class MainWindow extends UiPart<Stage> {
                             .append("\n");
                 });
 
-                //Yet To Start Tasks
-                reportBuilder.append("\nYet to Start Tasks (")
-                        .append(commandResult.getYetToStartTasks().size())
+                //Completed Tasks
+                reportBuilder.append("\nCompleted Tasks (")
+                        .append(commandResult.getCompletedTasks().size())
                         .append("):\n");
-                commandResult.getYetToStartTasks().forEach(person -> {
+                commandResult.getCompletedTasks().forEach(person -> {
                     String tasks = person.getTasks().stream()
-                            .filter(task -> task.getStatus().equals(TaskStatus.YET_TO_START))
+                            .filter(task -> task.getStatus().equals(TaskStatus.COMPLETED))
                             .map(Task::getDescription)
                             .collect(Collectors.joining(", "));
                     reportBuilder.append(person.getName())

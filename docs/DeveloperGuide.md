@@ -18,7 +18,7 @@
   - [Common classes](#common-classes)  
 - [Implementation](#implementation)  
   - [Proposed Undo/redo feature](#proposed-undoredo-feature)  
-  - [Proposed Data archiving](#proposed-data-archiving)  
+  - [Implementation of Task Feature](#Implementation-of-Task-Feature)  
 - [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)  
 - [Appendix: Requirements](#appendix-requirements)  
   - [Product scope](#product-scope)  
@@ -154,15 +154,6 @@ The `Model` component,
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
-<box type="info" seamless>
-
-**Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
-
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
-
-</box>
-
-
 ### Storage component
 
 **API** : [`Storage.java`](https://github.com/AY2425S2-CS2103-F09-4/tp/blob/master/src/main/java/seedu/address/storage/Storage.java)
@@ -277,10 +268,40 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 _{more aspects and alternatives to be added}_
 
-### \[Proposed\] Data archiving
+### Implementation of Task Feature
 
-_{Explain here how the data archiving feature will be implemented}_
+#### Overview
+The task feature allows users to assign and manage tasks for individual team members. Each `Person` object can contain multiple `Task` instances, each having a description, status, and optional due date.
 
+#### Task Status Enum
+We use an `enum TaskStatus` to define task states:
+- `YET_TO_START`
+- `IN_PROGRESS`
+- `COMPLETED`
+
+#### Commands
+| Command        | Description                                   |
+|----------------|-----------------------------------------------|
+| `task`         | Adds a task to a person                       |
+| `deltask`      | Deletes a task from a person                  |
+| `setduedate`   | Sets a due date for a specific task           |
+| `mark`         | Updates the task’s status                     |
+| `listtasks`    | Lists tasks for a specific person             |
+| `report`       | Generates a task completion summary           |
+
+#### Key Implementation Notes
+- Tasks are embedded inside the `Person` model.
+- `JsonAdaptedPerson` serializes/deserializes the `tasks` list.
+- Tasks are displayed in the UI when `listtasks` is used.
+- All task-related commands extend `Command` and use dedicated parsers.
+
+#### Task Structure
+
+<puml src="diagrams/TaskModelClassDiagram.puml" />
+
+#### Task Command Execution Flow
+
+<puml src="diagrams/TaskCommandSequenceDiagram.puml" />
 
 --------------------------------------------------------------------------------------------------------------------
 
