@@ -13,15 +13,15 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts and the tasks
 1. [Quick Start](#quick-start)
 2. [Features](#features)
     - [Viewing Help](#viewing-help--help)
-    - [Adding a Person](#adding-a-person--add)
-    - [Adding a Task to a Member](#adding-a-task-to-a-member--task)
+    - [Adding a Person](#adding-a-person-add)
+    - [Adding a Task to a Member](#adding-a-task-to-a-member-task)
     - [Listing All Persons](#listing-all-persons--list)
     - [Editing a Person](#editing-a-person--edit)
     - [Setting Due Date for a Task](#setting-due-date-for-a-task--setduedate)
     - [Listing Tasks Assigned to a Member](#listing-tasks-assigned-to-a-member--listtasks)
     - [Deleting a Task Under a Member](#deleting-a-task-under-a-member--deltask)
     - [Updating Status for a Task](#updating-status-for-a-task--mark)
-    - [Locating Persons by Name, Tags, or Tasks](#locating-persons-by-name-tags-or-tasks--find)
+    - [Locating Persons by Name, Tags, or Tasks](#locating-persons-by-name-tags-or-tasks-find)
     - [Generate Task Status Report](#generate-task-status-report--report)
     - [Deleting a Person](#deleting-a-person--delete)
     - [Clearing All Entries](#clearing-all-entries--clear)
@@ -89,22 +89,23 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts and the tasks
 
 ### Viewing help : `help`
 
-Shows a message explaning how to access the help page.
+Shows a message explaining how to access the help page.
 
 ![help message](images/helpMessage.png)
 
 Format: `help`
 
 
-### Adding a person: `add` 
+### Adding a person: `add`
 
 Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL tele/TELEGRAM pos/POSITION a/ADDRESS [t/TAG]…​ [s/SKILL]…​ [o/OTHER]…​ [task/TASK]…​`
 
-**Note:** Task can have no due date and status (ie task/barbeque or task/barbeque, 2025-05-28 14:00 or task/barbeque, in progress) the default status would be yet to start.
-
-**Tip:** A person can have any number of tags, skills, others and tasks (including 0). See "Adding a task to a member" section for more information regarding task creation.
+**Note:** 
+- Task can have no due date and status (ie task/barbeque or task/barbeque, 2025-05-28 14:00 or task/barbeque, in progress) the default status would be yet to start.
+- Repeated names are treated as the same person, regardless of case or other details, and will not be added again. 
+- A person can have any number of tags, skills, others and tasks (including 0). See "Adding a task to a member" section for more information regarding task creation.
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com tele/@john pos/student a/John street, block 123, #01-01 task/barbeque, 2025-05-28 14:00, yet to start`

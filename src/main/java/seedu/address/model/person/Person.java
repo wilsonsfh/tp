@@ -175,6 +175,7 @@ public class Person {
                 .add("tags", tags)
                 .add("skills", skills)
                 .add("others", others)
+                .add("tasks", tasks)
                 .add("taskStatus", taskStatus)
                 .toString();
     }
